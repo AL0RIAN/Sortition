@@ -1,6 +1,7 @@
+__all__ = ["NavigationButton"]
+
 from tkinter import Button, Event
-from GUI.colors import ColorRange, RED
-from root import root
+from GUI.Colors.colors import ColorRange, RED
 
 color_range = ColorRange(color=RED)
 
@@ -18,7 +19,7 @@ class NavigationButton(Button):
     ENTER_STATE = False
     COLOR = 0
 
-    def __init__(self, master, text="New",
+    def __init__(self, master, root_win, command, text="New",
                  font=("Montserrat", 15, "bold"),
                  borderwidth=0,
                  background="#F8F5F5",
@@ -48,9 +49,12 @@ class NavigationButton(Button):
                          font=("Montserrat", 15, "bold"),
                          borderwidth=borderwidth,
                          background=background,
-                         cursor=cursor)
+                         cursor=cursor,
+                         command=command,
+                         activebackground="#FF3737")
         self.bind("<Enter>", self.enter)
         self.bind("<Leave>", self.leave)
+        self.root_win = root_win
 
     def enter(self, event: Event = None) -> None:
         self.ENTER_STATE = True
@@ -66,7 +70,7 @@ class NavigationButton(Button):
                 color = color_range.get_color(index=self.COLOR)
                 self.COLOR += 1
                 self.config(background=color)
-                root.after(1, self.hover_enter)
+                self.root_win.after(1, self.hover_enter)
             else:
                 return
 
@@ -76,6 +80,6 @@ class NavigationButton(Button):
                 self.COLOR -= 1
                 color = color_range.get_color(self.COLOR)
                 self.config(background=color)
-                root.after(1, self.hover_leave)
+                self.root_win.after(1, self.hover_leave)
             else:
                 return
