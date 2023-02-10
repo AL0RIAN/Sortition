@@ -34,3 +34,5 @@ class ColorRange:
 RED = ['#FF%02X%02X' % (color, color) for color in range(255, 0, -1)]
 GREEN = ['#%02XFF%02X' % (color, color) for color in range(255, 0, -1)]
 BLUE = ['#%02X%02XFF' % (color, color) for color in range(255, 0, -1)]
+
+print(RED[200])
