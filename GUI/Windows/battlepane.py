@@ -1,18 +1,21 @@
 __all__ = ["BattleWindow"]
 
 from tkinter import *
-from tkinter import ttk
 from ..Buttons.battlebtn import *
+from typing import List
+import keyboard
 
 
 class BattleWindow(PanedWindow):
-    # Поле из двумерного массива
-    fields = []
+    DIRECTION = True
 
-    def __init__(self, master, root_win, cnf={}, **kwargs):
-        Widget.__init__(self, master, 'panedwindow', cnf, kwargs)
+    def __init__(self, master=None, root_win=None, cnf={}, **kwargs):
+        Widget.__init__(self, master=master, widgetName='panedwindow', cnf={}, **kwargs)
+        self.fields: List[List[BattleButton]] = []
+
         self.root_win = root_win
         self.grid_columnconfigure(index=0, minsize=self.winfo_screenwidth() // 16)
+        self.config(background="#6C6C6C")
 
         # Vertical Scrollbar
         self.vertical_scroll = Scrollbar(master=self)
@@ -24,7 +27,7 @@ class BattleWindow(PanedWindow):
 
         # Canvas (Scrollable Widget)
         self.canvas = Canvas(master=self,
-                             background="red",
+                             background="#6C6C6C",
                              highlightbackground="#6C6C6C",
                              yscrollcommand=self.vertical_scroll.set,
                              xscrollcommand=self.horizontal_scroll.set)
@@ -41,11 +44,29 @@ class BattleWindow(PanedWindow):
         self.canvas_frame = Frame(master=self.canvas, background="#6C6C6C", highlightbackground="#6C6C6C")
         self.canvas.create_window((0, 0), window=self.canvas_frame, anchor="nw")
 
-    def create_grid(self):
-        for row in range(32):
-            for col in range(16):
-                BattleButton(self.canvas_frame, text=f"", root_win=self.root_win).grid(row=row, column=col,
-                                                                                                  pady=10, padx=10,
-                                                                                                  sticky="news")
+        self.canvas.bind_all("<MouseWheel>", self.on_mousewheel)
+        keyboard.add_hotkey(hotkey="ctrl", callback=self.change_direction)
 
-# Сделать бинд на колесико мыши
+    def change_direction(self):
+        print(f"H {self.DIRECTION}")
+        print(f"V {not self.DIRECTION}\n")
+
+        if not self.DIRECTION:
+            self.DIRECTION = True
+        else:
+            self.DIRECTION = False
+
+    def on_mousewheel(self, event):
+        if self.DIRECTION:
+            self.canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+        elif not self.DIRECTION:
+            self.canvas.xview_scroll(int(-1 * (event.delta / 120)), "units")
+
+    def create_grid(self) -> None:
+        for row in range(32):
+            temp: List[BattleButton] = []
+            for col in range(16):
+                btn = BattleButton(self.canvas_frame, text=f" ", root_win=self.root_win)
+                btn.grid(row=row, column=col, sticky="news")
+                temp.append(btn)
+            self.fields.append(temp)

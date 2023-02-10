@@ -14,11 +14,7 @@ class BattleButton(Button):
         COLOR - indicator in range [0-255)
     """
 
-    def __init__(self, master, root_win, text=" ",
-                 font=("Montserrat", 15, "bold"),
-                 borderwidth=1,
-                 background="#F8F5F5",
-                 cnf={}, **kw):
+    def __init__(self, master, root_win, text=" ", cnf={}, **kw):
         """Construct a button widget with the parent MASTER.
 
 
@@ -41,10 +37,13 @@ class BattleButton(Button):
         super().__init__(master=master,
                          text=text,
                          font=("Montserrat", 15, "bold"),
-                         borderwidth=0,
+                         borderwidth=1,
                          background="#6C6C6C",
                          )
 
         self.root_win = root_win
         self.config(width=11)
         self.config(state="disabled")
+
+    def __str__(self):
+        return "0"
