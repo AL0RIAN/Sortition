@@ -1,85 +1,17 @@
 __all__ = ["NavigationButton"]
 
-from tkinter import Button, Event
-from GUI.Colors.colors import ColorRange, RED
-
-color_range = ColorRange(color=RED)
+from .colorbtn import *
 
 
-class NavigationButton(Button):
-    """Tkinter Button child. Navigation bar button.
+class NavigationButton(ColorButton):
+    def __init__(self, master, root_win, hover_color, command, text="New"):
 
-    TOP FIELDS
+        super().__init__(master=master, root_win=root_win, hover_color=hover_color, start_bg="#F8F5F5")
 
-        ENTER_STATE: This filed indicate cursor position relative to the button.
-        False - cursor is outside the button. True - cursor within the button.
-
-        COLOR - indicator in range [0-255)
-    """
-    ENTER_STATE = False
-    COLOR = 0
-
-    def __init__(self, master, root_win, command, text="New",
-                 font=("Montserrat", 15, "bold"),
-                 borderwidth=0,
-                 background="#F8F5F5",
-                 cursor="hand2",
-                 cnf={}, **kw):
-        """Construct a button widget with the parent MASTER.
-
-
-        STANDARD OPTIONS (tkinter.Button)
-
-            activebackground, activeforeground, anchor,
-            background, bitmap, borderwidth, cursor,
-            disabledforeground, font, foreground
-            highlightbackground, highlightcolor,
-            highlightthickness, image, justify,
-            padx, pady, relief, repeatdelay,
-            repeatinterval, takefocus, text,
-            textvariable, underline, wraplength
-
-        WIDGET-SPECIFIC OPTIONS (tkinter.Button)
-
-            command, compound, default, height,
-            overrelief, state, width
-        """
-        super().__init__(master=master,
-                         text=text,
-                         font=("Montserrat", 15, "bold"),
-                         borderwidth=borderwidth,
-                         background=background,
-                         cursor=cursor,
-                         command=command,
-                         activebackground="#FF3737")
-        self.bind("<Enter>", self.enter)
-        self.bind("<Leave>", self.leave)
         self.root_win = root_win
-
-    def enter(self, event: Event = None) -> None:
-        self.ENTER_STATE = True
-        self.hover_enter()
-
-    def leave(self, event: Event = None) -> None:
-        self.ENTER_STATE = False
-        self.hover_leave()
-
-    def hover_enter(self) -> None:
-        if self.ENTER_STATE:
-            if self.COLOR < 150:
-                color = color_range.get_color(index=self.COLOR)
-                self.COLOR += 1
-                self.config(background=color)
-                self.root_win.after(1, self.hover_enter)
-            else:
-                return
-
-    def hover_leave(self) -> None:
-        if not self.ENTER_STATE:
-            if self.COLOR - 1 != -1:
-                self.COLOR -= 1
-                color = color_range.get_color(self.COLOR)
-                self.config(background=color)
-                self.root_win.after(1, self.hover_leave)
-            else:
-                return
+        self.config(text=text,
+                    borderwidth=0,
+                    cursor="hand2",
+                    command=command,
+                    background="#F8F5F5",
+                    font=("Montserrat", 15, "bold"))
