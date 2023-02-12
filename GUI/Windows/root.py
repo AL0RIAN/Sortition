@@ -1,5 +1,6 @@
 from tkinter import *
 from GUI.Buttons import NavigationButton
+from GUI.Buttons import InfoButton
 from .battlepane import *
 
 
@@ -32,9 +33,10 @@ work_space.add(child=navigation_window)
 btn_frame = Frame(master=navigation_window, background="#F8F5F5", width=window.screen_width)
 btn_frame.place(relx=0.5, rely=0.5, anchor=CENTER)
 
-NavigationButton(master=btn_frame, text="Выход", root_win=window.root, command=window.root.destroy).grid(row=0,
-                                                                                                         column=0,
-                                                                                                         sticky="news")
+NavigationButton(master=btn_frame, text="Выход", root_win=window.root, hover_color="BLUE",
+                 command=window.root.destroy).grid(row=0,
+                                                   column=0,
+                                                   sticky="news")
 
 work_space.grid_columnconfigure(index=0, minsize=window.screen_height // 4)
 work_space.grid_rowconfigure(index=0, minsize=window.screen_height // 2)
@@ -45,3 +47,6 @@ battle_window = BattleWindow(master=work_space, root_win=RootWindow.root)
 work_space.add(child=battle_window)
 
 battle_window.create_grid()
+battle_window.add_members()
+
+
