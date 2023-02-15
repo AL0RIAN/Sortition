@@ -47,6 +47,6 @@ battle_window = BattleWindow(master=work_space, root_win=RootWindow.root)
 work_space.add(child=battle_window)
 
 battle_window.create_grid()
-battle_window.add_members()
+battle_window.start()
 
 

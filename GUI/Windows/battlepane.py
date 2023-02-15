@@ -6,11 +6,21 @@ from typing import List
 import keyboard
 from GUI.Buttons import InfoButton
 from GUI.athlete import *
-from GUI.Buttons.colorbtn import *
+from math import ceil
 
 
 class BattleWindow(PanedWindow):
     DIRECTION = True
+    MEMBERS = len(all) * 2
+    COLUMN = 0
+    SPACES = 0  # Текущий отступ + текущая колонка + 1 (SPACES + COLUMN + 1)
+    CURRENT_GRID = 0
+    COLUMN_MEMBERS = ceil(MEMBERS / 2)
+
+    """
+    ТЕКУЩИЙ РЯДОК. ИСПОЛЬЗУЕТСЯ В ФУНКЦИИ ПРОВЕРКИ ПАРЫ В СТОЛБИКЕ. ЕСЛИ ФУНКЦИЯ НАХОДИТ ПАРУ, ТО СТАВИТ
+    МЕЖДЖУ НИМИ КНОПКУ "БОЙ
+    """
 
     def __init__(self, master=None, root_win=None, cnf={}, **kwargs):
         Widget.__init__(self, master=master, widgetName='panedwindow', cnf={}, **kwargs)
@@ -51,8 +61,8 @@ class BattleWindow(PanedWindow):
         keyboard.add_hotkey(hotkey="ctrl", callback=self.change_direction)
 
     def change_direction(self):
-        print(f"H {self.DIRECTION}")
-        print(f"V {not self.DIRECTION}\n")
+        # print(f"H {self.DIRECTION}")
+        # print(f"V {not self.DIRECTION}\n")
 
         if not self.DIRECTION:
             self.DIRECTION = True
@@ -74,34 +84,67 @@ class BattleWindow(PanedWindow):
                 temp.append(btn)
             self.fields.append(temp)
 
-    def add_members(self):
-        # ЭТА ФУНКЦИЯ ДЛЯ СОЗДАНИЯ ТОЛЬКО ПЕРВОГО СТОЛБИКА
+    def start(self):
         column = 0
         row = 0
 
         for pair in all:
-            print(pair[0].name, pair[1].name, end="\n")
-        # for col in range(3):
-        #     row = 0 + col
-        for pair in all:
-            InfoButton(master=self.canvas_frame, root_win=self.root_win, hover_color="GREEN", info=pair[0]).grid(row=row, column=0)
+            InfoButton(master=self.canvas_frame, root_win=self.root_win, hover_color="GREEN", info=pair[0]).grid(
+                row=row, column=0)
             first = pair[0]
 
-            InfoButton(master=self.canvas_frame, root_win=self.root_win, hover_color="GREEN", info=pair[1]).grid(row=row + 2, column=0)
+            InfoButton(master=self.canvas_frame, root_win=self.root_win, hover_color="GREEN", info=pair[1]).grid(
+                row=row + 2, column=0)
             second = pair[1]
 
             btn = self.fields[column][row + 1]
-            btn.config(text="БОЙ", state="normal", cursor="hand2", command=lambda args=(first, second, btn): self.winner(args[0], args[1], args[2]))
-
+            btn.config(text="БОЙ", state="normal", cursor="hand2",
+                       command=lambda args=(first, second, btn): self.winner(args[0], args[1], args[2]))
 
             row += 4
 
+        self.COLUMN += 1
+        self.SPACES = self.SPACES + self.COLUMN + 1
+
     def winner(self, first: Athlete, second: Athlete, btn: Button):
         if first.power > second.power:
-            InfoButton(master=self.canvas_frame, root_win=self.root_win, hover_color="GREEN", info=first).grid(row=btn.grid_info()["row"], column=btn.grid_info()["column"] + 1)
+            new_btn = InfoButton(master=self.canvas_frame, root_win=self.root_win, hover_color="GREEN", info=first)
+            new_btn.grid(row=btn.grid_info()["row"], column=btn.grid_info()["column"] + 1)
+            self.fields[btn.grid_info()["column"] + 1][btn.grid_info()["row"]] = new_btn
         else:
-            InfoButton(master=self.canvas_frame, root_win=self.root_win, hover_color="GREEN", info=second).grid(row=btn.grid_info()["row"], column=btn.grid_info()["column"] + 1)
+            new_btn = InfoButton(master=self.canvas_frame, root_win=self.root_win, hover_color="GREEN", info=second)
+            new_btn.grid(row=btn.grid_info()["row"], column=btn.grid_info()["column"] + 1)
+            self.fields[btn.grid_info()["column"] + 1][btn.grid_info()["row"]] = new_btn
 
         btn.config(state="disabled")
+
+        self.COLUMN_MEMBERS -= 1
+
+        if self.COLUMN_MEMBERS < 0:
+            self.COLUMN += 1
+            self.COLUMN_MEMBERS = self.MEMBERS // (2 ** self.COLUMN)
+        else:
+            self.check_column()
+
+    def check_column(self):
+        for row in range(self.CURRENT_GRID, 32):
+
+            first_btn = self.fields[self.COLUMN][row]
+
+            if first_btn.__class__.__name__ == "InfoButton":
+                self.CURRENT_GRID = first_btn.grid_info()["row"]
+                for under_row in range(self.CURRENT_GRID + 1, 32):
+                    second_btn = self.fields[self.COLUMN][under_row]
+                    if second_btn.__class__.__name__ == "InfoButton":
+                        battle_btn = self.fields[self.COLUMN][abs(under_row - self.SPACES)]
+
+                        battle_btn.config(text="БОЙ", state="normal", cursor="hand2",
+                                          command=lambda
+                                              args=(first_btn.info, second_btn.info, battle_btn): self.winner(args[0],
+                                                                                                              args[1],
+                                                                                                              args[2]
+                                                                                                              ))
+                        self.CURRENT_GRID = under_row + 1
+                        return
 
 # СОЗДАТЬ ФУНКЦИЮ, КОТОРАЯ БУДЕТ ПРОДЛЕВАТЬ СЕТКУ НА ОДНОГО УЧАСТНИКА. ГЛОБАЛЬНЫЙ СПИСОК УЧАСТНИКОВ УМЕНЬШАЕТСЯ
