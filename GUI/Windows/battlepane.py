@@ -17,11 +17,6 @@ class BattleWindow(PanedWindow):
     CURRENT_GRID = 0
     COLUMN_MEMBERS = ceil(MEMBERS / 2)
 
-    """
-    ТЕКУЩИЙ РЯДОК. ИСПОЛЬЗУЕТСЯ В ФУНКЦИИ ПРОВЕРКИ ПАРЫ В СТОЛБИКЕ. ЕСЛИ ФУНКЦИЯ НАХОДИТ ПАРУ, ТО СТАВИТ
-    МЕЖДЖУ НИМИ КНОПКУ "БОЙ
-    """
-
     def __init__(self, master=None, root_win=None, cnf={}, **kwargs):
         Widget.__init__(self, master=master, widgetName='panedwindow', cnf={}, **kwargs)
         self.fields: List[List[Button]] = []
@@ -98,7 +93,7 @@ class BattleWindow(PanedWindow):
             second = pair[1]
 
             btn = self.fields[column][row + 1]
-            btn.config(text="БОЙ", state="normal", cursor="hand2",
+            btn.config(text="БОЙ", state="normal", cursor="hand2", fg="#fff",
                        command=lambda args=(first, second, btn): self.winner(args[0], args[1], args[2]))
 
             row += 4
@@ -118,13 +113,14 @@ class BattleWindow(PanedWindow):
 
         btn.config(state="disabled")
 
-        self.COLUMN_MEMBERS -= 1
-
-        if self.COLUMN_MEMBERS < 0:
-            self.COLUMN += 1
-            self.COLUMN_MEMBERS = self.MEMBERS // (2 ** self.COLUMN)
-        else:
+        if self.COLUMN_MEMBERS != 0:
             self.check_column()
+            self.COLUMN_MEMBERS -= 1
+        else:
+            self.COLUMN += 1
+            self.SPACES = 2 ** self.COLUMN
+            self.COLUMN_MEMBERS = (self.MEMBERS // (2 ** self.COLUMN)) - 1
+            self.CURRENT_GRID = 0
 
     def check_column(self):
         for row in range(self.CURRENT_GRID, 32):
@@ -138,7 +134,7 @@ class BattleWindow(PanedWindow):
                     if second_btn.__class__.__name__ == "InfoButton":
                         battle_btn = self.fields[self.COLUMN][abs(under_row - self.SPACES)]
 
-                        battle_btn.config(text="БОЙ", state="normal", cursor="hand2",
+                        battle_btn.config(text="БОЙ", state="normal", cursor="hand2", fg="#fff",
                                           command=lambda
                                               args=(first_btn.info, second_btn.info, battle_btn): self.winner(args[0],
                                                                                                               args[1],
@@ -146,5 +142,3 @@ class BattleWindow(PanedWindow):
                                                                                                               ))
                         self.CURRENT_GRID = under_row + 1
                         return
-
-# СОЗДАТЬ ФУНКЦИЮ, КОТОРАЯ БУДЕТ ПРОДЛЕВАТЬ СЕТКУ НА ОДНОГО УЧАСТНИКА. ГЛОБАЛЬНЫЙ СПИСОК УЧАСТНИКОВ УМЕНЬШАЕТСЯ

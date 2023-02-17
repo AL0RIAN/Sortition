@@ -1,7 +1,6 @@
 RED = ['#FF%02X%02X' % (color, color) for color in range(255, 0, -1)]
 GREEN = ['#%02XFF%02X' % (color, color) for color in range(255, 0, -1)]
 BLUE = ['#%02X%02XFF' % (color, color) for color in range(255, 0, -1)]
-# GRAY = ['#6C6C6C' if color < 108: '#6C6C6C' else '#%02X%02X%02X' % (color, color, color) for color in range(255, 0, -1)]
 GRAY = []
 
 for color in range(0, 255):
@@ -14,8 +13,6 @@ for color in range(0, 255):
 
 print(GRAY)
 
-
-# [f(x) if x is not None else '' for x in xs]
 
 class ColorRange:
     CURRENT = -1
