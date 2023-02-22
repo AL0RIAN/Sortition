@@ -49,4 +49,3 @@ work_space.add(child=battle_window)
 battle_window.create_grid()
 battle_window.start()
 
-

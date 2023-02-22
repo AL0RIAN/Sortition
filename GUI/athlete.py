@@ -2,13 +2,13 @@ __all__ = ["Athlete", "all"]
 
 
 class Athlete:
-    def __init__(self, name, power, index):
+    def __init__(self, name, score, index):
         self.name = name
-        self.power = power
+        self.score = score
         self.index = index
 
 
-all = [[Athlete("Babodzaki", 3, 16), Athlete("Malenia", 4, 1)],
+all = [[Athlete("Babodzaki", 0, 16), Athlete("Malenia", 0, 1)],
        [Athlete("Radan", 4, 9), Athlete("Godri", 2, 8)],
        [Athlete("Rennie", 5, 5), Athlete("Renala", 1, 12)],
        [Athlete("Godwin", 2, 13), Athlete("Tif", 9, 4)],
