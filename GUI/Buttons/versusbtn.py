@@ -1,13 +1,18 @@
 __all__ = ["VersusButton"]
 
-from .colorbtn import *
-from ..athlete import *
+from .battlebtn import *
 
 
-class VersusButton(ColorButton):
-    def __init__(self, master, root_win, hover_color, info: Athlete):
-        super().__init__(master=master, root_win=root_win, hover_color=hover_color, start_bg="#F8F5F5")
+class VersusButton(BattleButton):
+    CURRENT_ROUND = 0
+
+    def __init__(self, master, root_win, window=None):
+        super().__init__(master=master, root_win=root_win, hover_color="DARK_MOON", start_bg="#212126")
+
+        self.SCORES = {0: [0, 0, "black", "black"],
+                       1: [0, 0, "black", "black"],
+                       2: [0, 0, "black", "black"]}
 
         self.root_win = root_win
-        self.config(width=11, text=f"{info.index} | {info.name}", borderwidth=0, cursor="hand2", font=("Montserrat", 15, "bold"))
-        self.info = info
+        self.window = window
+        self.config(text="БОЙ", state="normal", cursor="hand2", fg="#fff")
