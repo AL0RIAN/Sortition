@@ -17,6 +17,7 @@ class BattleWindow(PanedWindow):
     SPACES = 0  # Текущий отступ + текущая колонка + 1 (SPACES + COLUMN + 1)
     CURRENT_GRID = 0
     COLUMN_MEMBERS = ceil(MEMBERS / 2)
+    BORDER = False
 
     def __init__(self, master=None, root_win=None, cnf={}, **kwargs):
         Widget.__init__(self, master=master, widgetName='panedwindow', cnf={}, **kwargs)
@@ -56,6 +57,9 @@ class BattleWindow(PanedWindow):
         self.canvas.bind_all("<MouseWheel>", self.on_mousewheel)
         keyboard.add_hotkey(hotkey="ctrl", callback=self.change_direction)
 
+        # Add to settings
+        self.root_win.settings_menu.add_command(label="Сетка", command=self.border_settings)
+
     def change_direction(self):
         # print(f"H {self.DIRECTION}")
         # print(f"V {not self.DIRECTION}\n")
@@ -79,6 +83,22 @@ class BattleWindow(PanedWindow):
                 btn.grid(row=row, column=col, sticky="news")
                 temp.append(btn)
             self.fields.append(temp)
+
+    def border_settings(self):
+        settings = Toplevel(master=self)
+        settings.geometry("300x300")
+        Label(master=settings, text="Сетка").grid(row=0, column=0)
+        Checkbutton(master=settings, command=self.border_set).grid(row=0, column=1)
+
+    def border_set(self):
+        for col in range(16):
+            for row in range(32):
+                if BattleWindow.BORDER:
+                    self.fields[col][row].config(borderwidth=0)
+                else:
+                    self.fields[col][row].config(borderwidth=1)
+
+        BattleWindow.BORDER = True if not BattleWindow.BORDER else False
 
     def start(self):
         column = 0
@@ -126,7 +146,8 @@ class BattleWindow(PanedWindow):
         elif second_scores >= 2:
             self.check_winner(second, btn)
         else:
-            VersusWindow(master=self, first=first, second=second, call_btn=btn, current_frame=btn.CURRENT_ROUND, root_win=self.root_win)
+            VersusWindow(master=self, first=first, second=second, call_btn=btn, current_frame=btn.CURRENT_ROUND,
+                         root_win=self.root_win)
 
     def check_winner(self, athlete: Athlete, btn: Button):
         # if first.score > second.score:

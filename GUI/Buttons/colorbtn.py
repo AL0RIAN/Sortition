@@ -37,7 +37,7 @@ class ColorButton(Button):
                 current_color = self.hover_range.get_color(index=self.COLOR)
                 self.COLOR += 1
                 self.config(background=current_color)
-                self.root_win.after(1, self.hover_enter)
+                self.root_win.root.after(1, self.hover_enter)
             else:
                 return
 
@@ -51,6 +51,6 @@ class ColorButton(Button):
                 self.COLOR -= 1
                 current_color = self.hover_range.get_color(self.COLOR)
                 self.config(background=current_color)
-                self.root_win.after(1, self.hover_leave)
+                self.root_win.root.after(1, self.hover_leave)
             else:
                 return
