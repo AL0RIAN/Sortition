@@ -1,3 +1,5 @@
+__all__ = ["Parser"]
+
 from docx import Document #Main python DOCX class
 import json #Debug
 

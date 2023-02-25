@@ -1,3 +1,5 @@
+__all__ = ["ExportDOCX", "Participant", "Pair"]
+
 from docx import Document #Main python DOCX class
 from docx.shared import Pt, Cm #Points, Centimeters
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT #Paragraph alignment
