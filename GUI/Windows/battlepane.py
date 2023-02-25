@@ -5,14 +5,15 @@ from ..Buttons.battlebtn import *
 from typing import List
 import keyboard
 from GUI.Buttons import InfoButton, VersusButton
-from GUI.athlete import *
+from sorting.athlete_sort import *
+from sorting.athlete import *
 from math import ceil
 from .versus import *
 
 
 class BattleWindow(PanedWindow):
     DIRECTION = True
-    MEMBERS = len(all) * 2
+    MEMBERS = len(Grid.ATHLETE_LIST) * 2
     COLUMN = 0
     SPACES = 0  # Текущий отступ + текущая колонка + 1 (SPACES + COLUMN + 1)
     CURRENT_GRID = 0
@@ -106,7 +107,7 @@ class BattleWindow(PanedWindow):
         column = 0
         row = 0
 
-        for pair in all:
+        for pair in Grid.ATHLETE_LIST:
             InfoButton(master=self.canvas_frame, root_win=self.root_win, hover_color="GREEN", info=pair[0]).grid(
                 row=row, column=0)
             first = pair[0]

@@ -3,7 +3,7 @@ __all__ = ["VersusWindow"]
 from tkinter import *
 from tkinter import messagebox
 from ..Buttons import ColorButton
-from ..athlete import *
+from sorting.athlete import *
 
 FIRST = 0
 SECOND = 1
