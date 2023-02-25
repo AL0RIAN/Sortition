@@ -5,17 +5,26 @@ from .battlepane import *
 
 
 class RootWindow:
-    root = Tk()
-
     def __init__(self):
-        self.screen_width = RootWindow.root.winfo_screenwidth()
-        self.screen_height = RootWindow.root.winfo_screenheight()
-        RootWindow.root.config(background="#6C6C6C")
-        RootWindow.root.title("Жеребьевка")
-        RootWindow.root.geometry(
+        self.root = Tk()
+        self.screen_width = self.root.winfo_screenwidth()
+        self.screen_height = self.root.winfo_screenheight()
+        self.root.config(background="#6C6C6C")
+        self.root.title("Жеребьевка")
+        self.root.geometry(
             f"{self.screen_width // 2}x{self.screen_height // 2}"
             f"+{self.screen_width // 4}+{int(self.screen_height // 5)}")
+
+        # Menu bar
+        self.menu_bar = Menu(master=self.root)
+        self.root.config(menu=self.menu_bar)
+
+        # Settings menu
+        self.settings_menu = Menu(self.menu_bar)
+        self.menu_bar.add_cascade(label="Settings", menu=self.settings_menu)
+
         # RootWindow.root.resizable(width=False, height=False)
+
 
 
 window = RootWindow()
@@ -33,7 +42,7 @@ work_space.add(child=navigation_window)
 btn_frame = Frame(master=navigation_window, background="#F8F5F5", width=window.screen_width)
 btn_frame.place(relx=0.5, rely=0.5, anchor=CENTER)
 
-NavigationButton(master=btn_frame, text="Выход", root_win=window.root, hover_color="BLUE",
+NavigationButton(master=btn_frame, text="Выход", root_win=window, hover_color="BLUE",
                  command=window.root.destroy).grid(row=0,
                                                    column=0,
                                                    sticky="news")
@@ -43,10 +52,8 @@ work_space.grid_rowconfigure(index=0, minsize=window.screen_height // 2)
 
 # BATTLE FIELD (RIGHT PANEL)
 
-battle_window = BattleWindow(master=work_space, root_win=RootWindow.root)
+battle_window = BattleWindow(master=work_space, root_win=window)
 work_space.add(child=battle_window)
 
 battle_window.create_grid()
 battle_window.start()
-
-
