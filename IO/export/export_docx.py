@@ -1,4 +1,4 @@
-__all__ = ["ExportDOCX", "Participant", "Pair"]
+__all__ = ["ExportCouplesDOCX", "Participant", "Pair"]
 
 from docx import Document #Main python DOCX class
 from docx.shared import Pt, Cm #Points, Centimeters
@@ -112,8 +112,8 @@ class Pair:
         self.blue = blue
 
 
-class ExportDOCX:
-    """Main DOCX export class, that converts parsed info into DOCX file."""
+class ExportCouplesDOCX:
+    """Main DOCX export class, that converts parsed info into DOCX couples file."""
 
     __DEFAULT_DATA = {
         "start-date": "",
