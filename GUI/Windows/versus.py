@@ -2,7 +2,7 @@ __all__ = ["VersusWindow"]
 
 from tkinter import *
 from ..Buttons import ColorButton
-from ..athlete import *
+from sorting.athlete import *
 
 """
 Этот класс будет представлять топ левел окно противостояния двух бойцов.
