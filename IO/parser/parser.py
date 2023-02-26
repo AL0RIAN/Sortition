@@ -1,14 +1,14 @@
-from docx import Document
+__all__ = ["Parser"]
 
+from docx import Document #Main python DOCX class
+import json #Debug
 
 class Parser:
     """Main parser of DOCX files"""
 
-    # Number of cells in a table row
-    __DOC_TABLE_WIDTH = 13
+    __DOC_TABLE_WIDTH = 13 #Number of cells in a table row
 
-    # Pattern table-cell: cell value
-    __TABLE_PATTERN = {
+    __TABLE_PATTERN = { #Pattern table-cell: cell value
         1: "name",
         2: "birthday",
         3: "gender",
@@ -23,9 +23,7 @@ class Parser:
         12: "trainer",
 
     }
-
-    # Pattern cell-value: converted-value
-    __AGE_CATEGORY_PATTERN = {
+    __AGE_CATEGORY_PATTERN = { #Pattern cell-value: converted-value
         "Юнаки молодшого віку до 10 років": "10-",
         "Юнаки молодшого віку 10-11 років": "10-11",
         "Юнаки старшого віку 12-13 років": "12-13",
@@ -60,7 +58,7 @@ class Parser:
 
     def __is_age_category(self, cell) -> bool:
         """
-        If collected data is age category infom then True, else False
+        If collected data is age category info then True, else False
 
         :param cell: cell from table
         :return: bool
@@ -86,8 +84,7 @@ class Parser:
         :return: None
         """
 
-        # Because 1 in row is number of participant
-        row = 2
+        row = 2 #Because 1 in row is number of participant
 
         while True:
             try:
@@ -119,5 +116,5 @@ class Parser:
 
         :return: dict
         """
-        # return json.dumps(self.__data, ensure_ascii=False)
+        #return json.dumps(self.__data, ensure_ascii=False)
         return self.__data
