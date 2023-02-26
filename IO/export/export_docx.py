@@ -113,7 +113,7 @@ class Pair:
         self.blue = blue
 
 
-class ExportCouplesDOCX:
+class ExportPairsDOCX:
     """Main DOCX export class, that converts parsed info into DOCX couples file."""
 
     __DEFAULT_DATA = {
