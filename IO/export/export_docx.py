@@ -1,4 +1,4 @@
-__all__ = ["ExportCouplesDOCX", "Participant", "Pair"]
+__all__ = ["ExportPairsDOCX", "Participant", "Pair"]
 
 from docx import Document  # Main python DOCX class
 from docx.shared import Pt, Cm  # Points, Centimeters
