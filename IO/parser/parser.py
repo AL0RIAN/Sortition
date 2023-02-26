@@ -111,11 +111,15 @@ class Parser:
             except IndexError:
                 break
 
-    def result(self) -> dict:
+    def result(self, json_debug: bool = False):
         """
         Returns the result of parsing in dictionary format
 
+        :param json_debug: If true, then json.dumps
+
         :return: dict
         """
-        # return json.dumps(self.__data, ensure_ascii=False)
+        if json_debug:
+            return json.dumps(self.__data, ensure_ascii=False)
+
         return self.__data
