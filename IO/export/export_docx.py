@@ -1,8 +1,10 @@
-from docx import Document #Main python DOCX class
-from docx.shared import Pt, Cm #Points, Centimeters
-from docx.enum.text import WD_PARAGRAPH_ALIGNMENT #Paragraph alignment
-from docx.oxml.shared import OxmlElement, qn #Magic
-from os import path as os_path #Working with external files
+__all__ = ["ExportPairsDOCX", "Participant", "Pair"]
+
+from docx import Document  # Main python DOCX class
+from docx.shared import Pt, Cm  # Points, Centimeters
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT  # Paragraph alignment
+from docx.oxml.shared import OxmlElement, qn  # Magic
+from os import path as os_path  # Working with external files
 
 '''
 Sample data.
@@ -62,6 +64,7 @@ sample_data = {
     ]
 }
 
+
 class Participant:
     """
     Class that represents info about particular contestant
@@ -72,12 +75,12 @@ class Participant:
     """
 
     def __init__(self, last_name: str, first_name: str, club: str):
-        '''
+        """
 
         :param last_name: Last name of contestant
         :param first_name: First name of contestant
         :param club: The club contestant is in
-        '''
+        """
         self.last_name = last_name
         self.first_name = first_name
         self.club = club
@@ -95,14 +98,14 @@ class Pair:
 
     def __init__(self, is_circle_trinity: bool, age_category: str, weight_category: str,
                  red: Participant, blue: Participant):
-        '''
+        """
 
         :param is_circle_trinity: If there's three participants in circle trinity, then True, else False
         :param age_category: Info about pair participants age category
         :param weight_category: Info about pair participants weight category
         :param red: Contestant
         :param blue: Contestant
-        '''
+        """
         self.is_circle_trinity = is_circle_trinity
         self.age_category = age_category
         self.weight_category = weight_category
@@ -110,8 +113,8 @@ class Pair:
         self.blue = blue
 
 
-class ExportDOCX:
-    """Main DOCX export class, that converts parsed info into DOCX file."""
+class ExportPairsDOCX:
+    """Main DOCX export class, that converts parsed info into DOCX couples file."""
 
     __DEFAULT_DATA = {
         "start-date": "",
@@ -121,27 +124,29 @@ class ExportDOCX:
 
     def __init__(self, start_date: str = "{{start-date}}", end_date: str = "{{end-date}}",
                  data: dict = __DEFAULT_DATA):
-        '''
+        """
 
         :param start_date: The day tournament is starting
         :param end_date: The day tournament is ending
         :param data: Contains data, that will be exported in DOCX file.
-        '''
-        if __name__ == "__main__": #If this file is runned, then base.docx is in the same folder as this file
+        """
+        if __name__ == "__main__":  # If this file is run, then base.docx is in the same folder as this file
             self.__document = Document(os_path.abspath("base.docx"))
-        else: #Else base.docx is in the same folder as this file, but because this file is imported, you have to do this
+        else:
+            # Else base.docx is in the same folder as this file,
+            # but because this file is imported, you have to do this
             self.__document = Document(os_path.abspath("export\\base.docx"))
         self.start_date = start_date
         self.end_date = end_date
-        self.__table = self.__document.tables[0] #Only one table is needed
+        self.__table = self.__document.tables[0]  # Only one table is needed
         self.__data = data
 
     def __print_dates(self) -> None:
-        '''
+        """
         Prints dates in the start of exporting file
 
         :return: None
-        '''
+        """
         for paragraph in self.__document.paragraphs:
             for run in paragraph.runs:
                 if run.text == "{{start-date}}":
@@ -151,12 +156,12 @@ class ExportDOCX:
                     run.text = self.end_date
 
     def __print_table(self) -> None:
-        '''
+        """
         Prints containing in __data info into file table
 
         :return: None
-        '''
-        count = 1 #Left table column
+        """
+        count = 1  # Left table column
 
         for pair in self.__data["pairs"]:
             row = self.__table.add_row()
@@ -210,12 +215,12 @@ class ExportDOCX:
             count += 1
 
     def add_pair(self, pair: Pair) -> None:
-        '''
+        """
         Adds one pair to __data.
 
         :param pair: instance of Pair class.
         :return: None
-        '''
+        """
 
         new_pair = {
             "is-circle-trinity": False,
@@ -248,17 +253,18 @@ class ExportDOCX:
 
         self.__data["pairs"].append(new_pair)
 
-
     def export(self, path="") -> None:
-        '''
+        """
         Congratulations! You're exporting a file. Leave path empty to export in root folder
 
         :param path: Path where to save export file
         :return: None
-        '''
+        """
         self.__print_dates()
         self.__print_table()
         if path != "":
             self.__document.save(os_path.abspath(f"{path}/Состав пар турнир {self.start_date} - {self.end_date}.docx"))
         else:
             self.__document.save(f"Состав пар турнир {self.start_date} - {self.end_date}.docx")
+
+# TODO: ExportRefereeProtocolDOCX
