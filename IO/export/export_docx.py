@@ -266,3 +266,5 @@ class ExportPairsDOCX:
             self.__document.save(os_path.abspath(f"{path}/Состав пар турнир {self.start_date} - {self.end_date}.docx"))
         else:
             self.__document.save(f"Состав пар турнир {self.start_date} - {self.end_date}.docx")
+
+# TODO: ExportRefereeProtocolDOCX
