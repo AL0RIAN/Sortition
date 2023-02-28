@@ -23,6 +23,9 @@ class ColorButton(Button):
         self.root_win = root_win
         self.hover_range = ColorRange(ColorRange.colors[hover_color], background=start_bg)
         self.config(activebackground=self.hover_range.get_color(200))
+        self.config(font=("Montserrat", 15, "bold"))
+        self.config(background=start_bg)
+        self.config(borderwidth=0)
 
         self.bind("<Enter>", self.enter)
         self.bind("<Leave>", self.leave)

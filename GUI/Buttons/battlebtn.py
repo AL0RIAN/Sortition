@@ -5,7 +5,7 @@ from .colorbtn import *
 
 
 class BattleButton(ColorButton):
-    def __init__(self, master, root_win, hover_color, text=" ", cnf={}, **kw):
+    def __init__(self, master, root_win, hover_color, text=" "):
         super().__init__(master=master, root_win=root_win, hover_color=hover_color, start_bg="#212126")
 
         self.root_win = root_win
