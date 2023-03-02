@@ -31,4 +31,4 @@ class VersusButton(BattleButton):
 
         self.root_win = root_win
         self.window = window
-        self.config(text="БОЙ", state="normal", cursor="hand2", fg="#fff")
+        self.config(text="БОЙ", state="disabled", cursor="hand2", fg="#fff")
