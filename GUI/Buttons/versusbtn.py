@@ -3,7 +3,6 @@ __all__ = ["VersusButton"]
 from .battlebtn import *
 
 
-# ЕСЛИ ОПРЕДЕЛЕНА ПОБЕДА В РАУНДЕ (ДОБАВИТЬ ОДНО ПОЛСЕ ВМЕСТО БЛЕК), ТО ДЛЯ ЭТОЙ КНОПКИ (ДЛЯ ИМЕНИ) СДЕЛАТЬ ПРОВЕРКУ НА ПОБЕДИТЕЛЯ
 class VersusButton(BattleButton):
     CURRENT_ROUND = 0
 
@@ -14,9 +13,7 @@ class VersusButton(BattleButton):
                        1: [0, 0, False],
                        2: [0, 0, False]}
 
-        self.WARNS = {0: [0, 0],
-                      1: [0, 0],
-                      2: [0, 0]}
+        self.WARNS = [0, 0]
 
         self.OBSERV = {0: [0, 0],
                        1: [0, 0],
@@ -29,6 +26,8 @@ class VersusButton(BattleButton):
         self.OUT = {0: [0, 0],
                     1: [0, 0],
                     2: [0, 0]}
+
+        self.AUTO_WIN = None
 
         self.root_win = root_win
         self.window = window

@@ -1,6 +1,7 @@
 __all__ = ["VersusWindow"]
 
 from tkinter import *
+from tkinter import messagebox
 from ..Buttons import ColorButton
 from ..athlete import *
 
@@ -65,11 +66,25 @@ class VersusWindow(Toplevel):
     @staticmethod
     def swap(index):
         try:
+            print(f"{index + 1} {VersusWindow.frames[VersusWindow.current_frame].IS_WIN}")
             VersusWindow.frames[VersusWindow.current_frame].place_forget()
             VersusWindow.frames[index].place(width=VersusWindow.WIDTH)
             VersusWindow.current_frame = index
         except IndexError:
             return
+
+    @staticmethod
+    def disable_frames():
+        for frame in VersusWindow.frames:
+            frame.disable_buttons()
+
+    @staticmethod
+    def color_rounds(athlete_side):
+        for frame in VersusWindow.frames:
+            if athlete_side == FIRST:
+                frame.left_name.config(fg="#3fd44e")
+            if athlete_side == SECOND:
+                frame.right_name.config(fg="#3fd44e")
 
 
 class VersusFrame(Frame):
@@ -99,7 +114,7 @@ class VersusFrame(Frame):
         self.left_name.grid(row=0, column=0, columnspan=2)
 
         # Versus Label
-        Label(master=self, text=f"VS{battle_round + 1}", font=("Montserrat", 15, "bold"), fg="#DE5C5C",
+        Label(master=self, text=f"Раунд {battle_round + 1}", font=("Montserrat", 15, "bold"), fg="#DE5C5C",
               background="#D9D9D9").grid(row=0, column=2)
 
         # Right Athlete Label
@@ -124,67 +139,6 @@ class VersusFrame(Frame):
         # Left Navigation
         self.create_nav(FIRST)
         self.create_nav(SECOND)
-        # TODO доделать все кнопки по примеру add_btn
-        # add_btn = self.create_nav(text="Добавить")
-        # add_btn.config(command=lambda: self.plus(first_score, FIRST))
-        # add_btn.grid(row=2, column=0, columnspan=2)
-        #
-        # warn_btn = self.create_nav(text="Предупреждение")
-        # warn_btn.config(command=lambda: self.warn(first_score, second_score, athlete_side=FIRST))
-        # warn_btn.grid(row=3, column=0, columnspan=2)
-        #
-        # observ_btn = self.create_nav(text="Замечание")
-        # observ_btn.config(command=lambda: self.observ(first_score, second_score, athlete_side=FIRST))
-        # observ_btn.grid(row=4, column=0, columnspan=2)
-        #
-        # knockdown_btn = self.create_nav(text="Нокдаун")
-        # knockdown_btn.config(command=lambda: self.knockdown(first_score, second_score, athlete_side=FIRST))
-        # knockdown_btn.grid(row=5, column=0, columnspan=2)
-        #
-        # out_btn = self.create_nav(text="Граница")
-        # out_btn.config(command=lambda: self.out(first_score, second_score, athlete_side=FIRST))
-        # out_btn.grid(row=5, column=0, columnspan=2)
-
-        # self.minus_btn_left = Button(master=self, text="Попередження", borderwidth=0, font=("Montserrat", 15, "bold"),
-        #                              command=lambda: self.warn(first_score, "TOP"), background="#D9D9D9")
-        # self.minus_btn_left.grid(row=3, column=0, columnspan=2)
-
-        # self.minus_btn_left = Button(master=self, text="Замечания", borderwidth=0, font=("Montserrat", 15, "bold"),
-        #                              command=lambda: self.minus(first_athlete, first_score, 0), background="#D9D9D9")
-        # self.minus_btn_left.grid(row=4, column=0, columnspan=2)
-        #
-        # self.minus_btn_left = Button(master=self, text="Примусовий звіт", borderwidth=0,
-        #                              font=("Montserrat", 15, "bold"),
-        #                              command=lambda: self.minus(first_athlete, first_score, 0), background="#D9D9D9")
-        # self.minus_btn_left.grid(row=5, column=0, columnspan=2)
-        #
-        # self.minus_btn_left = Button(master=self, text="Вихід за майданчик", borderwidth=0,
-        #                              font=("Montserrat", 15, "bold"),
-        #                              command=lambda: self.minus(first_athlete, first_score, 0), background="#D9D9D9")
-        # self.minus_btn_left.grid(row=6, column=0, columnspan=2)
-        #
-        # # Right Navigation
-        # self.plus_btn_right = Button(master=self, text="Добавить", borderwidth=0, font=("Montserrat", 15, "bold"),
-        #                              command=lambda: self.plus(second_athlete, second_score, 1), background="#D9D9D9")
-        # self.plus_btn_right.grid(row=2, column=3, columnspan=2)
-        #
-        # self.minus_btn_right = Button(master=self, text="Попередження", borderwidth=0, font=("Montserrat", 15, "bold"),
-        #                               command=lambda: self.minus(second_athlete, second_score, 1), background="#D9D9D9")
-        # self.minus_btn_right.grid(row=3, column=3, columnspan=2)
-        #
-        # self.minus_btn_right = Button(master=self, text="Замечания", borderwidth=0, font=("Montserrat", 15, "bold"),
-        #                               command=lambda: self.minus(second_athlete, second_score, 1), background="#D9D9D9")
-        # self.minus_btn_right.grid(row=4, column=3, columnspan=2)
-        #
-        # self.minus_btn_right = Button(master=self, text="Примусовий звіт", borderwidth=0,
-        #                               font=("Montserrat", 15, "bold"),
-        #                               command=lambda: self.minus(second_athlete, second_score, 1), background="#D9D9D9")
-        # self.minus_btn_right.grid(row=5, column=3, columnspan=2)
-        #
-        # self.minus_btn_right = Button(master=self, text="Вихід за майданчик", borderwidth=0,
-        #                               font=("Montserrat", 15, "bold"),
-        #                               command=lambda: self.minus(second_athlete, second_score, 1), background="#D9D9D9")
-        # self.minus_btn_right.grid(row=6, column=3, columnspan=2)
 
         # Col and Row settings
 
@@ -195,9 +149,8 @@ class VersusFrame(Frame):
         self.rowconfigure(index=6, minsize=10)
 
         # Define Button
-        self.define = Button(master=self, text="Определить", borderwidth=0, font=("Montserrat", 15, "bold"),
-                             command=lambda: self.check_winner(),
-                             background="#D9D9D9")
+        self.define = self.create_btn(text="Определить")
+        self.define.config(command=lambda: self.check_winner())
         self.define.grid(row=7, column=0, columnspan=5)
 
     def create_info_win(self, call_btn: Button, athlete_side: int):
@@ -206,7 +159,7 @@ class VersusFrame(Frame):
         info_win.title(f"{call_btn['text']}")
 
         scores = VersusWindow.call_btn.SCORES[self.battle_round][athlete_side]
-        warns = VersusWindow.call_btn.WARNS[self.battle_round][athlete_side]
+        warns = VersusWindow.call_btn.WARNS[athlete_side]
         observ = VersusWindow.call_btn.OBSERV[self.battle_round][athlete_side]
         outs = VersusWindow.call_btn.OUT[self.battle_round][athlete_side]
         knocks = VersusWindow.call_btn.KNOCK[self.battle_round][athlete_side]
@@ -231,8 +184,6 @@ class VersusFrame(Frame):
             col = 3
         else:
             raise ValueError
-
-        print(type(score))
 
         add_btn = self.create_btn(text="Добавить")
         add_btn.config(command=lambda: self.plus(score, athlete_side))
@@ -274,11 +225,11 @@ class VersusFrame(Frame):
         if athlete_side == FIRST:
             current_score_second.set(current_score_second.get() + 2)
             VersusWindow.call_btn.SCORES[self.battle_round][SECOND] = current_score_second.get()
-            VersusWindow.call_btn.WARNS[self.battle_round][FIRST] += 1
+            VersusWindow.call_btn.WARNS[FIRST] += 1
         elif athlete_side == SECOND:
             current_score_first.set(current_score_first.get() + 2)
             VersusWindow.call_btn.SCORES[self.battle_round][FIRST] = current_score_first.get()
-            VersusWindow.call_btn.WARNS[self.battle_round][SECOND] += 1
+            VersusWindow.call_btn.WARNS[SECOND] += 1
 
         self.check_penalty()
 
@@ -326,20 +277,37 @@ class VersusFrame(Frame):
 
     def check_penalty(self):
         first_score = VersusWindow.call_btn.SCORES[self.battle_round][FIRST]
-        first_warns = VersusWindow.call_btn.WARNS[self.battle_round][FIRST]
+        first_warns = VersusWindow.call_btn.WARNS[FIRST]
         first_knocks = VersusWindow.call_btn.KNOCK[self.battle_round][FIRST]
         first_outs = VersusWindow.call_btn.OUT[self.battle_round][FIRST]
 
         second_score = VersusWindow.call_btn.SCORES[self.battle_round][SECOND]
-        second_warns = VersusWindow.call_btn.WARNS[self.battle_round][SECOND]
+        second_warns = VersusWindow.call_btn.WARNS[SECOND]
         second_knocks = VersusWindow.call_btn.KNOCK[self.battle_round][SECOND]
         second_outs = VersusWindow.call_btn.OUT[self.battle_round][SECOND]
 
-        if first_warns == 3 or first_knocks == 2 or first_outs == 2 or (second_score - first_score) >= 12:
+        # Если Один Из Участников Набирает Три Предупреждения, Второй Побеждает Автоматом
+        if first_warns == 3:
+            VersusWindow.disable_frames()
+            VersusWindow.color_rounds(SECOND)
+            messagebox.showinfo(title="Победитель", message=f"{self.first_athlete.name} набирает три предупреждения!")
+            VersusWindow.call_btn.AUTO_WIN = self.second_athlete
+        elif second_warns == 3:
+            VersusWindow.disable_frames()
+            VersusWindow.color_rounds(FIRST)
+            messagebox.showinfo(title="Победитель", message=f"{self.second_athlete.name} набирает три предупреждения!")
+            VersusWindow.call_btn.AUTO_WIN = self.first_athlete
+
+        if first_knocks == 2 or first_outs == 2 or (second_score - first_score) >= 12:
             self.check_winner(autowin_bottom=True)
 
-        if second_warns == 3 or second_knocks == 2 or second_outs == 2 or (first_score - second_score) >= 12:
+        if second_knocks == 2 or second_outs == 2 or (first_score - second_score) >= 12:
             self.check_winner(autowin_top=True)
+
+    def disable_buttons(self):
+        for child in self.winfo_children():
+            if child.__class__.__name__ == "Button":
+                child.configure(state="disabled")
 
     def check_winner(self, autowin_top: bool = False, autowin_bottom: bool = False):
         """
@@ -351,32 +319,21 @@ class VersusFrame(Frame):
 
         first_score = VersusWindow.call_btn.SCORES[self.battle_round][0]
         second_score = VersusWindow.call_btn.SCORES[self.battle_round][1]
+        auto_winner = VersusWindow.call_btn.AUTO_WIN
 
-        if first_score == second_score:
+        if first_score == second_score or self.IS_WIN:
             return
-        elif first_score > second_score or autowin_top:
+        elif first_score > second_score or autowin_top or auto_winner == self.first_athlete:
             self.left_name.config(fg="#3fd44e")
-        elif first_score < second_score or autowin_bottom:
+            VersusWindow.call_btn.CURRENT_ROUND += 1
+        elif first_score < second_score or autowin_bottom or auto_winner == self.second_score:
             self.right_name.config(fg="#3fd44e")
+            VersusWindow.call_btn.CURRENT_ROUND += 1
 
         VersusWindow.call_btn.SCORES[self.battle_round][2] = True
 
-        VersusWindow.call_btn.CURRENT_ROUND += 1
+        self.disable_buttons()
 
-        for child in self.winfo_children():
-            if child.__class__.__name__ == "Button":
-                child.configure(state="disabled")
+        if VersusWindow.current_frame < 2:
+            VersusWindow.swap(self.battle_round + 1)
 
-        # self.plus_btn_left.config(state="disabled")
-        # self.plus_btn_right.config(state="disabled")
-        # self.minus_btn_left.config(state="disabled")
-        # self.minus_btn_right.config(state="disabled")
-        # self.define.config(state="disabled")
-
-        # for btn in self.BUTTONS["nav"]:
-        #     btn.configure(state="disabled")
-
-        # for btn in VersusWindow.frames[1].BUTTONS:
-        #     btn.config(state="normal")
-
-        # VersusWindow.swap(self.battle_round + 1)

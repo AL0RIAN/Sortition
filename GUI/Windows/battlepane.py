@@ -133,6 +133,10 @@ class BattleWindow(PanedWindow):
         first_scores = 0
         second_scores = 0
 
+        if btn.AUTO_WIN is not None:
+            self.check_winner(btn.AUTO_WIN, btn)
+            return
+
         for btl_round in range(0, 3):
             if btn.SCORES[btl_round][0] > btn.SCORES[btl_round][1]:
                 first_scores += 1
