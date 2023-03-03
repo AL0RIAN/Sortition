@@ -29,6 +29,7 @@ class VersusWindow(Toplevel):
 
     def __init__(self, master, root_win, first: Athlete, second: Athlete, call_btn: Button, current_frame):
         super().__init__(master=master)
+        print(f"{master.winfo_width()}x{master.winfo_height()}")
         self.geometry(f"{master.winfo_width()}x{master.winfo_height()}")
         self.config(width=master.winfo_width(), height=master.winfo_height(), background="#D9D9D9")
         self.title("Бой")
