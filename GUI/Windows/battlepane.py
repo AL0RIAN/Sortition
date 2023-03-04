@@ -18,6 +18,8 @@ class BattleWindow(PanedWindow):
     CURRENT_GRID = 0
     COLUMN_MEMBERS = ceil(MEMBERS / 2)
     BORDER = False
+    VERSUS_BUTTONS = list()
+    CURRENT_VERSUS = 0
 
     def __init__(self, master=None, root_win=None, cnf={}, **kwargs):
         Widget.__init__(self, master=master, widgetName='panedwindow', cnf={}, **kwargs)
@@ -119,12 +121,11 @@ class BattleWindow(PanedWindow):
             self.fields[column][row + 1] = btn
             btn.config(command=lambda args=(first, second, btn): self.winner(args[0], args[1], args[2]))
             btn.grid(row=row + 1, column=column)
-
-            # btn.config(text="БОЙ", state="normal", cursor="hand2", fg="#fff",
-            #            command=lambda args=(first, second, btn): self.winner(args[0], args[1], args[2]))
+            BattleWindow.VERSUS_BUTTONS.append(btn)
 
             row += 4
 
+        BattleWindow.VERSUS_BUTTONS[BattleWindow.CURRENT_VERSUS].config(state="normal")
         self.COLUMN += 1
         self.SPACES = self.SPACES + self.COLUMN + 1
 
@@ -132,6 +133,10 @@ class BattleWindow(PanedWindow):
         # Если программа находит две победы, то блокирует кнопку и выводит победителя вперед
         first_scores = 0
         second_scores = 0
+
+        if btn.AUTO_WIN is not None:
+            self.check_winner(btn.AUTO_WIN, btn)
+            return
 
         for btl_round in range(0, 3):
             if btn.SCORES[btl_round][0] > btn.SCORES[btl_round][1]:
@@ -163,8 +168,6 @@ class BattleWindow(PanedWindow):
         new_btn.grid(row=btn.grid_info()["row"], column=btn.grid_info()["column"] + 1)
         self.fields[btn.grid_info()["column"] + 1][btn.grid_info()["row"]] = new_btn
 
-        btn.config(state="disabled")
-
         if self.COLUMN_MEMBERS != 0:
             self.check_column()
             self.COLUMN_MEMBERS -= 1
@@ -174,7 +177,12 @@ class BattleWindow(PanedWindow):
             self.COLUMN_MEMBERS = (self.MEMBERS // (2 ** self.COLUMN)) - 1
             self.CURRENT_GRID = 0
 
-        # info_window.destroy()
+        try:
+            BattleWindow.VERSUS_BUTTONS[BattleWindow.CURRENT_VERSUS].config(state="disabled")
+            BattleWindow.VERSUS_BUTTONS[BattleWindow.CURRENT_VERSUS + 1].config(state="normal")
+            BattleWindow.CURRENT_VERSUS += 1
+        except IndexError:
+            return
 
     def check_column(self):
         for row in range(self.CURRENT_GRID, 32):
@@ -201,6 +209,7 @@ class BattleWindow(PanedWindow):
                                                                                                            args[1],
                                                                                                            args[2]))
                         battle_btn.grid(row=abs(under_row - self.SPACES), column=self.COLUMN)
+                        BattleWindow.VERSUS_BUTTONS.append(battle_btn)
 
                         # battle_btn = self.fields[self.COLUMN][abs(under_row - self.SPACES)]
                         #
