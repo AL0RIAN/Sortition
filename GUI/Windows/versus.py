@@ -15,8 +15,6 @@ SECOND = 1
 """
 
 
-# TODO настроить логику кнопок
-
 class VersusWindow(Toplevel):
     first: Athlete = None
     second: Athlete = None
@@ -142,7 +140,6 @@ class VersusFrame(Frame):
         self.create_nav(SECOND)
 
         # Col and Row settings
-
         self.rowconfigure(index=2, minsize=10)
         self.rowconfigure(index=3, minsize=10)
         self.rowconfigure(index=4, minsize=10)
@@ -208,9 +205,9 @@ class VersusFrame(Frame):
         out_btn.grid(row=5, column=col, columnspan=2)
 
     def plus(self, current_score: IntVar, athlete_side):
+        current_vs_btn = VersusWindow.call_btn
         current_score.set(current_score.get() + 1)
-
-        VersusWindow.call_btn.SCORES[self.battle_round][athlete_side] = current_score.get()
+        current_vs_btn.SCORES[self.battle_round][athlete_side] = current_score.get()
 
         self.check_penalty()
 
@@ -287,17 +284,28 @@ class VersusFrame(Frame):
         second_knocks = VersusWindow.call_btn.KNOCK[self.battle_round][SECOND]
         second_outs = VersusWindow.call_btn.OUT[self.battle_round][SECOND]
 
+        # For Data Base
+        battle_window_db = self.master.master.data_base
+        curr_vs_btn = VersusWindow.call_btn
+
         # Если Один Из Участников Набирает Три Предупреждения, Второй Побеждает Автоматом
         if first_warns == 3:
             VersusWindow.disable_frames()
             VersusWindow.color_rounds(SECOND)
             messagebox.showinfo(title="Победитель", message=f"{self.first_athlete.name} набирает три предупреждения!")
             VersusWindow.call_btn.AUTO_WIN = self.second_athlete
+
+            battle_window_db[f"{curr_vs_btn.grid_info()['column']}x{curr_vs_btn.grid_info()['row']}"]["info"][
+                "auto_win"] = self.second_athlete
+
         elif second_warns == 3:
             VersusWindow.disable_frames()
             VersusWindow.color_rounds(FIRST)
             messagebox.showinfo(title="Победитель", message=f"{self.second_athlete.name} набирает три предупреждения!")
             VersusWindow.call_btn.AUTO_WIN = self.first_athlete
+
+            battle_window_db[f"{curr_vs_btn.grid_info()['column']}x{curr_vs_btn.grid_info()['row']}"]["info"][
+                "auto_win"] = self.first_athlete
 
         if first_knocks == 2 or first_outs == 2 or (second_score - first_score) >= 12:
             self.check_winner(autowin_bottom=True)
@@ -331,10 +339,9 @@ class VersusFrame(Frame):
             self.right_name.config(fg="#3fd44e")
             VersusWindow.call_btn.CURRENT_ROUND += 1
 
-        VersusWindow.call_btn.SCORES[self.battle_round][2] = True
-
+        current_vs_btn = VersusWindow.call_btn
+        current_vs_btn.SCORES[self.battle_round][2] = True
         self.disable_buttons()
 
         if VersusWindow.current_frame < 2:
             VersusWindow.swap(self.battle_round + 1)
-
