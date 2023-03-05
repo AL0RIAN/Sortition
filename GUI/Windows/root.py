@@ -48,6 +48,7 @@ class RootWindow:
 
                 # pane.remove(self.right_panels[self.current_panel])
                 self.right_panels[self.current_panel].clear()
+                self.right_panels[self.current_panel].fill()
 
                 # //// ТЕСТЫ ////
                 # self.right_panels[self.current_panel].frame_killer()

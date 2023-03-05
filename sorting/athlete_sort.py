@@ -39,3 +39,7 @@ class Grid:
 parser_data = Parser(file_name="Попередня Запоріжжя.docx").result()
 # Grid.packaging(parser_data)
 grids = [Grid(parser_data, 5), Grid(parser_data, 4), Grid(parser_data, 3)]
+
+print(grids[0].ATHLETE_LIST[0])
+print(grids[1].ATHLETE_LIST[0])
+print(grids[2].ATHLETE_LIST[0])
