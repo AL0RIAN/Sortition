@@ -31,4 +31,10 @@ class VersusButton(BattleButton):
 
         self.root_win = root_win
         self.window = window
+        self.space = 1
         self.config(text="БОЙ", state="disabled", cursor="hand2", fg="#fff")
+
+    def tester_mode(self):
+        for score in range(0, 3):
+            self.SCORES[score][0] = 100
+            self.SCORES[score][2] = True

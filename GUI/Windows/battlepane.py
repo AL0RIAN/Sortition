@@ -123,6 +123,8 @@ class BattleWindow(PanedWindow):
                     temp.append(btn)
                 elif self.data_base[f"{col}x{row}"]["type"] == VersusButton:
                     btn = VersusButton(self.canvas_frame, root_win=self.root_win)
+                    # TODO TESTER MODE
+                    btn.tester_mode()
                     btn.grid(row=row, column=col, sticky="news")
 
                     scores = self.data_base[f"{col}x{row}"]["info"]["scores"]
@@ -132,6 +134,7 @@ class BattleWindow(PanedWindow):
                     outs = self.data_base[f"{col}x{row}"]["info"]["outs"]
                     auto_win = self.data_base[f"{col}x{row}"]["info"]["auto_win"]
                     state = self.data_base[f"{col}x{row}"]["info"]["state"]
+                    spaces = self.data_base[f"{col}x{row}"]["info"]["space"]
                     # first_row = self.data_base[f"{col}x{row}"]["info"]["first"]["row"]
                     # first_col = self.data_base[f"{col}x{row}"]["info"]["first"]["column"]
                     # second_row = self.data_base[f"{col}x{row}"]["info"]["second"]["row"]
@@ -149,16 +152,27 @@ class BattleWindow(PanedWindow):
                     btn.KNOCK = knocks
                     btn.OUT = outs
                     btn.AUTO_WIN = auto_win
+                    btn.space = spaces
 
                     self.VERSUS_BUTTONS.append(btn)
                     temp.append(btn)
 
             self.fields.append(temp)
 
+        print()
+        count = 1
         for btn in self.VERSUS_BUTTONS:
-            first = self.fields[btn.grid_info()['column']][btn.grid_info()['row'] - 1].info
-            second = self.fields[btn.grid_info()['column']][btn.grid_info()['row'] + 1].info
+            print("Space:", btn.space)
+            first = self.fields[btn.grid_info()['column']][btn.grid_info()['row'] - btn.space].info
+            second = self.fields[btn.grid_info()['column']][btn.grid_info()['row'] + btn.space].info
+            print(f"VB #{count}. First: {first}, Second: {second}\n"
+                  f"first col: {btn.grid_info()['column']}, first row: {[btn.grid_info()['row'] - 1]}\n"
+                  f"second col: {btn.grid_info()['column']}, second row: {[btn.grid_info()['row'] + 1]}\n")
             btn.config(command=lambda args=(first, second, btn): self.winner(args[0], args[1], args[2]))
+            count += 1
+
+        # ОШИБКА В ТОМ, ЧТО Я НЕ УЧИТЫВАЮ, ЧТО НА КАЖДОМ НОВОМ РЯДКЕ ОТСТУП МЕЖДУ КНОПКАМИ УВЕЛИЧВИАЕТСЯ,
+        # И просто делаю - 1, либо + 1
 
     def border_settings(self):
         settings = Toplevel(master=self)
@@ -201,6 +215,8 @@ class BattleWindow(PanedWindow):
             btn = self.fields[column][row + 1]
 
             btn = VersusButton(master=self.canvas_frame, root_win=self.root_win)
+            # TODO TESTER MODE
+            btn.tester_mode()
             self.fields[column][row + 1] = btn
             btn.grid(row=row + 1, column=column)
             btn.config(command=lambda args=(first, second, btn): self.winner(args[0], args[1], args[2]))
@@ -218,7 +234,9 @@ class BattleWindow(PanedWindow):
                                                                                                "auto_win": btn.AUTO_WIN,
                                                                                                "state": "disabled",
                                                                                                "first": first_atl.grid_info(),
-                                                                                               "second": second_atl.grid_info()
+                                                                                               "second": second_atl.grid_info(),
+                                                                                               "grid_info": btn.grid_info(),
+                                                                                               "space": 1,
                                                                                                }
 
         first_vs_btn = self.VERSUS_BUTTONS[self.CURRENT_VERSUS]
@@ -314,6 +332,8 @@ class BattleWindow(PanedWindow):
                     if second_btn.__class__.__name__ == "InfoButton":
                         print(second_btn)
                         battle_btn = VersusButton(master=self.canvas_frame, root_win=self.root_win)
+                        # TODO TESTER MODE
+                        battle_btn.tester_mode()
                         self.fields[self.COLUMN][abs(under_row - self.SPACES)] = battle_btn
                         battle_btn.config(
                             command=lambda args=(first_btn.info, second_btn.info, battle_btn): self.winner(args[0],
@@ -338,7 +358,9 @@ class BattleWindow(PanedWindow):
                             "auto_win": battle_btn.AUTO_WIN,
                             "state": "disabled",
                             "first": first_btn.grid_info(),
-                            "second": second_btn.grid_info()
+                            "second": second_btn.grid_info(),
+                            "grid_info": battle_btn.grid_info(),
+                            "space": self.SPACES
                         }
 
                         battle_btn = self.fields[self.COLUMN][abs(under_row - self.SPACES)]

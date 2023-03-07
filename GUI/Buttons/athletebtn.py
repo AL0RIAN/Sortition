@@ -9,11 +9,16 @@ class InfoButton(ColorButton):
     def __init__(self, master, root_win, hover_color, info: Athlete):
         super().__init__(master=master, root_win=root_win, hover_color=hover_color, start_bg="#F8F5F5")
 
-        if info.name == "-":
-            text = "-"
-        else:
-            text = info.name.split()[0]
-            text += f" {info.name.split()[1][:1]}."
+        try:
+            # print(f"Info: {info}")
+            if info.name == "-":
+                text = "-"
+            else:
+                text = info.name.split()[0]
+                text += f" {info.name.split()[1][:1]}."
+        except AttributeError:
+            # print(f"Info: {info}")
+            pass
 
         self.root_win = root_win
         self.info = info
