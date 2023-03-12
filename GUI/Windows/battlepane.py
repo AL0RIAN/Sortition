@@ -2,28 +2,33 @@ __all__ = ["BattleWindow"]
 
 from tkinter import *
 from ..Buttons.battlebtn import *
-from typing import List
+from typing import List, Dict
 import keyboard
 from GUI.Buttons import InfoButton, VersusButton
-from GUI.athlete import *
+from sorting.athlete_sort import *
+from sorting.athlete import *
 from math import ceil
 from .versus import *
 
 
 class BattleWindow(PanedWindow):
-    DIRECTION = True
-    MEMBERS = len(all) * 2
-    COLUMN = 0
-    SPACES = 0  # Текущий отступ + текущая колонка + 1 (SPACES + COLUMN + 1)
-    CURRENT_GRID = 0
-    COLUMN_MEMBERS = ceil(MEMBERS / 2)
-    BORDER = False
-    VERSUS_BUTTONS = list()
-    CURRENT_VERSUS = 0
 
-    def __init__(self, master=None, root_win=None, cnf={}, **kwargs):
+    def __init__(self, master=None, root_win=None, number=0, cnf={}, **kwargs):
         Widget.__init__(self, master=master, widgetName='panedwindow', cnf={}, **kwargs)
-        self.fields: List[List[Button]] = []
+
+        self.DIRECTION = True
+        self.MEMBERS = 16
+        self.COLUMN = 0
+        self.SPACES = 0  # Текущий отступ + текущая колонка + 1 (SPACES + COLUMN + 1)
+        self.CURRENT_GRID = 0
+        self.COLUMN_MEMBERS = 8
+        self.BORDER = False
+        self.VERSUS_BUTTONS = list()
+        self.CURRENT_VERSUS = 0
+
+        self.fields: List[List[Button]] = list()
+        self.data_base: Dict = dict()
+        self.number = number
 
         self.root_win = root_win
         self.grid_columnconfigure(index=0, minsize=self.winfo_screenwidth() // 16)
@@ -52,7 +57,7 @@ class BattleWindow(PanedWindow):
         # Binding
         self.canvas.bind("<Configure>", lambda event: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
 
-        # Creating A New Frame
+        # Creating A New Frame For Scroll
         self.canvas_frame = Frame(master=self.canvas, background="#212126", highlightbackground="#212126")
         self.canvas.create_window((0, 0), window=self.canvas_frame, anchor="nw")
 
@@ -77,14 +82,107 @@ class BattleWindow(PanedWindow):
         elif not self.DIRECTION:
             self.canvas.xview_scroll(int(-1 * (event.delta / 120)), "units")
 
-    def create_grid(self) -> None:
-        for col in range(16):
-            temp: List[Button] = []
+    def create_grid(self, db: dict = None) -> None:
+        self.data_base = db
+        print(self.data_base)
+
+        if self.data_base == {}:
+            for col in range(16):
+                temp: List[Button] = []
+                for row in range(32):
+                    btn = BattleButton(self.canvas_frame, text=" ", root_win=self.root_win, hover_color="DARK_MOON")
+                    btn.grid(row=row, column=col, sticky="news")
+                    temp.append(btn)
+                    self.data_base[f"{col}x{row}"] = dict()
+                    self.data_base[f"{col}x{row}"]["type"] = BattleButton
+                self.fields.append(temp)
+            self.start()
+
+        else:
+            self.fill()
+
+    def get_grid_info(self) -> dict:
+        info = {"direction": self.DIRECTION,
+                "members": self.MEMBERS,
+                "column": self.COLUMN,
+                "spaces": self.SPACES,
+                "cur_grid": self.CURRENT_GRID,
+                "column_member": self.COLUMN_MEMBERS,
+                "border": self.BORDER,
+                "cur_vs": self.CURRENT_VERSUS}
+        return info
+
+    def clear(self) -> dict:
+        for child in self.canvas_frame.winfo_children():
+            if child.__class__.__name__ in ("BattleButton", "InfoButton", "VersusButton"):
+                child.destroy()
+        print(self.data_base)
+        self.fields.clear()
+        self.VERSUS_BUTTONS.clear()
+        return self.data_base
+
+    def fill(self) -> None:
+        for col in range(8):
+            temp = []
             for row in range(32):
-                btn = BattleButton(self.canvas_frame, text=f" ", root_win=self.root_win, hover_color="DARK_MOON")
-                btn.grid(row=row, column=col, sticky="news")
-                temp.append(btn)
+                if self.data_base[f"{col}x{row}"]["type"] == BattleButton:
+                    btn = BattleButton(self.canvas_frame, text=" ", root_win=self.root_win, hover_color="DARK_MOON")
+                    btn.grid(row=row, column=col, sticky="news")
+                    temp.append(btn)
+                elif self.data_base[f"{col}x{row}"]["type"] == InfoButton:
+                    athlete = self.data_base[f"{col}x{row}"]["Athlete"]
+                    btn = InfoButton(master=self.canvas_frame, root_win=self.root_win, hover_color="GREEN",
+                                     info=athlete)
+                    btn.grid(row=row, column=col, sticky="news")
+                    temp.append(btn)
+                elif self.data_base[f"{col}x{row}"]["type"] == VersusButton:
+                    btn = VersusButton(self.canvas_frame, root_win=self.root_win)
+                    # TODO TESTER MODE
+                    btn.tester_mode()
+                    btn.grid(row=row, column=col, sticky="news")
+
+                    scores = self.data_base[f"{col}x{row}"]["info"]["scores"]
+                    warns = self.data_base[f"{col}x{row}"]["info"]["warns"]
+                    observ = self.data_base[f"{col}x{row}"]["info"]["observ"]
+                    knocks = self.data_base[f"{col}x{row}"]["info"]["knocks"]
+                    outs = self.data_base[f"{col}x{row}"]["info"]["outs"]
+                    auto_win = self.data_base[f"{col}x{row}"]["info"]["auto_win"]
+                    state = self.data_base[f"{col}x{row}"]["info"]["state"]
+                    spaces = self.data_base[f"{col}x{row}"]["info"]["space"]
+                    # first_row = self.data_base[f"{col}x{row}"]["info"]["first"]["row"]
+                    # first_col = self.data_base[f"{col}x{row}"]["info"]["first"]["column"]
+                    # second_row = self.data_base[f"{col}x{row}"]["info"]["second"]["row"]
+                    # second_col = self.data_base[f"{col}x{row}"]["info"]["second"]["column"]
+                    #
+                    # first = self.fields[first_col][first_row]
+                    # second = self.fields[second_col][second_row]
+                    #
+                    # command = lambda args=(first, second, btn): self.winner(args[0], args[1], args[2])
+
+                    btn.config(state=state)
+                    btn.SCORES = scores
+                    btn.WARNS = warns
+                    btn.OBSERV = observ
+                    btn.KNOCK = knocks
+                    btn.OUT = outs
+                    btn.AUTO_WIN = auto_win
+                    btn.space = spaces
+
+                    self.VERSUS_BUTTONS.append(btn)
+                    temp.append(btn)
+
             self.fields.append(temp)
+
+        print()
+        count = 1
+        for btn in self.VERSUS_BUTTONS:
+            first = self.fields[btn.grid_info()['column']][btn.grid_info()['row'] - btn.space].info
+            second = self.fields[btn.grid_info()['column']][btn.grid_info()['row'] + btn.space].info
+            btn.config(command=lambda args=(first, second, btn): self.winner(args[0], args[1], args[2]))
+            count += 1
+
+        # ОШИБКА В ТОМ, ЧТО Я НЕ УЧИТЫВАЮ, ЧТО НА КАЖДОМ НОВОМ РЯДКЕ ОТСТУП МЕЖДУ КНОПКАМИ УВЕЛИЧВИАЕТСЯ,
+        # И просто делаю - 1, либо + 1
 
     def border_settings(self):
         settings = Toplevel(master=self)
@@ -94,7 +192,7 @@ class BattleWindow(PanedWindow):
 
     def border_set(self):
         for col in range(16):
-            for row in range(32):
+            for row in range(16):
                 if BattleWindow.BORDER:
                     self.fields[col][row].config(borderwidth=0)
                 else:
@@ -106,26 +204,57 @@ class BattleWindow(PanedWindow):
         column = 0
         row = 0
 
-        for pair in all:
-            InfoButton(master=self.canvas_frame, root_win=self.root_win, hover_color="GREEN", info=pair[0]).grid(
-                row=row, column=0)
+        for pair in grids[self.number].ATHLETE_LIST:
+            first_atl = InfoButton(master=self.canvas_frame, root_win=self.root_win, hover_color="GREEN", info=pair[0])
+            first_atl.grid(row=row, column=0)
             first = pair[0]
 
-            InfoButton(master=self.canvas_frame, root_win=self.root_win, hover_color="GREEN", info=pair[1]).grid(
-                row=row + 2, column=0)
+            # To Data Base (Info Button)
+            self.data_base[f"{0}x{row}"]["type"] = InfoButton
+            self.data_base[f"{0}x{row}"]["Athlete"] = pair[0]
+
+            second_atl = InfoButton(master=self.canvas_frame, root_win=self.root_win, hover_color="GREEN", info=pair[1])
+            second_atl.grid(row=row + 2, column=0)
             second = pair[1]
 
+            # To Data Base (Second Info Button)
+            self.data_base[f"{0}x{row + 2}"]["type"] = InfoButton
+            self.data_base[f"{0}x{row + 2}"]["Athlete"] = pair[1]
+
+            # Versus Button Create
             btn = self.fields[column][row + 1]
 
             btn = VersusButton(master=self.canvas_frame, root_win=self.root_win)
+            # TODO TESTER MODE
+            btn.tester_mode()
             self.fields[column][row + 1] = btn
+            btn.grid(row=row + 1, column=column)
             btn.config(command=lambda args=(first, second, btn): self.winner(args[0], args[1], args[2]))
             btn.grid(row=row + 1, column=column)
-            BattleWindow.VERSUS_BUTTONS.append(btn)
-
+            self.VERSUS_BUTTONS.append(btn)
             row += 4
 
-        BattleWindow.VERSUS_BUTTONS[BattleWindow.CURRENT_VERSUS].config(state="normal")
+            # To Data Base (Versus Button)
+            self.data_base[f"{btn.grid_info()['column']}x{btn.grid_info()['row']}"]["type"] = VersusButton
+            self.data_base[f"{btn.grid_info()['column']}x{btn.grid_info()['row']}"]["info"] = {"scores": btn.SCORES,
+                                                                                               "warns": btn.WARNS,
+                                                                                               "observ": btn.OBSERV,
+                                                                                               "knocks": btn.KNOCK,
+                                                                                               "outs": btn.OUT,
+                                                                                               "auto_win": btn.AUTO_WIN,
+                                                                                               "state": "disabled",
+                                                                                               "first": first_atl.grid_info(),
+                                                                                               "second": second_atl.grid_info(),
+                                                                                               "grid_info": btn.grid_info(),
+                                                                                               "space": 1,
+                                                                                               }
+
+        first_vs_btn = self.VERSUS_BUTTONS[self.CURRENT_VERSUS]
+        first_vs_btn.config(state="normal")
+
+        self.data_base[f"{first_vs_btn.grid_info()['column']}x{first_vs_btn.grid_info()['row']}"]["info"][
+            "state"] = "normal"
+
         self.COLUMN += 1
         self.SPACES = self.SPACES + self.COLUMN + 1
 
@@ -168,7 +297,12 @@ class BattleWindow(PanedWindow):
         new_btn.grid(row=btn.grid_info()["row"], column=btn.grid_info()["column"] + 1)
         self.fields[btn.grid_info()["column"] + 1][btn.grid_info()["row"]] = new_btn
 
+        # To Data Base
+        self.data_base[f"{new_btn.grid_info()['column']}x{new_btn.grid_info()['row']}"]["type"] = InfoButton
+        self.data_base[f"{new_btn.grid_info()['column']}x{new_btn.grid_info()['row']}"]["Athlete"] = athlete
+
         if self.COLUMN_MEMBERS != 0:
+            print(self.COLUMN_MEMBERS)
             self.check_column()
             self.COLUMN_MEMBERS -= 1
         else:
@@ -178,9 +312,20 @@ class BattleWindow(PanedWindow):
             self.CURRENT_GRID = 0
 
         try:
-            BattleWindow.VERSUS_BUTTONS[BattleWindow.CURRENT_VERSUS].config(state="disabled")
-            BattleWindow.VERSUS_BUTTONS[BattleWindow.CURRENT_VERSUS + 1].config(state="normal")
-            BattleWindow.CURRENT_VERSUS += 1
+            current_vs_btn = self.VERSUS_BUTTONS[self.CURRENT_VERSUS]
+            next_vs_btn = self.VERSUS_BUTTONS[self.CURRENT_VERSUS + 1]
+
+            current_vs_btn.config(state="disabled")
+            next_vs_btn.config(state="normal")
+            self.CURRENT_VERSUS += 1
+
+            # To Data Base
+            self.data_base[f"{current_vs_btn.grid_info()['column']}x{current_vs_btn.grid_info()['row']}"]["info"][
+                "state"] = "disabled"
+
+            self.data_base[f"{next_vs_btn.grid_info()['column']}x{next_vs_btn.grid_info()['row']}"]["info"][
+                "state"] = "normal"
+
         except IndexError:
             return
 
@@ -193,32 +338,49 @@ class BattleWindow(PanedWindow):
                 self.CURRENT_GRID = first_btn.grid_info()["row"]
                 for under_row in range(self.CURRENT_GRID + 1, 32):
                     second_btn = self.fields[self.COLUMN][under_row]
-                    if second_btn.__class__.__name__ == "InfoButton":
-                        # btn = self.fields[column][row + 1]
-                        #
-                        # btn = VersusButton(master=self.canvas_frame, root_win=self.root_win)
-                        # self.fields[column][row + 1] = btn
-                        # btn.config(command=lambda args=(first, second, btn): self.winner(args[0], args[1], args[2]))
-                        # btn.grid(row=row + 1, column=column)
 
-                        battle_btn = self.fields[self.COLUMN][abs(under_row - self.SPACES)]
+                    if second_btn.__class__.__name__ == "InfoButton":
+                        print(second_btn)
                         battle_btn = VersusButton(master=self.canvas_frame, root_win=self.root_win)
+                        # TODO TESTER MODE
+                        battle_btn.tester_mode()
                         self.fields[self.COLUMN][abs(under_row - self.SPACES)] = battle_btn
                         battle_btn.config(
                             command=lambda args=(first_btn.info, second_btn.info, battle_btn): self.winner(args[0],
                                                                                                            args[1],
                                                                                                            args[2]))
                         battle_btn.grid(row=abs(under_row - self.SPACES), column=self.COLUMN)
-                        BattleWindow.VERSUS_BUTTONS.append(battle_btn)
+                        self.VERSUS_BUTTONS.append(battle_btn)
 
-                        # battle_btn = self.fields[self.COLUMN][abs(under_row - self.SPACES)]
-                        #
-                        # battle_btn.config(text="БОЙ", state="normal", cursor="hand2", fg="#fff",
-                        #                   command=lambda
-                        #                       args=(first_btn.info, second_btn.info, battle_btn): self.winner(args[0],
-                        #                                                                                       args[1],
-                        #                                                                                       args[2]
-                        #                                                                                       ))
+                        print(abs(under_row - self.SPACES), self.COLUMN)
+
+                        # To Data Base
+                        self.data_base[f"{battle_btn.grid_info()['column']}x{battle_btn.grid_info()['row']}"] = {}
+                        self.data_base[f"{battle_btn.grid_info()['column']}x{battle_btn.grid_info()['row']}"][
+                            "type"] = VersusButton
+                        self.data_base[f"{battle_btn.grid_info()['column']}x{battle_btn.grid_info()['row']}"][
+                            "info"] = {
+                            "scores": battle_btn.SCORES,
+                            "warns": battle_btn.WARNS,
+                            "observ": battle_btn.OBSERV,
+                            "knocks": battle_btn.KNOCK,
+                            "outs": battle_btn.OUT,
+                            "auto_win": battle_btn.AUTO_WIN,
+                            "state": "disabled",
+                            "first": first_btn.grid_info(),
+                            "second": second_btn.grid_info(),
+                            "grid_info": battle_btn.grid_info(),
+                            "space": self.SPACES
+                        }
+
+                        battle_btn = self.fields[self.COLUMN][abs(under_row - self.SPACES)]
+
+                        battle_btn.config(text="БОЙ", state="normal", cursor="hand2", fg="#fff",
+                                          command=lambda
+                                              args=(first_btn.info, second_btn.info, battle_btn): self.winner(args[0],
+                                                                                                              args[1],
+                                                                                                              args[2]
+                                                                                                              ))
                         self.CURRENT_GRID = under_row + 1
 
                         return
