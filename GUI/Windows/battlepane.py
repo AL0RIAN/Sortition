@@ -11,12 +11,6 @@ from math import ceil
 from .versus import *
 
 
-# data = {"10-11":
-#             [{"0x0": {"type": InfoButton, "fields": []},
-#               "1x0": {"type": BattleButton, "fields": []}}]
-#         }
-
-
 class BattleWindow(PanedWindow):
 
     def __init__(self, master=None, root_win=None, number=0, cnf={}, **kwargs):
@@ -88,24 +82,44 @@ class BattleWindow(PanedWindow):
         elif not self.DIRECTION:
             self.canvas.xview_scroll(int(-1 * (event.delta / 120)), "units")
 
-    def create_grid(self) -> None:
-        for col in range(16):
-            temp: List[Button] = []
-            for row in range(32):
-                btn = BattleButton(self.canvas_frame, text=" ", root_win=self.root_win, hover_color="DARK_MOON")
-                btn.grid(row=row, column=col, sticky="news")
-                temp.append(btn)
-                self.data_base[f"{col}x{row}"] = dict()
-                self.data_base[f"{col}x{row}"]["type"] = BattleButton
-            self.fields.append(temp)
+    def create_grid(self, db: dict = None) -> None:
+        self.data_base = db
+        print(self.data_base)
 
-    def clear(self) -> None:
+        if self.data_base == {}:
+            for col in range(16):
+                temp: List[Button] = []
+                for row in range(32):
+                    btn = BattleButton(self.canvas_frame, text=" ", root_win=self.root_win, hover_color="DARK_MOON")
+                    btn.grid(row=row, column=col, sticky="news")
+                    temp.append(btn)
+                    self.data_base[f"{col}x{row}"] = dict()
+                    self.data_base[f"{col}x{row}"]["type"] = BattleButton
+                self.fields.append(temp)
+            self.start()
+
+        else:
+            self.fill()
+
+    def get_grid_info(self) -> dict:
+        info = {"direction": self.DIRECTION,
+                "members": self.MEMBERS,
+                "column": self.COLUMN,
+                "spaces": self.SPACES,
+                "cur_grid": self.CURRENT_GRID,
+                "column_member": self.COLUMN_MEMBERS,
+                "border": self.BORDER,
+                "cur_vs": self.CURRENT_VERSUS}
+        return info
+
+    def clear(self) -> dict:
         for child in self.canvas_frame.winfo_children():
             if child.__class__.__name__ in ("BattleButton", "InfoButton", "VersusButton"):
                 child.destroy()
         print(self.data_base)
         self.fields.clear()
         self.VERSUS_BUTTONS.clear()
+        return self.data_base
 
     def fill(self) -> None:
         for col in range(8):
@@ -162,12 +176,8 @@ class BattleWindow(PanedWindow):
         print()
         count = 1
         for btn in self.VERSUS_BUTTONS:
-            print("Space:", btn.space)
             first = self.fields[btn.grid_info()['column']][btn.grid_info()['row'] - btn.space].info
             second = self.fields[btn.grid_info()['column']][btn.grid_info()['row'] + btn.space].info
-            print(f"VB #{count}. First: {first}, Second: {second}\n"
-                  f"first col: {btn.grid_info()['column']}, first row: {[btn.grid_info()['row'] - 1]}\n"
-                  f"second col: {btn.grid_info()['column']}, second row: {[btn.grid_info()['row'] + 1]}\n")
             btn.config(command=lambda args=(first, second, btn): self.winner(args[0], args[1], args[2]))
             count += 1
 
