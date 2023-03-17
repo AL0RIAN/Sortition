@@ -1,42 +1,45 @@
-__all__ = ["Grid"]
+__all__ = ["grids"]
 
 from sorting.athlete import *
 from IO.parser import *
 
 
 class Grid:
-    ATHLETE_LIST = [[16, 1],
-                    [9, 8],
-                    [5, 12],
-                    [13, 4],
-                    [3, 14],
-                    [11, 6],
-                    [7, 10],
-                    [15, 2]]
+    def __init__(self, data, index):
+        self.ATHLETE_LIST = [[16, 1],
+                             [9, 8],
+                             [5, 12],
+                             [13, 4],
+                             [3, 14],
+                             [11, 6],
+                             [7, 10],
+                             [15, 2]]
+        self.packaging(data, index)
 
-    @staticmethod
-    def packaging(data):
+    def packaging(self, data, index):
         current = 1
-        for athlete in data["participants"][5]["data"]:
+        for athlete in data["participants"][index]["data"]:
             for i in range(8):
                 for j in range(2):
-                    if current == Grid.ATHLETE_LIST[i][j]:
-                        Grid.ATHLETE_LIST[i][j] = Athlete(name=athlete["name"], birthday=athlete["birthday"],
+                    if current == self.ATHLETE_LIST[i][j]:
+                        self.ATHLETE_LIST[i][j] = Athlete(name=athlete["name"], birthday=athlete["birthday"],
                                                           gender=athlete["gender"], weight=athlete["weight"])
                         break
             current += 1
 
-        for member in Grid.ATHLETE_LIST:
-            if type(member[0]) == int:
-                member[0] = Athlete(name="-", birthday="-", gender="-", weight="-")
-            if type(member[1]) == int:
-                member[1] = Athlete(name="-", birthday="-", gender="-", weight="-")
+        for pair in self.ATHLETE_LIST:
+            if type(pair[0]) == int:
+                pair[0] = Athlete(name="-", birthday="-", gender="-", weight="-")
+            if type(pair[1]) == int:
+                pair[1] = Athlete(name="-", birthday="-", gender="-", weight="-")
 
-        return Grid.ATHLETE_LIST
+        return self.ATHLETE_LIST
 
 
 parser_data = Parser(file_name="Попередня Запоріжжя.docx").result()
-print(parser_data)
-Grid.packaging(parser_data)
-for athlete in Grid.ATHLETE_LIST:
-    print(f"{athlete[0].name} x {athlete[1].name}")
+# Grid.packaging(parser_data)
+grids = [Grid(parser_data, 5), Grid(parser_data, 4), Grid(parser_data, 3)]
+
+print(grids[0].ATHLETE_LIST[0])
+print(grids[1].ATHLETE_LIST[0])
+print(grids[2].ATHLETE_LIST[0])
