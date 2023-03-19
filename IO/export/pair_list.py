@@ -6,9 +6,8 @@ CHECK = 1
 ALL_LIST = []
 
 '''
-Решить проблему с переопределением ATHLETE_LIST
+The Grid class modified specifically for the list of pairs.
 '''
-
 class Grid:
     def __init__(self, data, index):
         self.ATHLETE_LIST = [[16, 1],
@@ -42,51 +41,63 @@ class Grid:
 
 
 '''
-Определяет победителя из пары.
+Determines the winner of the pair for the list of pairs.
+P.S.
+Add 2 more above the array with distribution lists by gender, as well as under the list
+(distribution list by age) of distribution by weight.
 '''
 def winner_of_pair(list):
     global CHECK
-    i = 0
-    new_list = []
-    new_second_list = []
-    new_third_list = []
-    for x in range(6):
-        while i < copy(len(list[x])):
-            for j in range(2):
-                if type(list[x][i][0]) == str or type(list[x][i][1]) == str:
-                    new_list.append(f"Победитель пары {CHECK}")
+    pair_of_athletes = 0  # Auxiliary variable, in order to go through the entire list of pairs.
+    first_list = []  # Auxiliary list for the function to work.
+    second_list = []  # Auxiliary list for the function to work.
+    third_list = []  # Auxiliary list for the function to work.
+    '''
+    A cycle that goes through the list of age groups of athletes.
+    '''
+    for age_group in range(6):
+        '''
+        A cycle that goes through the list of pairs of athletes in the list of age groups.
+        '''
+        while pair_of_athletes < copy(len(list[age_group])):
+            '''
+            A cycle that goes through the list in pair.
+            '''
+            for index_in_pair in range(2):
+                if type(list[age_group][pair_of_athletes][0]) == str or type(list[age_group][pair_of_athletes][1]) == str:
+                    first_list.append(f"Победитель пары {CHECK}")
                     CHECK += 1
-                    i += 1
+                    pair_of_athletes += 1
                     continue
-                if list[x][i][0].name == "-" and list[x][i][1].name == "-":
-                    new_list.append(list[x][i][1])
-                    i += 1
+                if list[age_group][pair_of_athletes][0].name == "-" and list[age_group][pair_of_athletes][1].name == "-":
+                    first_list.append(list[age_group][pair_of_athletes][1])
+                    pair_of_athletes += 1
                     continue
-                if list[x][i][0].name == "-" and list[x][i][1].name != "-":
-                    new_list.append(list[x][i][1])
-                    i += 1
+                if list[age_group][pair_of_athletes][0].name == "-" and list[age_group][pair_of_athletes][1].name != "-":
+                    first_list.append(list[age_group][pair_of_athletes][1])
+                    pair_of_athletes += 1
                     continue
-                if list[x][i][0].name != "-" and list[x][i][1].name == "-":
-                    new_list.append(list[x][i][0])
-                    i += 1
+                if list[age_group][pair_of_athletes][0].name != "-" and list[age_group][pair_of_athletes][1].name == "-":
+                    first_list.append(list[age_group][pair_of_athletes][0])
+                    pair_of_athletes += 1
                     continue
-                if list[x][i][0].name != "-" and list[x][i][1].name != "-":
-                    new_list.append(f"Победитель пары {CHECK}")
+                if list[age_group][pair_of_athletes][0].name != "-" and list[age_group][pair_of_athletes][1].name != "-":
+                    first_list.append(f"Победитель пары {CHECK}")
                     CHECK += 1
-                    i += 1
+                    pair_of_athletes += 1
                     continue
-            new_second_list.append(copy(new_list))
-            new_list.clear()
-        new_third_list.append(copy(new_second_list))
-        i = 0
-        new_second_list.clear()
-    return new_third_list
+            second_list.append(copy(first_list))
+            first_list.clear()
+        third_list.append(copy(second_list))
+        pair_of_athletes = 0
+        second_list.clear()
+    return third_list
 '''
-ДОРАБОТАТЬ
-Создание всего списка пар.
+Creating a list of pairs from a dictionary for easier sorting in the future.
+The function fills the global variable, which will include all pairs.
 '''
 def create_list_of_pair(grid):
-    list = []
+    list = []  # Auxiliary list for the function to work.
     for i in grid.ATHLETE_LIST:
         list.append(i[0])
         list.append(i[1])
@@ -94,48 +105,45 @@ def create_list_of_pair(grid):
         print(f"{i[0].name} x {i[1].name}")
     ALL_LIST.append(list)
 '''
-Удаление "-" из изначального списка участников.
-(разбиение основного списка на пары)
+Removing "-" from the original list of participants. If they are on the list.
+P.S.
+Accidentally confused i and j, just too lazy to change.
 '''
 def deleting_original(list):
     i = 0
-    new_list = []
-    third_new_list = []
+    second_list = []  # List of couples
+    third_list = []  # List of couple lists
     for j in range(6):
         while i < len(list[j]):
-            second_new_list = []
-            second_new_list.append(list[j][i])
-            second_new_list.append(list[j][i + 1])
-            new_list.append(second_new_list)
+            first_list = []  # Couple of athletes
+            first_list.append(list[j][i])
+            first_list.append(list[j][i + 1])
+            second_list.append(first_list)
             i += 2
         i = 0
-        third_new_list.append(copy(new_list))
-        new_list = []
-    return third_new_list
+        third_list.append(copy(second_list))
+        second_list = []
+    return third_list
 
 parser_data = Parser(file_name="Попередня Запоріжжя.docx").result()
 
-sth_list = []
-all_list = []
+list_of_all = []  # Initial list with all pairs received from the parser.
+changing_list = []  # The list is constantly changing.
 for i in range(6):
     grid = Grid(parser_data, i)
     create_list_of_pair(grid)
-all_list = copy(ALL_LIST)
+list_of_all = copy(ALL_LIST)
 '''
-Вызов срабатывания функций дальней итерации турнира
------------------------------------------------------------
+Calling the functions of the distant iteration of the tournament. For TESTING.
 '''
-sth_list = deleting_original(all_list)
-print(sth_list)
-sth_list = winner_of_pair(sth_list)
+changing_list = deleting_original(list_of_all)
+print(changing_list)
+sth_list = winner_of_pair(changing_list)
 print()
-print(sth_list)
-sth_list = winner_of_pair(sth_list)
+print(changing_list)
+changing_list = winner_of_pair(changing_list)
 print()
-print(sth_list)
-sth_list = winner_of_pair(sth_list)
+print(changing_list)
+changing_list = winner_of_pair(changing_list)
 print()
-print(sth_list)
-'''
------------------------------------------------------------
-'''
+print(changing_list)
