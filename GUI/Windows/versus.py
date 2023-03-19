@@ -92,7 +92,7 @@ class VersusFrame(Frame):
         super().__init__(master=master)
         self.first_athlete = first_athlete
         self.second_athlete = second_athlete
-        self.battle_round = battle_round
+        self.battle_round = str(battle_round)
         self.IS_WIN = VersusWindow.call_btn.SCORES[self.battle_round][2]
 
         # Grid
@@ -293,19 +293,19 @@ class VersusFrame(Frame):
             VersusWindow.disable_frames()
             VersusWindow.color_rounds(SECOND)
             messagebox.showinfo(title="Победитель", message=f"{self.first_athlete.name} набирает три предупреждения!")
-            VersusWindow.call_btn.AUTO_WIN = self.second_athlete
+            VersusWindow.call_btn.AUTO_WIN = self.second_athlete.toJson()
 
             battle_window_db[f"{curr_vs_btn.grid_info()['column']}x{curr_vs_btn.grid_info()['row']}"]["info"][
-                "auto_win"] = self.second_athlete
+                "auto_win"] = self.second_athlete.toJson()
 
         elif second_warns == 3:
             VersusWindow.disable_frames()
             VersusWindow.color_rounds(FIRST)
             messagebox.showinfo(title="Победитель", message=f"{self.second_athlete.name} набирает три предупреждения!")
-            VersusWindow.call_btn.AUTO_WIN = self.first_athlete
+            VersusWindow.call_btn.AUTO_WIN = self.first_athlete.toJson()
 
             battle_window_db[f"{curr_vs_btn.grid_info()['column']}x{curr_vs_btn.grid_info()['row']}"]["info"][
-                "auto_win"] = self.first_athlete
+                "auto_win"] = self.first_athlete.toJson()
 
         if first_knocks == 2 or first_outs == 2 or (second_score - first_score) >= 12:
             self.check_winner(autowin_bottom=True)
@@ -332,7 +332,7 @@ class VersusFrame(Frame):
 
         if first_score == second_score or self.IS_WIN:
             return
-        elif first_score > second_score or autowin_top or auto_winner == self.first_athlete:
+        elif first_score > second_score or autowin_top or auto_winner == self.first_athlete.toJson():
             self.left_name.config(fg="#3fd44e")
             VersusWindow.call_btn.CURRENT_ROUND += 1
         elif first_score < second_score or autowin_bottom or auto_winner == self.second_score:

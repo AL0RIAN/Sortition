@@ -22,24 +22,24 @@ class Grid:
             for i in range(8):
                 for j in range(2):
                     if current == self.ATHLETE_LIST[i][j]:
-                        self.ATHLETE_LIST[i][j] = Athlete(name=athlete["name"], birthday=athlete["birthday"],
-                                                          gender=athlete["gender"], weight=athlete["weight"])
+                        data = {"name": athlete["name"],
+                                "birthday": athlete["birthday"],
+                                "gender": athlete["gender"],
+                                "weight": athlete["weight"]}
+                        self.ATHLETE_LIST[i][j] = Athlete(data)
                         break
             current += 1
 
         for pair in self.ATHLETE_LIST:
+            data = {"name": "-", "birthday": "-", "gender": "-", "weight": "-"}
             if type(pair[0]) == int:
-                pair[0] = Athlete(name="-", birthday="-", gender="-", weight="-")
+                pair[0] = Athlete(data)
             if type(pair[1]) == int:
-                pair[1] = Athlete(name="-", birthday="-", gender="-", weight="-")
+                pair[1] = Athlete(data)
 
         return self.ATHLETE_LIST
 
 
-parser_data = Parser(file_name="Попередня Запоріжжя.docx").result()
+parser_data = Parser(file_name=r"C:\Users\Davidov\PycharmProjects\Sortition\sorting\Попередня Запоріжжя.docx").result()
 # Grid.packaging(parser_data)
 grids = [Grid(parser_data, 5), Grid(parser_data, 4), Grid(parser_data, 3)]
-
-print(grids[0].ATHLETE_LIST[0])
-print(grids[1].ATHLETE_LIST[0])
-print(grids[2].ATHLETE_LIST[0])

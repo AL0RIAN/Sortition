@@ -1,11 +1,22 @@
+__all__ = ["window"]
+
 from tkinter import *
+from tkinter import filedialog
 from GUI.Buttons import NavigationButton
-from GUI.Buttons import InfoButton
 from .battlepane import *
+import json
 
 
 class RootWindow:
-    right_panels_grid = {x: {} for x in range(16)}
+    """
+    right_panels_grid: информация о сетке, где x - номер поля
+    right_panels: информация о поле, где x - номер поля
+    current_panel_num: номер текущего поля
+    current_panel: текущее поле
+    opening: приветственное окно
+    """
+
+    right_panels_grid = {str(x): {} for x in range(16)}
     right_panels = {x: {'direction': True,
                         'members': 16,
                         'column': 1,
@@ -16,6 +27,7 @@ class RootWindow:
                         'cur_vs': 0} for x in range(16)}
     current_panel_num = 0
     current_panel = None
+    opening = None
 
     def __init__(self):
         self.root = Tk()
@@ -26,6 +38,9 @@ class RootWindow:
         self.root.geometry(
             f"{self.screen_width // 2}x{self.screen_height // 2}"
             f"+{self.screen_width // 4}+{int(self.screen_height // 5)}")
+
+        self.root.withdraw()
+        self.opening_win()
 
         # Pane
         self.right_panel = None
@@ -44,12 +59,10 @@ class RootWindow:
         for grid in range(16):
             self.grids.add_command(label=f"{grid + 1}", command=lambda num=grid: self.swap_grid(num))
 
-        # self.grids.add_command(label="1", command=lambda: self.swap_grid(0))
-        # self.grids.add_command(label="2", command=lambda: self.swap_grid(1))
-        # self.grids.add_command(label="3", command=lambda: self.swap_grid(2))
         self.menu_bar.add_cascade(label="Турниры", menu=self.grids)
 
-        # self.root.resizable(width=False, height=False)
+        # Обработчик Закрытия
+        self.root.protocol("WM_DELETE_WINDOW", self.save)
 
     def swap_grid(self, number):
         cur_num = self.current_panel_num
@@ -64,9 +77,6 @@ class RootWindow:
         # Delete Old Pane
         self.right_panel.remove(cur_pane)
         cur_pane.destroy()
-
-        print(dbg)
-        print(dbw)
 
         # Add New Pane
         new_pane = BattleWindow(master=self.right_panel, root_win=self, number=2)
@@ -84,69 +94,86 @@ class RootWindow:
         RootWindow.current_panel_num = number
         RootWindow.current_panel = new_pane
 
-        # self.right_panel.remove(self.current_panel)
-        # self.right_panels[self.current_panel] =
-        # self.current_panel.destroy()
-        #
-        # battle_window = BattleWindow(master=self.right_panel, root_win=self, number=number)
-        # battle_window.create_grid(db=self.right_panel[number])
-        #
-        # self.right_panel.add(battle_window)
-        #
-        # self.right_panels[number] = battle_window.data_base
-        #
-        # self.current_panel = number
+    def opening_win(self):
+        RootWindow.opening = Toplevel(master=self.root)
+        RootWindow.opening.geometry("500x500")
+        Button(master=RootWindow.opening, text="Открыть", command=self.browse_file).pack()
+        Button(master=RootWindow.opening, text="Создать", command=self.work_space_creation).pack()
 
-        # //// ТЕСТЫ ////
-        # self.right_panels[self.current_panel].frame_killer()
-        # self.right_panels[self.current_panel].grid_forget()
-        # self.right_panels[number].grid(row=0, column=0, sticky="news")
-        # self.right_panels[number].frame_filler()
-        # self.current_panel = number
-        # //// ТЕСТЫ ////
+    def browse_file(self):
+        filename = filedialog.askopenfilename(initialdir="/",
+                                              title="Выберите файл",
+                                              filetypes=(("Json File", "*.json"),))
+        with open(filename, "r") as file:
+            self.right_panels_grid = json.load(file)
 
-        # print(pane.winfo_children())
-        # break
+        print("DATA BASE: ", self.right_panels_grid)
+
+        self.root.deiconify()
+
+        self.work_space_creation()
+
+    def work_space_creation(self):
+        RootWindow.opening.destroy()
+
+        # WORK SPACE CREATION
+        work_space = PanedWindow(master=self.root, background="#6C6C6C")
+        work_space.pack(fill=BOTH, expand=True)
+        window.right_panel = work_space
+
+        # NAVIGATION (LEFT PANEL)
+
+        navigation_window = PanedWindow(master=work_space, background="#F8F5F5", width=window.screen_width // 8)
+        work_space.add(child=navigation_window)
+
+        btn_frame = Frame(master=navigation_window, background="#F8F5F5", width=window.screen_width)
+        btn_frame.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+        exit_btn = NavigationButton(master=btn_frame, text="Выход", root_win=window, hover_color="BLUE",
+                                    command=window.root.destroy)
+        exit_btn.grid(row=1, column=0, sticky="news")
+
+        judge_btn = NavigationButton(master=btn_frame, text="Судья", root_win=window, hover_color="BLUE", command=None)
+        judge_btn.grid(row=0, column=0, sticky="news")
+
+        work_space.grid_columnconfigure(index=0, minsize=window.screen_height // 4)
+        work_space.grid_rowconfigure(index=0, minsize=window.screen_height // 2)
+
+        # BATTLE FIELD (RIGHT PANEL)
+
+        battle_window1 = BattleWindow(master=work_space, root_win=window, number=0)
+        # RootWindow.right_panels[0] = battle_window1.data_base
+        RootWindow.current_panel = battle_window1
+        work_space.add(child=battle_window1)
+
+        print(self.right_panels_grid["0"])
+
+        battle_window1.create_grid(self.right_panels_grid["0"])
+        self.root.deiconify()
+
+    def set_dbg(self, number: int, data: dict) -> None:
+        """
+        Этот метод нужен для обновления базы данных всякий раз, как происходят изменения на Поле
+
+        :param number:
+        :param data:
+        :return:
+        """
+        RootWindow.right_panels_grid[number] = data
+
+    def save(self):
+        print(self.right_panels_grid)
+
+        with open("js-db.json", "w") as file:
+            json.dump(self.right_panels_grid, file)
+
+        self.root.destroy()
 
 
 window = RootWindow()
 
-# WORK SPACE CREATION
+# Сделать Сериализацию и Десирализацию
+# Сделать начальные окна, как ТопЛевел. Пока инструкции в них не заданы, не выводить основное
 
-work_space = PanedWindow(master=window.root, background="#6C6C6C")
-work_space.pack(fill=BOTH, expand=True)
-window.right_panel = work_space
-
-# NAVIGATION (LEFT PANEL)
-
-navigation_window = PanedWindow(master=work_space, background="#F8F5F5", width=window.screen_width // 8)
-work_space.add(child=navigation_window)
-
-btn_frame = Frame(master=navigation_window, background="#F8F5F5", width=window.screen_width)
-btn_frame.place(relx=0.5, rely=0.5, anchor=CENTER)
-
-exit_btn = NavigationButton(master=btn_frame, text="Выход", root_win=window, hover_color="BLUE",
-                            command=window.root.destroy)
-exit_btn.grid(row=1, column=0, sticky="news")
-
-judge_btn = NavigationButton(master=btn_frame, text="Судья", root_win=window, hover_color="BLUE", command=None)
-judge_btn.grid(row=0, column=0, sticky="news")
-
-work_space.grid_columnconfigure(index=0, minsize=window.screen_height // 4)
-work_space.grid_rowconfigure(index=0, minsize=window.screen_height // 2)
-
-# BATTLE FIELD (RIGHT PANEL)
-
-battle_window1 = BattleWindow(master=work_space, root_win=window, number=0)
-RootWindow.right_panels[0] = battle_window1.data_base
-RootWindow.current_panel = battle_window1
-work_space.add(child=battle_window1)
-# judge_btn.config(command=lambda: work_space.remove(battle_window1))
-
-battle_window1.create_grid(db={})
-
-# for bw in range(15):
-#     b = BattleWindow(master=None, root_win=window, number=2)
-#     RootWindow.right_panels.append(b.data_base)
-
-# НУЖНО ТЕПЕРЬ ХРАНИТЬ ДАННЫ ОБ ОТСТУПАХ И ТЕКУЩЕЙ КОЛОНКЕ
+# window.root.withdraw()
+# window.root.deiconify()
