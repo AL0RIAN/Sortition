@@ -16,15 +16,15 @@ class RootWindow:
     opening: приветственное окно
     """
 
-    right_panels_grid = {str(x): {} for x in range(16)}
-    right_panels = {x: {'direction': True,
-                        'members': 16,
-                        'column': 1,
-                        'spaces': 2,
-                        'cur_grid': 0,
-                        'column_member': 8,
-                        'border': False,
-                        'cur_vs': 0} for x in range(16)}
+    right_panels_grid = {str(x): {"grid": {}, "spaces_info": {}} for x in range(16)}
+    right_panels = {str(x): {'direction': True,
+                             'members': 16,
+                             'column': 1,
+                             'spaces': 2,
+                             'cur_grid': 0,
+                             'column_member': 8,
+                             'border': False,
+                             'cur_vs': 0} for x in range(16)}
     current_panel_num = 0
     current_panel = None
     opening = None
@@ -66,8 +66,8 @@ class RootWindow:
 
     def swap_grid(self, number):
         cur_num = self.current_panel_num
-        dbg = self.right_panels_grid
-        dbw = self.right_panels
+        dbg = self.right_panels_grid["grid"]
+        dbw = self.right_panels["spaces_info"]
         cur_pane = self.current_panel
 
         # Add Old Info To DB
@@ -107,63 +107,73 @@ class RootWindow:
         with open(filename, "r") as file:
             self.right_panels_grid = json.load(file)
 
-        print("DATA BASE: ", self.right_panels_grid)
-
         self.root.deiconify()
-
         self.work_space_creation()
 
     def work_space_creation(self):
-        RootWindow.opening.destroy()
+        self.opening.destroy()
+        review_win = Toplevel(master=self.root)
 
-        # WORK SPACE CREATION
-        work_space = PanedWindow(master=self.root, background="#6C6C6C")
-        work_space.pack(fill=BOTH, expand=True)
-        window.right_panel = work_space
+        # RootWindow.opening.destroy()
+        #
+        # # WORK SPACE CREATION
+        # work_space = PanedWindow(master=self.root, background="#6C6C6C")
+        # work_space.pack(fill=BOTH, expand=True)
+        # window.right_panel = work_space
+        #
+        # # NAVIGATION (LEFT PANEL)
+        #
+        # navigation_window = PanedWindow(master=work_space, background="#F8F5F5", width=window.screen_width // 8)
+        # work_space.add(child=navigation_window)
+        #
+        # btn_frame = Frame(master=navigation_window, background="#F8F5F5", width=window.screen_width)
+        # btn_frame.place(relx=0.5, rely=0.5, anchor=CENTER)
+        #
+        # exit_btn = NavigationButton(master=btn_frame, text="Выход", root_win=window, hover_color="BLUE",
+        #                             command=window.root.destroy)
+        # exit_btn.grid(row=1, column=0, sticky="news")
+        #
+        # judge_btn = NavigationButton(master=btn_frame, text="Судья", root_win=window, hover_color="BLUE", command=None)
+        # judge_btn.grid(row=0, column=0, sticky="news")
+        #
+        # work_space.grid_columnconfigure(index=0, minsize=window.screen_height // 4)
+        # work_space.grid_rowconfigure(index=0, minsize=window.screen_height // 2)
+        #
+        # # BATTLE FIELD (RIGHT PANEL)
+        #
+        # battle_window1 = BattleWindow(master=work_space, root_win=window, args=self.right_panels["0"], number="0")
+        # RootWindow.current_panel = battle_window1
+        # work_space.add(child=battle_window1)
+        #
+        # print(self.right_panels_grid["0"])
+        # battle_window1.create_grid(self.right_panels_grid["0"]["grid"])
+        # self.root.deiconify()
 
-        # NAVIGATION (LEFT PANEL)
-
-        navigation_window = PanedWindow(master=work_space, background="#F8F5F5", width=window.screen_width // 8)
-        work_space.add(child=navigation_window)
-
-        btn_frame = Frame(master=navigation_window, background="#F8F5F5", width=window.screen_width)
-        btn_frame.place(relx=0.5, rely=0.5, anchor=CENTER)
-
-        exit_btn = NavigationButton(master=btn_frame, text="Выход", root_win=window, hover_color="BLUE",
-                                    command=window.root.destroy)
-        exit_btn.grid(row=1, column=0, sticky="news")
-
-        judge_btn = NavigationButton(master=btn_frame, text="Судья", root_win=window, hover_color="BLUE", command=None)
-        judge_btn.grid(row=0, column=0, sticky="news")
-
-        work_space.grid_columnconfigure(index=0, minsize=window.screen_height // 4)
-        work_space.grid_rowconfigure(index=0, minsize=window.screen_height // 2)
-
-        # BATTLE FIELD (RIGHT PANEL)
-
-        battle_window1 = BattleWindow(master=work_space, root_win=window, number=0)
-        # RootWindow.right_panels[0] = battle_window1.data_base
-        RootWindow.current_panel = battle_window1
-        work_space.add(child=battle_window1)
-
-        print(self.right_panels_grid["0"])
-
-        battle_window1.create_grid(self.right_panels_grid["0"])
-        self.root.deiconify()
-
-    def set_dbg(self, number: int, data: dict) -> None:
+    @staticmethod
+    def set_dbg(number: str, data: dict) -> None:
         """
-        Этот метод нужен для обновления базы данных всякий раз, как происходят изменения на Поле
+        Этот метод нужен для обновления базы данных всякий раз, как происходят изменения на Поле (СЕТКА)
 
         :param number:
         :param data:
         :return:
         """
-        RootWindow.right_panels_grid[number] = data
+
+        RootWindow.right_panels_grid[number]["grid"] = data
+
+    @staticmethod
+    def set_dbw(number: str, data: dict) -> None:
+        """
+        Этот метод нужен для обновления базы данных всякий раз, как происходят изменения на Поле (ОТСТУПЫ И КОНФИГУРАЦИЯ)
+
+        :param number:
+        :param data:
+        :return:
+        """
+
+        RootWindow.right_panels_grid[number]["spaces_info"] = data
 
     def save(self):
-        print(self.right_panels_grid)
-
         with open("js-db.json", "w") as file:
             json.dump(self.right_panels_grid, file)
 

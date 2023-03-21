@@ -13,18 +13,18 @@ from .versus import *
 
 class BattleWindow(PanedWindow):
 
-    def __init__(self, master=None, root_win=None, number=0, cnf={}, **kwargs):
-        Widget.__init__(self, master=master, widgetName='panedwindow', cnf={}, **kwargs)
+    def __init__(self, master=None, root_win=None, args: dict = None, number="0"):
+        Widget.__init__(self, master=master, widgetName='panedwindow', cnf={})
 
-        self.DIRECTION = True
-        self.MEMBERS = 16
-        self.COLUMN = 0
-        self.SPACES = 0  # Текущий отступ + текущая колонка + 1 (SPACES + COLUMN + 1)
-        self.CURRENT_GRID = 0
-        self.COLUMN_MEMBERS = 8
-        self.BORDER = False
+        self.DIRECTION = args["direction"]
+        self.MEMBERS = args["members"]
+        self.COLUMN = args["column"]
+        self.SPACES = args["spaces"]  # Текущий отступ + текущая колонка + 1 (SPACES + COLUMN + 1)
+        self.CURRENT_GRID = args["cur_grid"]
+        self.COLUMN_MEMBERS = args["column_member"]
+        self.BORDER = args["border"]
         self.VERSUS_BUTTONS = list()
-        self.CURRENT_VERSUS = 0
+        self.CURRENT_VERSUS = args["cur_vs"]
 
         self.fields: List[List[Button]] = list()
         self.data_base: Dict = dict()
@@ -102,6 +102,16 @@ class BattleWindow(PanedWindow):
 
         # Сохраняем в общую базу данных состояние поля
         self.root_win.set_dbg(number=self.number, data=self.data_base)
+        self.root_win.set_dbw(number=self.number, data={"DIRECTION": self.DIRECTION,
+                                                        "MEMBERS": self.MEMBERS,
+                                                        "COLUMN": self.COLUMN,
+                                                        "SPACES": self.SPACES,
+                                                        "CURRENT_GRID": self.CURRENT_GRID,
+                                                        "COLUMN_MEMBERS": self.COLUMN_MEMBERS,
+                                                        "BORDER": self.BORDER,
+                                                        # "VERSUS_BUTTONS": self.VERSUS_BUTTONS,
+                                                        "CURRENT_VERSUS": self.CURRENT_VERSUS
+                                                        })
 
     def get_grid_info(self) -> dict:
         info = {"direction": self.DIRECTION,
@@ -200,7 +210,7 @@ class BattleWindow(PanedWindow):
         column = 0
         row = 0
 
-        for pair in grids[self.number].ATHLETE_LIST:
+        for pair in grids[int(self.number)].ATHLETE_LIST:
             first_atl = InfoButton(master=self.canvas_frame, root_win=self.root_win, hover_color="GREEN", info=pair[0])
             first_atl.grid(row=row, column=0)
             first = pair[0]
@@ -365,5 +375,26 @@ class BattleWindow(PanedWindow):
                                                                                                               args[2]
                                                                                                               ))
                         self.CURRENT_GRID = under_row + 1
+
+                        self.root_win.set_dbw(number=self.number, data={"DIRECTION": self.DIRECTION,
+                                                                        "MEMBERS": self.MEMBERS,
+                                                                        "COLUMN": self.COLUMN,
+                                                                        "SPACES": self.SPACES,
+                                                                        "CURRENT_GRID": self.CURRENT_GRID,
+                                                                        "COLUMN_MEMBERS": self.COLUMN_MEMBERS,
+                                                                        "BORDER": self.BORDER,
+                                                                        # "VERSUS_BUTTONS": self.VERSUS_BUTTONS,
+                                                                        "CURRENT_VERSUS": self.CURRENT_VERSUS
+                                                                        })
+
+                        print("DIRECTION:", self.DIRECTION)
+                        print("MEMBERS:", self.MEMBERS)
+                        print("COLUMN:", self.COLUMN)
+                        print("SPACES:", self.SPACES)
+                        print("CURRENT_GRID:", self.CURRENT_GRID)
+                        print("COLUMN_MEMBERS:", self.COLUMN_MEMBERS)
+                        print("BORDER:", self.BORDER)
+                        print("VERSUS_BUTTONS:", self.VERSUS_BUTTONS)
+                        print("CURRENT_VERSUS:", self.CURRENT_VERSUS)
 
                         return

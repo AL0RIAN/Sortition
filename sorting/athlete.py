@@ -6,7 +6,7 @@ from typing import Dict
 
 
 class Athlete:
-    def __init__(self, args):
+    def __init__(self, args: dict):
         self.name = args["name"]
         self.birthday = args["birthday"]
         self.gender = args["gender"]
