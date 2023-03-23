@@ -1,5 +1,3 @@
-__all__ = ["Parser"]
-
 from docx import Document #Main python DOCX class
 import json #Debug
 
@@ -58,7 +56,7 @@ class Parser:
 
     def __is_age_category(self, cell) -> bool:
         """
-        If collected data is age category info then True, else False
+        If collected data is age category infom then True, else False
 
         :param cell: cell from table
         :return: bool
