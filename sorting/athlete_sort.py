@@ -1,4 +1,4 @@
-__all__ = ["grids"]
+__all__ = ["grids", "parser_data"]
 
 from sorting.athlete import *
 from IO.parser import *
@@ -41,5 +41,6 @@ class Grid:
 
 
 parser_data = Parser(file_name=r"C:\Users\Davidov\PycharmProjects\Sortition\sorting\Попередня Запоріжжя.docx").result()
+print(parser_data)
 # Grid.packaging(parser_data)
 grids = [Grid(parser_data, 5), Grid(parser_data, 4), Grid(parser_data, 3)]

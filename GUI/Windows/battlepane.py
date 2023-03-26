@@ -83,6 +83,13 @@ class BattleWindow(PanedWindow):
             self.canvas.xview_scroll(int(-1 * (event.delta / 120)), "units")
 
     def create_grid(self, db: dict = None) -> None:
+        """
+        Если изначально БД пустая, то создается новое поле, иначе списывается с БД
+
+        :param db:
+        :return:
+        """
+
         self.data_base = db
 
         if self.data_base == {}:

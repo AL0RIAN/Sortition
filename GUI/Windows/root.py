@@ -2,7 +2,7 @@ __all__ = ["window"]
 
 from tkinter import *
 from tkinter import filedialog
-from GUI.Buttons import NavigationButton
+from sorting.athlete_sort import *
 from .battlepane import *
 import json
 
@@ -111,8 +111,75 @@ class RootWindow:
         self.work_space_creation()
 
     def work_space_creation(self):
-        self.opening.destroy()
+        def get_info_from_parser(key: str):
+            result = list()
+
+            for age_category in parser_data['participants']:
+                for info in age_category["data"]:
+                    current = StringVar()
+                    current.set(info[key])
+                    result.append(current)
+
+            return result
+
         review_win = Toplevel(master=self.root)
+        review_win.resizable(width=False, height=False)
+
+        name = get_info_from_parser("name")
+        birthday = get_info_from_parser("birthday")
+        category = get_info_from_parser("category")
+        gender = get_info_from_parser("gender")
+        weight = get_info_from_parser("weight")
+        is_sanda = get_info_from_parser("is_sanda")
+        is_cinda = get_info_from_parser("is_cinda")
+        is_tuishou = get_info_from_parser("is_tuishou")
+        is_vinchun = get_info_from_parser("is_vinchun")
+        region = get_info_from_parser("region")
+        club = get_info_from_parser("club")
+        trainer = get_info_from_parser("trainer")
+
+        row = 0
+        index = 0
+        label = None
+        for data in parser_data['participants']:
+            label = Label(master=review_win, text=data["age_category"])
+            label.grid(row=row, column=0, sticky="news", columnspan=13)
+            row += 1
+            for names in data["data"]:
+                Entry(master=review_win, textvariable=name[index]).grid(row=row, column=0, sticky="news")
+                Entry(master=review_win, textvariable=birthday[index]).grid(row=row, column=1, sticky="news")
+                Entry(master=review_win, textvariable=category[index]).grid(row=row, column=2, sticky="news")
+                Entry(master=review_win, textvariable=gender[index]).grid(row=row, column=3, sticky="news")
+                Entry(master=review_win, textvariable=weight[index]).grid(row=row, column=4, sticky="news")
+                Entry(master=review_win, width=1, textvariable=is_sanda[index]).grid(row=row, column=5, sticky="news")
+                Entry(master=review_win, width=1, textvariable=is_cinda[index]).grid(row=row, column=6, sticky="news")
+                Entry(master=review_win, width=1, textvariable=is_vinchun[index]).grid(row=row, column=7, sticky="news")
+                Entry(master=review_win, width=1, textvariable=is_tuishou[index]).grid(row=row, column=8, sticky="news")
+                Entry(master=review_win, width=1, textvariable=is_vinchun[index]).grid(row=row, column=9, sticky="news")
+                Entry(master=review_win, textvariable=region[index]).grid(row=row, column=10, sticky="news")
+                Entry(master=review_win, textvariable=club[index]).grid(row=row, column=11, sticky="news")
+                Entry(master=review_win, textvariable=trainer[index]).grid(row=row, column=12, sticky="news")
+
+                row += 1
+                index += 1
+
+            Button(master=review_win, text="X", command=lambda: label.grid_forget()).grid(row=row, column=0, columnspan=13)
+            # Label(master=review_win, name=category).pack()
+
+        self.opening.destroy()
+        # review_win.geometry("500x500")
+
+        # names = get_info_from_parser("name")
+        # birthday = get_info_from_parser("birthday")
+        # gender = get_info_from_parser("gender")
+        # categories = get_info_from_parser("category")
+
+        #
+        # for number in range(len(names)):
+        #     Entry(master=review_win, textvariable=names[number]).grid(row=number, column=0)
+        #     Entry(master=review_win, textvariable=birthday[number]).grid(row=number, column=1)
+        #     Entry(master=review_win, textvariable=gender[number]).grid(row=number, column=2)
+        #     Entry(master=review_win, textvariable=categories[number]).grid(row=number, column=3)
 
         # RootWindow.opening.destroy()
         #
@@ -132,7 +199,7 @@ class RootWindow:
         # exit_btn = NavigationButton(master=btn_frame, text="Выход", root_win=window, hover_color="BLUE",
         #                             command=window.root.destroy)
         # exit_btn.grid(row=1, column=0, sticky="news")
-        #
+        # д
         # judge_btn = NavigationButton(master=btn_frame, text="Судья", root_win=window, hover_color="BLUE", command=None)
         # judge_btn.grid(row=0, column=0, sticky="news")
         #
