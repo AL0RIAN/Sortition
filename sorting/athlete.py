@@ -1,14 +1,19 @@
 # __all__ = ["Athlete", "all"]
 __all__ = ["Athlete"]
 
+import json
+from typing import Dict
+
 
 class Athlete:
-    def __init__(self, name, birthday, gender, weight):
-        self.name = name
-        self.birthday = birthday
-        self.gender = gender
-        self.weight = weight
+    def __init__(self, args: dict):
+        self.name = args["name"]
+        self.birthday = args["birthday"]
+        self.gender = args["gender"]
+        self.weight = args["weight"]
 
+    def toJson(self):
+        return json.dumps(self, default=lambda o: o.__dict__)
 
 # all = [[Athlete("Babodzaki", 2), Athlete("Malenia", 16)],
 #        [Athlete("Radan", 4), Athlete("Godri", 2)],
