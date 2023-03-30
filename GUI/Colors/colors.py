@@ -1,8 +1,8 @@
 RED = ['#FF%02X%02X' % (color, color) for color in range(255, 0, -1)]
 GREEN = ['#%02XFF%02X' % (color, color) for color in range(255, 0, -1)]
 BLUE = ['#%02X%02XFF' % (color, color) for color in range(255, 0, -1)]
-# GRAY = ['#6C6C6C' if color < 108: '#6C6C6C' else '#%02X%02X%02X' % (color, color, color) for color in range(255, 0, -1)]
 GRAY = []
+DARK_MOON = []
 
 for color in range(0, 255):
     if color < 108:
@@ -12,10 +12,12 @@ for color in range(0, 255):
     else:
         GRAY.append('#%02X%02X%02X' % (150, 150, 150))
 
-print(GRAY)
+for color in range(255, 0, -1):
+    if color > 55:
+        DARK_MOON.append("#333338")
+    else:
+        DARK_MOON.append('#%02X%02X%02X' % (color - 5, color - 5, color))
 
-
-# [f(x) if x is not None else '' for x in xs]
 
 class ColorRange:
     CURRENT = -1
@@ -25,6 +27,7 @@ class ColorRange:
         "GREEN": GREEN,
         "BLUE": BLUE,
         "GRAY": GRAY,
+        "DARK_MOON": DARK_MOON,
     }
 
     def __init__(self, color: list, background: str):
