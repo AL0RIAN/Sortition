@@ -192,8 +192,8 @@ class RootWindow:
             for _ in data["data"]:
                 create_entry(variable=name[index], row=row, col=0, entry_list=entries)
                 create_entry(variable=birthday[index], row=row, col=1, entry_list=entries)
-                create_entry(variable=category[index], row=row, col=2, entry_list=entries)
-                create_entry(variable=gender[index], row=row, col=3, entry_list=entries)
+                create_entry(variable=gender[index], row=row, col=2, entry_list=entries)
+                create_entry(variable=category[index], row=row, col=3, entry_list=entries)
                 create_entry(variable=weight[index], row=row, col=4, entry_list=entries)
                 create_entry(variable=is_sanda[index], row=row, col=5, entry_list=entries, width=1)
                 create_entry(variable=is_cinda[index], row=row, col=6, entry_list=entries, width=1)
