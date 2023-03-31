@@ -267,4 +267,18 @@ class ExportPairsDOCX:
         else:
             self.__document.save(f"Состав пар турнир {self.start_date} - {self.end_date}.docx")
 
+class ExportRequestDOCX:
+    """DOCX export class, that converts dictionary info from open window into DOCX participants file."""
+
+    __AGE_CATEGORY_PATTERN = {  # Pattern cell-value: converted-value
+        "Юнаки молодшого віку до 10 років": "10-",
+        "Юнаки молодшого віку 10-11 років": "10-11",
+        "Юнаки старшого віку 12-13 років": "12-13",
+        "Юніори 14-15 років": "14-15",
+        "Юніори 16-17 років": "16-17",
+        "Дорослі 18+ років": "18+"
+    }
+
+
+
 # TODO: ExportRefereeProtocolDOCX
