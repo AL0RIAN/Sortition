@@ -279,6 +279,8 @@ class ExportRequestDOCX:
         "Дорослі 18+ років": "18+"
     }
 
+    def __init__(self, info_dict: dict) -> None:
 
+        self.__info_dict = info_dict
 
 # TODO: ExportRefereeProtocolDOCX
