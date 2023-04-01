@@ -2,8 +2,9 @@ __all__ = ["window"]
 
 from tkinter import *
 from tkinter import filedialog
-from sorting.athlete_sort import *
 from .battlepane import *
+from ..Buttons.navigationbtn import *
+from .memblist import *
 import json
 
 
@@ -111,113 +112,11 @@ class RootWindow:
         self.work_space_creation()
 
     def work_space_creation(self):
-        # TODO добавить метод и кнопку, которые будут отвечать за поднятие поля при удалении одного из. Для этого
-        # TODO нужно добавить переменную поля, в которой будут храниться данные о полях.
-        def get_info_from_parser(key: str):
-            """
-            Локальная функция. Получает информацию из парсера по ключу.
-
-            :param key:
-            :return:
-            """
-            result = list()
-
-            for age_category in parser_data['participants']:
-                for info in age_category["data"]:
-                    current = StringVar()
-                    current.set(info[key])
-                    result.append(current)
-
-            return result
-
-        def create_entry(variable, entry_list, row, col, width=None) -> None:
-            """
-            Локальная функция. Создает Entry полее ввода в ТопЛевел окне со списком участников.
-
-            :param variable:
-            :param entry_list:
-            :param row:
-            :param col:
-            :param width:
-            """
-            entry = Entry(master=review_win, textvariable=variable, width=width)
-            entry.grid(row=row, column=col, sticky="news")
-            entry_list.append(entry)
-
-        def save_info(entry_list: list, row_count):
-            """
-            Сохраняет состояние поля и передает информацию конвертеру в ворд
-
-            :param row_count: кол-во рядков
-            :param entry_list: список Энтри
-            :return:
-            """
-            print(entries)
-            result = {line: list() for line in range(row_count)}
-
-            for widget in entry_list:
-                if type(widget) == Label:
-                    print(result[widget.grid_info()["row"]].append(widget.cget("text")))
-                else:
-                    result[widget.grid_info()["row"]].append(widget.get())
-                    # print(widget.cget("text"))
-
-            # TODO ДОПИСАТЬ ВЫЗОВ ФУНКЦИИ КОНВЕРТАЦИИ
-
-        review_win = Toplevel(master=self.root)
-        review_win.resizable(width=False, height=False)
-
-        entries = list()
-        name = get_info_from_parser("name")
-        birthday = get_info_from_parser("birthday")
-        category = get_info_from_parser("category")
-        gender = get_info_from_parser("gender")
-        weight = get_info_from_parser("weight")
-        is_sanda = get_info_from_parser("is_sanda")
-        is_cinda = get_info_from_parser("is_cinda")
-        is_tuishou = get_info_from_parser("is_tuishou")
-        is_vinchun = get_info_from_parser("is_vinchun")
-        region = get_info_from_parser("region")
-        club = get_info_from_parser("club")
-        trainer = get_info_from_parser("trainer")
-
-        row = 0
-        index = 0
-        label = None
-        for data in parser_data['participants']:
-            label = Label(master=review_win, text=data["age_category"])
-            label.grid(row=row, column=0, sticky="news", columnspan=13)
-            entries.append(label)
-            row += 1
-            for _ in data["data"]:
-                create_entry(variable=name[index], row=row, col=0, entry_list=entries)
-                create_entry(variable=birthday[index], row=row, col=1, entry_list=entries)
-                create_entry(variable=category[index], row=row, col=2, entry_list=entries)
-                create_entry(variable=gender[index], row=row, col=3, entry_list=entries)
-                create_entry(variable=weight[index], row=row, col=4, entry_list=entries)
-                create_entry(variable=is_sanda[index], row=row, col=5, entry_list=entries, width=1)
-                create_entry(variable=is_cinda[index], row=row, col=6, entry_list=entries, width=1)
-                create_entry(variable=is_tuishou[index], row=row, col=7, entry_list=entries, width=1)
-                create_entry(variable=is_vinchun[index], row=row, col=8, entry_list=entries, width=1)
-                create_entry(variable=region[index], row=row, col=9, entry_list=entries)
-                create_entry(variable=club[index], row=row, col=10, entry_list=entries)
-                create_entry(variable=trainer[index], row=row, col=11, entry_list=entries)
-
-                row += 1
-                index += 1
-
-        Button(master=review_win, text="X", command=lambda: save_info(entries, row)).grid(row=row, column=0,
-                                                                                          columnspan=12)
-        # Label(master=review_win, name=category).pack()
-        print(row)
-        self.opening.destroy()
-        # review_win.geometry("500x500")
-
         # names = get_info_from_parser("name")
         # birthday = get_info_from_parser("birthday")
         # gender = get_info_from_parser("gender")
         # categories = get_info_from_parser("category")
-
+        #
         #
         # for number in range(len(names)):
         #     Entry(master=review_win, textvariable=names[number]).grid(row=number, column=0)
@@ -225,9 +124,11 @@ class RootWindow:
         #     Entry(master=review_win, textvariable=gender[number]).grid(row=number, column=2)
         #     Entry(master=review_win, textvariable=categories[number]).grid(row=number, column=3)
 
-        # RootWindow.opening.destroy()
-        #
-        # # WORK SPACE CREATION
+        RootWindow.opening.destroy()
+
+        Toplevel(master=self.root)
+
+        # WORK SPACE CREATION
         # work_space = PanedWindow(master=self.root, background="#6C6C6C")
         # work_space.pack(fill=BOTH, expand=True)
         # window.right_panel = work_space
@@ -243,7 +144,6 @@ class RootWindow:
         # exit_btn = NavigationButton(master=btn_frame, text="Выход", root_win=window, hover_color="BLUE",
         #                             command=window.root.destroy)
         # exit_btn.grid(row=1, column=0, sticky="news")
-        # д
         # judge_btn = NavigationButton(master=btn_frame, text="Судья", root_win=window, hover_color="BLUE", command=None)
         # judge_btn.grid(row=0, column=0, sticky="news")
         #
@@ -298,3 +198,6 @@ window = RootWindow()
 
 # window.root.withdraw()
 # window.root.deiconify()
+
+# TODO добавить метод и кнопку, которые будут отвечать за поднятие поля при удалении одного из. Для этого
+# TODO нужно добавить переменную поля, в которой будут храниться данные о полях.
