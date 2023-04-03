@@ -124,9 +124,9 @@ class RootWindow:
         #     Entry(master=review_win, textvariable=gender[number]).grid(row=number, column=2)
         #     Entry(master=review_win, textvariable=categories[number]).grid(row=number, column=3)
 
-        RootWindow.opening.destroy()
+        TopLevelMembers(master=self.root, root_win=self)
 
-        Toplevel(master=self.root)
+        # RootWindow.opening.destroy()
 
         # WORK SPACE CREATION
         # work_space = PanedWindow(master=self.root, background="#6C6C6C")

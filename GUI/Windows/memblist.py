@@ -2,6 +2,7 @@ __all__ = ["TopLevelMembers"]
 
 from tkinter import *
 from sorting.athlete_sort import *
+from ..Buttons.colorbtn import *
 
 
 class TopLevelMembers(Toplevel):
@@ -10,12 +11,12 @@ class TopLevelMembers(Toplevel):
     в Ворд-документ.
     """
 
-    def __init__(self, master):
+    def __init__(self, master, root_win):
         super().__init__(master)
 
         self.resizable(width=False, height=False)
+        # Список Вводимых Полей
 
-        entries = list()
         name = self.get_info_from_parser("name")
         birthday = self.get_info_from_parser("birthday")
         category = self.get_info_from_parser("category")
@@ -29,39 +30,52 @@ class TopLevelMembers(Toplevel):
         club = self.get_info_from_parser("club")
         trainer = self.get_info_from_parser("trainer")
 
+        self.entries = {row: list() for row in range(len(name) + 6)}
+
         row = 0
         index = 0
-        label = None
+
         for data in parser_data['participants']:
             label = Label(master=self, text=data["age_category"])
             label.grid(row=row, column=0, sticky="news", columnspan=13)
-            entries.append(label)
+            self.entries[row].append(label)
             row += 1
             for _ in data["data"]:
-                self.create_entry(variable=name[index], row=row, col=0, entry_list=entries)
-                self.create_entry(variable=birthday[index], row=row, col=1, entry_list=entries)
-                self.create_entry(variable=category[index], row=row, col=2, entry_list=entries)
-                self.create_entry(variable=gender[index], row=row, col=3, entry_list=entries)
-                self.create_entry(variable=weight[index], row=row, col=4, entry_list=entries)
-                self.create_entry(variable=is_sanda[index], row=row, col=5, entry_list=entries, width=1)
-                self.create_entry(variable=is_cinda[index], row=row, col=6, entry_list=entries, width=1)
-                self.create_entry(variable=is_tuishou[index], row=row, col=7, entry_list=entries, width=1)
-                self.create_entry(variable=is_vinchun[index], row=row, col=8, entry_list=entries, width=1)
-                self.create_entry(variable=region[index], row=row, col=9, entry_list=entries)
-                self.create_entry(variable=club[index], row=row, col=10, entry_list=entries)
-                self.create_entry(variable=trainer[index], row=row, col=11, entry_list=entries)
+                self.create_entry(variable=name[index], row=row, col=0, entry_list=self.entries)
+                self.create_entry(variable=birthday[index], row=row, col=1, entry_list=self.entries)
+                self.create_entry(variable=category[index], row=row, col=2, entry_list=self.entries)
+                self.create_entry(variable=gender[index], row=row, col=3, entry_list=self.entries)
+                self.create_entry(variable=weight[index], row=row, col=4, entry_list=self.entries)
+                self.create_entry(variable=is_sanda[index], row=row, col=5, entry_list=self.entries, width=1)
+                self.create_entry(variable=is_cinda[index], row=row, col=6, entry_list=self.entries, width=1)
+                self.create_entry(variable=is_tuishou[index], row=row, col=7, entry_list=self.entries, width=1)
+                self.create_entry(variable=is_vinchun[index], row=row, col=8, entry_list=self.entries, width=1)
+                self.create_entry(variable=region[index], row=row, col=9, entry_list=self.entries)
+                self.create_entry(variable=club[index], row=row, col=10, entry_list=self.entries)
+                self.create_entry(variable=trainer[index], row=row, col=11, entry_list=self.entries)
+                btn = ColorButton(master=self, root_win=root_win, hover_color="RED", start_bg="#fff")
+                btn.config(text="X", font=("Montserrat", 10, "bold"))
+                btn.config(command=lambda args=(row, btn): self.delete_row(args[0], args[1]))
+                btn.grid(row=row, column=12)
 
                 row += 1
                 index += 1
 
-        Button(master=self, text="X", command=lambda: self.save_info(entries, row)).grid(row=row, column=0,
-                                                                                          columnspan=12)
-        # Label(master=review_win, name=category).pack()
-        print(row)
-
+        print(self.entries)
         # review_win.geometry("500x500")
 
-    def get_info_from_parser(self, key: str):
+    def delete_row(self, row: int, button: Button):
+
+        for widget in self.entries[row]:
+            widget.grid_forget()
+
+        button.grid_forget()
+
+    # СОЗДАТЬ СЛОВАРЬ КЛЮЧ - РЯДОК, ЗНАЧЕНИЕ - СПИСОК ВИДЖЕТОВ. ПЕРЕДАВАТЬ КНОПКЕ КЛЮЧ, ФУНКЦИЯ БУДЕТ УДАЛЯТЬ ВСЕ ИЗ
+    # ЗНАЧЕНИЯ
+
+    @staticmethod
+    def get_info_from_parser(key: str):
         """
         Локальная функция. Получает информацию из парсера по ключу.
 
@@ -88,9 +102,10 @@ class TopLevelMembers(Toplevel):
         :param col:
         :param width:
         """
-        entry = Entry(master=review_win, textvariable=variable, width=width)
+        entry = Entry(master=self, textvariable=variable, width=width)
         entry.grid(row=row, column=col, sticky="news")
-        entry_list.append(entry)
+
+        entry_list[row].append(entry)
 
     def save_info(self, entry_list: list, row_count):
         """
@@ -100,7 +115,7 @@ class TopLevelMembers(Toplevel):
         :param entry_list: список Энтри
         :return:
         """
-        print(entries)
+        print(self.entries)
         result = {line: list() for line in range(row_count)}
 
         for widget in entry_list:
@@ -108,6 +123,3 @@ class TopLevelMembers(Toplevel):
                 print(result[widget.grid_info()["row"]].append(widget.cget("text")))
             else:
                 result[widget.grid_info()["row"]].append(widget.get())
-                # print(widget.cget("text"))
-
-        # TODO ДОПИСАТЬ ВЫЗОВ ФУНКЦИИ КОНВЕРТАЦИИ
