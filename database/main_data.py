@@ -297,14 +297,10 @@ def calculate_group_of_age(athlete):
             return groups
         continue
 
-
-'''
-WORKING !!!!!!
-'''
 def shuffle_tournament(data):
     for gender in data:
         for age in data[gender]:
-            for weight in data[gender][age]:
+            for weight in data[gender][age].values():
                 shuffle(weight)
 
 
@@ -314,6 +310,8 @@ parser_data = Parser(file_name=r"C:\Users\megat\project\sortition\Поперед
 sth_list = packaging(parser_data, 1)
 sth_list = packaging(parser_data, 2)
 sth_list = packaging(parser_data, 3)
+
+shuffle_tournament(sth_list)
 
 print(sth_list)
 '''
