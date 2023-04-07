@@ -1,6 +1,7 @@
 from sorting.athlete import *
 from IO.parser import *
 from copy import copy
+from database.main_data import *
 
 CHECK = 1
 ALL_LIST = []
@@ -125,7 +126,7 @@ def deleting_original(list):
         second_list = []
     return third_list
 
-parser_data = Parser(file_name="Попередня Запоріжжя.docx").result()
+parser_data = Parser(file_name=r"C:\Users\megat\project\sortition\Попередня Запоріжжяr.docx").result()
 
 list_of_all = []  # Initial list with all pairs received from the parser.
 changing_list = []  # The list is constantly changing.

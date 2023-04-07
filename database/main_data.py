@@ -254,11 +254,59 @@ weight_count = {
     }
 }
 
+ATHLETE_LIST = [[16, 1],
+                [9, 8],
+                [5, 12],
+                [13, 4],
+                [3, 14],
+                [11, 6],
+                [7, 10],
+                [15, 2]]
+
+ATHLETE_LIST_KEYS = {
+    16: 1,
+    1: 2,
+    9: 3,
+    8: 4,
+    5: 5,
+    12: 6,
+    13: 7,
+    4: 8,
+    3: 9,
+    14: 10,
+    11: 11,
+    6: 12,
+    7: 13,
+    10: 14,
+    15: 15,
+    2: 16
+}
+
+ATHLETE_LIST_KEYS_re = {
+    16: "-",
+    1: "-",
+    9: "-",
+    8: "-",
+    5: "-",
+    12: "-",
+    13: "-",
+    4: "-",
+    3: "-",
+    14: "-",
+    11: "-",
+    6: "-",
+    7: "-",
+    10: "-",
+    15: "-",
+    2: "-"
+}
+
 from sorting.athlete import *
 from IO.parser import *
 from datetime import date
 from datetime import datetime
 from random import shuffle
+from copy import copy
 
 
 class Grid:
@@ -303,6 +351,23 @@ def shuffle_tournament(data):
             for weight in data[gender][age].values():
                 shuffle(weight)
 
+def to_actual_data(data):
+    for gender in data:
+        for age in data[gender]:
+            for weight in data[gender][age]:
+                if len(data[gender][age][weight]) <= 1:
+                    data[gender][age][weight].clear()
+                    continue
+                flag_dict = ATHLETE_LIST_KEYS_re.copy()
+                for index in range(len(data[gender][age][weight])):
+                    flag_dict[index + 1] = data[gender][age][weight][index]
+                flag_list = []
+                data[gender][age][weight].clear()
+                for athlete in flag_dict.values():
+                    flag_list.append(athlete)
+                    if len(flag_list) == 2:
+                        data[gender][age][weight].append(flag_list)
+                        flag_list = []
 
 parser_data = Parser(file_name=r"C:\Users\megat\project\sortition\Попередня Запоріжжяr.docx").result()
 # print(parser_data)
@@ -312,8 +377,7 @@ sth_list = packaging(parser_data, 2)
 sth_list = packaging(parser_data, 3)
 
 shuffle_tournament(sth_list)
-
-print(sth_list)
+to_actual_data(sth_list)
 '''
 Testing calculate_group_of_age.
 '''
