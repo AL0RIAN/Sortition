@@ -64,7 +64,7 @@ ATHLETES_DISTRIBUTION = {
     },
     "М": {
         "10": {
-            "27": [],  #27-
+            "27": [],  # 27-
             "30": [],
             "33": [],
             "36": [],
@@ -99,7 +99,7 @@ ATHLETES_DISTRIBUTION = {
             "60": [],
             "65": [],
             "70": [],
-            "2000": []  #70+
+            "2000": []  # 70+
         },  # 14-15
         "16": {
             "48": [],  # 48-
@@ -321,6 +321,7 @@ class Grid:
                              [15, 2]]
         # self.packaging(data, index)
 
+
 def packaging(data, index):
     for athlete in data["participants"][index]["data"]:
         age = calculate_group_of_age(athlete)
@@ -328,28 +329,34 @@ def packaging(data, index):
         ATHLETES_DISTRIBUTION[athlete["gender"]][age][weight].append(athlete)
     return ATHLETES_DISTRIBUTION
 
+
 def calculate_age(athlete):
     today = date.today()
     date_format = "%d.%m.%y"
     date_born = datetime.strptime(athlete["birthday"], date_format)
     return today.year - date_born.year - ((today.month, today.day) < (date_born.month, date_born.day))
 
+
 def calculate_group_of_weight(athlete, age):
     for weight in ATHLETES_DISTRIBUTION[athlete["gender"]][age]:
         if float(athlete["weight"]) <= float(weight):
             return weight
         continue
+
+
 def calculate_group_of_age(athlete):
     for groups in ATHLETES_DISTRIBUTION[athlete["gender"]]:
         if calculate_age(athlete) <= int(groups):
             return groups
         continue
 
+
 def shuffle_tournament(data):
     for gender in data:
         for age in data[gender]:
             for weight in data[gender][age].values():
                 shuffle(weight)
+
 
 def to_actual_data(data):
     for gender in data:
@@ -369,7 +376,8 @@ def to_actual_data(data):
                         data[gender][age][weight].append(flag_list)
                         flag_list = []
 
-parser_data = Parser(file_name=r"C:\Users\megat\project\sortition\Попередня Запоріжжяr.docx").result()
+
+parser_data = Parser(file_name=r"C:\Users\megat\project\sortition\Попередня Запоріжжя reborn.docx").result()
 # print(parser_data)
 
 sth_list = packaging(parser_data, 1)
@@ -378,6 +386,7 @@ sth_list = packaging(parser_data, 3)
 
 shuffle_tournament(sth_list)
 to_actual_data(sth_list)
+print(sth_list)
 '''
 Testing calculate_group_of_age.
 '''

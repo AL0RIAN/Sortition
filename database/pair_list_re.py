@@ -56,6 +56,10 @@ def winner_of_pair_later(data):
     return fifth_list
 
 '''
+Maybe it's will be a auxiliary function to a winner_of_pair_later.
+'''
+# def cheking_on_cross():
+'''
 Making pair from main dictionary.
 '''
 def winner_of_pair_first(data):
