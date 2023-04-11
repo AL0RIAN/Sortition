@@ -40,7 +40,7 @@ class Grid:
         return self.ATHLETE_LIST
 
 
-parser_data = Parser(file_name=r"C:\Users\Davidov\PycharmProjects\Sortition\sorting\Попередня Запоріжжя.docx").result()
+parser_data = Parser(file_name=r"Попередня Запоріжжя.docx").result()
 print(parser_data)
 # Grid.packaging(parser_data)
 grids = [Grid(parser_data, 5), Grid(parser_data, 4), Grid(parser_data, 3)]

@@ -11,8 +11,6 @@ class TopLevelMembers(Toplevel):
     в Ворд-документ.
     """
 
-    # TODO починить удаление и оптимизацию
-
     def __init__(self, master, root_win):
         super().__init__(master)
 
@@ -34,7 +32,7 @@ class TopLevelMembers(Toplevel):
         values["club"] = self.get_info_from_parser("club")
         values["trainer"] = self.get_info_from_parser("trainer")
 
-        # Список виджетов
+        # Список виджетов, где +6 - Label'ы с категориями
         self.entries = {row: list() for row in range(len(values["name"]) + 6)}
 
         row = 0
@@ -47,7 +45,7 @@ class TopLevelMembers(Toplevel):
             btn.config(text="+", font=("Montserrat", 15, "bold"))
             btn.config(command=lambda args=(row, btn): self.add_row(row=args[0] + 1, button=args[1]))
             btn.grid(row=row, column=12)
-            self.entries[row].append(label.cget("text"))
+            self.entries[row].append(label)
             row += 1
             for _ in data["data"]:
                 self.fill_row(values, member_num, row)
@@ -56,10 +54,27 @@ class TopLevelMembers(Toplevel):
                 member_num += 1
 
     def delete_row(self, row: int, button: Button):
-        for widget in self.entries[row]:
-            widget.grid_forget()
+        for number in range(12):
+            for widget in self.winfo_children():
+                if (type(widget) == Entry) and (str(widget.cget("textvariable")) == str(self.entries[row][number])):
+                    widget.grid_forget()
 
         button.grid_forget()
+
+        if row == len(self.entries) - 1:
+            self.entries.pop(row)
+        else:
+            for key in range(row, len(self.entries.keys()) - 1):
+                self.entries[key] = self.entries[key + 1]
+            self.entries.pop(len(self.entries.keys()) - 1)
+
+        for key in self.entries.keys():
+            if len(self.entries[key]) == 1:
+                print(f"{key} - {self.entries[key][0].cget('text')}")
+            else:
+                print(f"{key} - {self.entries[key][0].get()}")
+                btn = self.entries[key][12]
+                btn.config(command=lambda args=(key, btn): self.delete_row(args[0], args[1]))
 
     def add_row(self, row: int, button: Button):
         # Пересоздавать поле. Копировать в новый словарь, пока не дойдет до нового
@@ -73,59 +88,68 @@ class TopLevelMembers(Toplevel):
 
         # Текущий ключ в новом словаре
         current_key = 0
+
         # Добавляет в новый словарь ключ-значение до нужного рядка
         for key in keys:
             if key == row:
                 break
-            new_entries[key] = old_entries[key]
+            #     Создаем новые экземпляры Энтрис и Лейблов
+            if len(old_entries[key]) == 1:
+                new_entries[key] = [Label(text=old_entries[key][0].cget("text"))]
+            else:
+                new_entries[key] = old_entries[key]
             current_key += 1
 
         self.fill_row(dict(), 0, row)
 
         for key in range(current_key, len(keys)):
-            new_entries[current_key + 1] = old_entries[key]
-            current_key += 1
+            if len(old_entries[key]) == 1:
+                new_entries[current_key + 1] = [Label(text=old_entries[key][0].cget("text"))]
+            else:
+                for var in old_entries[key]:
+                    new_entries[current_key + 1].append(var)
 
-        # self.entries = new_entries
+            current_key += 1
         self.restart()
 
     def restart(self):
-        for widget in self.winfo_children():
-            widget.grid_forget()
+        self.destroy()
+        super().__init__(master=self.master)
 
         row = 0
 
         for key in self.entries.keys():
             info = self.entries[key]
-            print("Info:", info)
+            # Если размер массив равен 1, то там находится только Лейбл категории
             if len(info) == 1:
-                label = Label(master=self, text=info[0])
+                label = Label(master=self, text=info[0].cget("text"))
                 label.grid(row=row, column=1, columnspan=12, sticky="news")
                 btn = ColorButton(master=self, root_win=self.root_win, hover_color="RED", start_bg="#fff")
                 btn.config(text="+", font=("Montserrat", 15, "bold"))
                 btn.config(command=lambda args=(row, btn): self.add_row(row=args[0] + 1, button=args[1]))
                 btn.grid(row=row, column=12)
             else:
-                Entry(master=self, textvariable=StringVar(value=info[0])).grid(row=row, column=0, sticky="ns")
-                Entry(master=self, textvariable=StringVar(value=info[1])).grid(row=row, column=1, sticky="ns")
-                Entry(master=self, textvariable=StringVar(value=info[2])).grid(row=row, column=2, sticky="ns")
-                Entry(master=self, textvariable=StringVar(value=info[3])).grid(row=row, column=3, sticky="ns")
-                Entry(master=self, textvariable=StringVar(value=info[4])).grid(row=row, column=4, sticky="ns")
-                Entry(master=self, textvariable=StringVar(value=info[5])).grid(row=row, column=5, sticky="ns")
-                Entry(master=self, textvariable=StringVar(value=info[6])).grid(row=row, column=6, sticky="ns")
-                Entry(master=self, textvariable=StringVar(value=info[7])).grid(row=row, column=7, sticky="ns")
-                Entry(master=self, textvariable=StringVar(value=info[8])).grid(row=row, column=8, sticky="ns")
-                Entry(master=self, textvariable=StringVar(value=info[9])).grid(row=row, column=9, sticky="ns")
-                Entry(master=self, textvariable=StringVar(value=info[10])).grid(row=row, column=10, sticky="ns")
-                Entry(master=self, textvariable=StringVar(value=info[11])).grid(row=row, column=11, sticky="ns")
+                Entry(master=self, textvariable=info[0]).grid(row=row, column=0, sticky="ns")
+                Entry(master=self, textvariable=info[1]).grid(row=row, column=1, sticky="ns")
+                Entry(master=self, textvariable=info[2]).grid(row=row, column=2, sticky="ns")
+                Entry(master=self, textvariable=info[3]).grid(row=row, column=3, sticky="ns")
+                Entry(master=self, textvariable=info[4]).grid(row=row, column=4, sticky="ns")
+                Entry(master=self, textvariable=info[5]).grid(row=row, column=5, sticky="ns")
+                Entry(master=self, textvariable=info[6]).grid(row=row, column=6, sticky="ns")
+                Entry(master=self, textvariable=info[7]).grid(row=row, column=7, sticky="ns")
+                Entry(master=self, textvariable=info[8]).grid(row=row, column=8, sticky="ns")
+                Entry(master=self, textvariable=info[9]).grid(row=row, column=9, sticky="ns")
+                Entry(master=self, textvariable=info[10]).grid(row=row, column=10, sticky="ns")
+                Entry(master=self, textvariable=info[11]).grid(row=row, column=11, sticky="ns")
 
                 btn = ColorButton(master=self, root_win=self.root_win, hover_color="RED", start_bg="#fff")
                 btn.config(text="X", font=("Montserrat", 10, "bold"))
                 btn.config(command=lambda args=(row, btn): self.delete_row(args[0], args[1]))
                 btn.grid(row=row, column=12, sticky="news")
 
+                self.entries[row][12] = btn
+
             row += 1
-        print("\nEntries:", self.entries)
 
     @staticmethod
     def get_info_from_parser(key: str):
@@ -175,6 +199,9 @@ class TopLevelMembers(Toplevel):
         btn.config(command=lambda args=(row, btn): self.delete_row(args[0], args[1]))
         btn.grid(row=row, column=12, sticky="news")
 
+        print(len(self.entries[row]))
+        self.entries[row].append(btn)
+
     def create_entry(self, variable, entry_list, row, col, width=None) -> None:
         """
         Локальная функция. Создает Entry полее ввода в ТопЛевел окне со списком участников.
@@ -186,13 +213,14 @@ class TopLevelMembers(Toplevel):
         :param width:
         """
 
-        if 5 >= row <= 8:
-            width = 1
+        if variable == " ":
+            variable = StringVar(value=" ")
 
         entry = Entry(master=self, textvariable=variable, width=width)
         entry.grid(row=row, column=col, sticky="news")
 
-        entry_list[row].append(entry.get())
+        # entry_list[row].append(entry.get())
+        entry_list[row].append(variable)
 
     def save_info(self, entry_list: list, row_count):
         # TODO переделать: больше не передаются указатели на экземпляры, а просто строки
