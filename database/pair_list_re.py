@@ -1,7 +1,10 @@
 from database.main_data import sth_list
+from database.main_data import ATHLETE_LIST_THIRD
 from copy import copy
+from copy import deepcopy
 
 CHECK = 1
+CHECK_third = -1
 
 '''
 For lists.
@@ -61,7 +64,7 @@ For lists.
 #     return fifth_list
 
 '''
-For Dictionary.
+For main Dictionary.
 '''
 def winner_of_pair_later(data):
     global CHECK
@@ -120,7 +123,31 @@ def winner_of_pair_later(data):
     #     fourth_list.clear()
     # return fifth_list
 
+def decorator_for_third(func):
+    def wrapper(*args, **kwargs):
+        global CHECK_third
+        CHECK_third += 1
+        result = func(*args, **kwargs)
+        return result
+    return wrapper
 
+@decorator_for_third
+def winner_of_pair_in_third(data_third):
+    copy_of_data = deepcopy(data_third)
+    new_data = {}
+    for gender in copy_of_data:
+        for age in copy_of_data[gender]:
+            for weight in copy_of_data[gender][age]:
+                if CHECK_third == 0:
+                    new_data[gender] = copy_of_data[gender]
+                    new_data[gender][age][weight].pop(2)
+                if CHECK_third == 1:
+                    new_data[gender] = copy_of_data[gender]
+                    new_data[gender][age][weight].pop(1)
+                if CHECK_third == 2:
+                    new_data[gender] = copy_of_data[gender]
+                    new_data[gender][age][weight].pop(0)
+    return new_data
 '''
 Maybe it's will be a auxiliary function to a winner_of_pair_later.
 '''
@@ -192,8 +219,11 @@ def deleting_cross(data):
 
 changing_list = winner_of_pair_first(sth_list)
 
-winner_of_pair_later(changing_list)
 # winner_of_pair_later(changing_list)
+winner_of_pair_later(changing_list)
 winner_of_pair_later(changing_list)
 deleting_cross(changing_list)
 print(changing_list)
+third_list = winner_of_pair_in_third(ATHLETE_LIST_THIRD)
+merged_dict = {**changing_list, **third_list}
+print(merged_dict)

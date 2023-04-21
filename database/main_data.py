@@ -263,52 +263,52 @@ weight_count = {
     }
 }
 
-ATHLETE_LIST = [[16, 1],
-                [9, 8],
-                [5, 12],
-                [13, 4],
-                [3, 14],
-                [11, 6],
-                [7, 10],
-                [15, 2]]
+# ATHLETE_LIST = [[16, 1],
+#                 [9, 8],
+#                 [5, 12],
+#                 [13, 4],
+#                 [3, 14],
+#                 [11, 6],
+#                 [7, 10],
+#                 [15, 2]]
 
-ATHLETE_LIST_VALUES = {
-    1: 16,
-    2: 1,
-    3: 9,
-    4: 8,
-    5: 5,
-    6: 12,
-    7: 13,
-    8: 4,
-    9: 3,
-    10: 14,
-    11: 11,
-    12: 6,
-    13: 7,
-    14: 10,
-    15: 15,
-    16: 2
-}
+# ATHLETE_LIST_VALUES = {
+#     1: 16,
+#     2: 1,
+#     3: 9,
+#     4: 8,
+#     5: 5,
+#     6: 12,
+#     7: 13,
+#     8: 4,
+#     9: 3,
+#     10: 14,
+#     11: 11,
+#     12: 6,
+#     13: 7,
+#     14: 10,
+#     15: 15,
+#     16: 2
+# }
 
-ATHLETE_LIST_KEYS = {
-    16: 1,
-    1: 2,
-    9: 3,
-    8: 4,
-    5: 5,
-    12: 6,
-    13: 7,
-    4: 8,
-    3: 9,
-    14: 10,
-    11: 11,
-    6: 12,
-    7: 13,
-    10: 14,
-    15: 15,
-    2: 16
-}
+# ATHLETE_LIST_KEYS = {
+#     16: 1,
+#     1: 2,
+#     9: 3,
+#     8: 4,
+#     5: 5,
+#     12: 6,
+#     13: 7,
+#     4: 8,
+#     3: 9,
+#     14: 10,
+#     11: 11,
+#     6: 12,
+#     7: 13,
+#     10: 14,
+#     15: 15,
+#     2: 16
+# }
 
 ATHLETE_LIST_KEYS_re = {
     16: "-",
@@ -329,6 +329,8 @@ ATHLETE_LIST_KEYS_re = {
     2: "-"
 }
 
+ATHLETE_LIST_THIRD = {}
+
 from sorting.athlete import *
 from IO.parser import *
 from datetime import date
@@ -348,7 +350,6 @@ class Grid:
                              [7, 10],
                              [15, 2]]
         # self.packaging(data, index)
-
 
 def packaging(data, index):
     for athlete in data["participants"][index]["data"]:
@@ -391,7 +392,6 @@ def change_to_normal_name_in_age(data):
             data[gender][age_count[gender][age]] = data[gender].pop(age)
 
 def change_to_normal_name_in_weight(data):
-    print(data)
     for gender in data:
         for age in data[gender]:
             for weight in copy(data[gender][age]):
@@ -399,11 +399,28 @@ def change_to_normal_name_in_weight(data):
 
 def to_actual_data(data):
     for gender in data:
-        for age in data[gender]:
-            for weight in data[gender][age]:
+        for age in copy(data[gender]):
+            for weight in copy(data[gender][age]):
+
+                '''
+                Deleting empty part of main dictionary.
+                '''
                 if len(data[gender][age][weight]) <= 1:
-                    data[gender][age][weight].clear()
+                    # data[gender][age][weight].clear()
+                    data[gender][age].pop(weight)
                     continue
+
+                '''
+                Deleting part of main dictionary with third participant of main dictionary.
+                And adding they to special dict.
+                '''
+                if len(data[gender][age][weight]) == 3:
+                    ATHLETE_LIST_THIRD[gender] = copy(data[gender])
+                    ATHLETE_LIST_THIRD[gender][age] = copy(data[gender][age])
+                    ATHLETE_LIST_THIRD[gender][age][weight] = copy(data[gender][age][weight])
+                    data[gender][age].pop(weight)
+                    continue
+
                 flag_dict = ATHLETE_LIST_KEYS_re.copy()
                 for index in range(len(data[gender][age][weight])):
                     flag_dict[index + 1] = data[gender][age][weight][index]
@@ -415,6 +432,22 @@ def to_actual_data(data):
                         data[gender][age][weight].append(flag_list)
                         flag_list = []
 
+    '''
+    Deleting empty part of main dictionary.
+    '''
+    for gender in data:
+        for age in copy(data[gender]):
+            if len(data[gender][age]) == 0:
+                data[gender].pop(age)
+
+    '''
+    Deleting part of main dictionary with third participant of main dictionary.
+    And adding they to special dict.
+    '''
+    for gender in ATHLETE_LIST_THIRD:
+        for age in copy(ATHLETE_LIST_THIRD[gender]):
+            if len(ATHLETE_LIST_THIRD[gender][age]) == 0:
+                ATHLETE_LIST_THIRD[gender].pop(age)
 
 parser_data = Parser(file_name=r"C:\Users\megat\project\sortition\Попередня Запоріжжя reborn.docx").result()
 # print(parser_data)
@@ -428,6 +461,7 @@ to_actual_data(sth_list)
 change_to_normal_name_in_weight(sth_list)
 change_to_normal_name_in_age(sth_list)
 print(sth_list)
+print(ATHLETE_LIST_THIRD)
 '''
 Testing calculate_group_of_age.
 '''
