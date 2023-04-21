@@ -1,9 +1,11 @@
 __all__ = ["TopLevelMembers"]
 
+from tkinter import ttk
 from tkinter import *
+from .scrollable import *
+
 from sorting.athlete_sort import *
 from ..Buttons.colorbtn import *
-
 
 class TopLevelMembers(Toplevel):
     """
@@ -13,9 +15,6 @@ class TopLevelMembers(Toplevel):
 
     def __init__(self, master, root_win):
         super().__init__(master)
-
-        # self.resizable(width=False, height=False)
-        self.root_win = root_win
 
         # Список Вводимых Полей
         values = dict()
@@ -35,13 +34,25 @@ class TopLevelMembers(Toplevel):
         # Список виджетов, где +6 - Label'ы с категориями
         self.entries = {row: list() for row in range(len(values["name"]) + 6)}
 
+        self.resizable(width=False, height=False)
+        self.root_win = root_win
+
+        # Main Frame
+        self.main_frame = Frame(master=self)
+        self.main_frame.pack(fill=BOTH, expand=1)
+        self.second_frame = Frame()
+
+        # Создаем Шапку
+        self.create_header()
+
+        self.create_work_space()
+
         row = 0
         member_num = 0
-
         for data in parser_data['participants']:
-            label = Label(master=self, text=data["age_category"])
+            label = Label(master=self.second_frame, text=data["age_category"])
             label.grid(row=row, column=0, sticky="news", columnspan=12)
-            btn = ColorButton(master=self, root_win=self.root_win, hover_color="RED", start_bg="#fff")
+            btn = ColorButton(master=self.second_frame, root_win=self.root_win, hover_color="RED", start_bg="#fff")
             btn.config(text="+", font=("Montserrat", 15, "bold"))
             btn.config(command=lambda args=(row, btn): self.add_row(row=args[0] + 1, button=args[1]))
             btn.grid(row=row, column=12)
@@ -55,7 +66,7 @@ class TopLevelMembers(Toplevel):
 
     def delete_row(self, row: int, button: Button):
         for number in range(12):
-            for widget in self.winfo_children():
+            for widget in self.second_frame.winfo_children():
                 if (type(widget) == Entry) and (str(widget.cget("textvariable")) == str(self.entries[row][number])):
                     widget.grid_forget()
 
@@ -116,33 +127,34 @@ class TopLevelMembers(Toplevel):
         self.destroy()
         super().__init__(master=self.master)
 
+        # Main Frame
+        self.main_frame = Frame(master=self)
+        self.main_frame.pack(fill=BOTH, expand=1)
+        self.second_frame = Frame()
+
+        # Создаем Шапку
+        self.create_header()
+
+        self.create_work_space()
+
         row = 0
 
         for key in self.entries.keys():
             info = self.entries[key]
             # Если размер массив равен 1, то там находится только Лейбл категории
             if len(info) == 1:
-                label = Label(master=self, text=info[0].cget("text"))
+                label = Label(master=self.second_frame, text=info[0].cget("text"))
                 label.grid(row=row, column=1, columnspan=12, sticky="news")
-                btn = ColorButton(master=self, root_win=self.root_win, hover_color="RED", start_bg="#fff")
+                btn = ColorButton(master=self.second_frame, root_win=self.root_win, hover_color="RED", start_bg="#fff")
                 btn.config(text="+", font=("Montserrat", 15, "bold"))
                 btn.config(command=lambda args=(row, btn): self.add_row(row=args[0] + 1, button=args[1]))
                 btn.grid(row=row, column=12)
             else:
-                Entry(master=self, textvariable=info[0]).grid(row=row, column=0, sticky="ns")
-                Entry(master=self, textvariable=info[1]).grid(row=row, column=1, sticky="ns")
-                Entry(master=self, textvariable=info[2]).grid(row=row, column=2, sticky="ns")
-                Entry(master=self, textvariable=info[3]).grid(row=row, column=3, sticky="ns")
-                Entry(master=self, textvariable=info[4]).grid(row=row, column=4, sticky="ns")
-                Entry(master=self, textvariable=info[5]).grid(row=row, column=5, sticky="ns")
-                Entry(master=self, textvariable=info[6]).grid(row=row, column=6, sticky="ns")
-                Entry(master=self, textvariable=info[7]).grid(row=row, column=7, sticky="ns")
-                Entry(master=self, textvariable=info[8]).grid(row=row, column=8, sticky="ns")
-                Entry(master=self, textvariable=info[9]).grid(row=row, column=9, sticky="ns")
-                Entry(master=self, textvariable=info[10]).grid(row=row, column=10, sticky="ns")
-                Entry(master=self, textvariable=info[11]).grid(row=row, column=11, sticky="ns")
+                for col in range(12):
+                    entry = Entry(master=self.second_frame, textvariable=info[col], justify=CENTER)
+                    entry.grid(row=row, column=col, sticky="ns")
 
-                btn = ColorButton(master=self, root_win=self.root_win, hover_color="RED", start_bg="#fff")
+                btn = ColorButton(master=self.second_frame, root_win=self.root_win, hover_color="RED", start_bg="#fff")
                 btn.config(text="X", font=("Montserrat", 10, "bold"))
                 btn.config(command=lambda args=(row, btn): self.delete_row(args[0], args[1]))
                 btn.grid(row=row, column=12, sticky="news")
@@ -194,18 +206,61 @@ class TopLevelMembers(Toplevel):
         self.create_entry(variable=value_list.get("club", " ")[number], row=row, col=10, entry_list=self.entries)
         self.create_entry(variable=value_list.get("trainer", " ")[number], row=row, col=11, entry_list=self.entries)
 
-        btn = ColorButton(master=self, root_win=self.root_win, hover_color="RED", start_bg="#fff")
+        btn = ColorButton(master=self.second_frame, root_win=self.root_win, hover_color="RED", start_bg="#fff")
         btn.config(text="X", font=("Montserrat", 10, "bold"))
         btn.config(command=lambda args=(row, btn): self.delete_row(args[0], args[1]))
         btn.grid(row=row, column=12, sticky="news")
 
-        print(len(self.entries[row]))
         self.entries[row].append(btn)
+
+    def create_work_space(self):
+        # Canvas
+        canvas = Canvas(self.main_frame)
+        canvas.pack(side=LEFT, fill=BOTH, expand=1)
+        canvas.config(height=750)
+
+        # Scrollbar
+        vertical_scrollbar = ttk.Scrollbar(master=self.main_frame, orient=VERTICAL, command=canvas.yview)
+        vertical_scrollbar.pack(side=RIGHT, fill=Y)
+
+        # Config Canvas
+        canvas.configure(yscrollcommand=vertical_scrollbar.set)
+        canvas.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+
+        # Another Frame inside the canvas
+        self.second_frame = Frame(master=canvas)
+
+        # Add That New Frame To A Window In The Canvas
+        canvas.create_window((0, 0), window=self.second_frame, anchor="nw")
+
+    def create_header(self):
+        header = Frame(self.main_frame)
+        header.pack()
+
+        names = ["Имя",
+                 "Дата",
+                 "Пол",
+                 "Разряд",
+                 "Категория",
+                 "Саньда",
+                 "Циньда",
+                 "Туйшоу",
+                 "Винчун",
+                 "Город",
+                 "Клуб",
+                 "Тренер", ]
+
+        for col in range(12):
+            entry = Entry(master=header, textvariable=StringVar(value=names[col]), justify=CENTER)
+            entry.grid(row=0, column=col, sticky="ns")
+
+        # Кнопка с инструкцией
+        Button(master=header, text="?", font=("Montserrat", 20, "bold")).grid(row=0, column=12)
 
     def create_entry(self, variable, entry_list, row, col, width=None) -> None:
         """
         Локальная функция. Создает Entry полее ввода в ТопЛевел окне со списком участников.
-    
+
         :param variable:
         :param entry_list:
         :param row:
@@ -216,8 +271,8 @@ class TopLevelMembers(Toplevel):
         if variable == " ":
             variable = StringVar(value=" ")
 
-        entry = Entry(master=self, textvariable=variable, width=width)
-        entry.grid(row=row, column=col, sticky="news")
+        entry = Entry(master=self.second_frame, textvariable=variable, width=width, justify=CENTER)
+        entry.grid(row=row, column=col, sticky="ns")
 
         # entry_list[row].append(entry.get())
         entry_list[row].append(variable)
