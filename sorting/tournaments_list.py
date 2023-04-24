@@ -188,6 +188,7 @@ def winner_of_pair_later(data):
     return fifth_list
 '''
 
+
 # For main Dictionary.
 # Creating a list of pairs for further iterations of the tournament.
 def winner_of_pair_later(data):
@@ -236,6 +237,7 @@ def winner_of_pair_later(data):
                 pair_of_athletes = 0
                 second_list.clear()
 
+
 # A decorator to count how many times the function has been called. (Function should be called 3 times.)
 def decorator_for_third(func):
     def wrapper(*args, **kwargs):
@@ -244,6 +246,7 @@ def decorator_for_third(func):
         result = func(*args, **kwargs)
         return result
     return wrapper
+
 
 # Determining the list of pairs from the list where 3 participants.
 @decorator_for_third
@@ -365,6 +368,7 @@ def pair_list_cleaner(pair_list):
             continue
         CHECK_delete += 1
     return pair_list
+
 
 sth_list = make_pair_list()
 PAIR_LIST = pair_list_cleaner(sth_list)
