@@ -1,7 +1,4 @@
-from sorting.athlete import *
-from IO.parser import *
-from copy import copy
-from database.main_data import *
+from sorting.main_dicts import *
 
 CHECK = 1
 ALL_LIST = []

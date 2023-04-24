@@ -1,15 +1,11 @@
-'''
-The description how will work the start of "Жеребьёвка"
+from IO.parser import *
+from datetime import date
+from datetime import datetime
+from random import shuffle
+from copy import copy
 
-1 - Tournament participants will be added one by one to the list, a variable is also added, with saving
-its number is on the list, because we will need to remember it.
-2 - Later we will use method shuffle() to it array, and than I say early, we shall remember number of
-athlete in array from parser witch will showed in tournament tree in the program.
-3 - Then we add athletes from parser to athletes_list and in the future we will use that array.
-4 - Later we take that array for make pair_list. ( It will separate peace of program (. )
-5 - And later... We will output pair_list (We should to remake it)
-6 - The program will able to start )
-'''
+
+# Declaring Dictionaries.
 ATHLETES_DISTRIBUTION = {
     "Ж": {
         "10": {
@@ -263,53 +259,6 @@ weight_count = {
     }
 }
 
-# ATHLETE_LIST = [[16, 1],
-#                 [9, 8],
-#                 [5, 12],
-#                 [13, 4],
-#                 [3, 14],
-#                 [11, 6],
-#                 [7, 10],
-#                 [15, 2]]
-
-# ATHLETE_LIST_VALUES = {
-#     1: 16,
-#     2: 1,
-#     3: 9,
-#     4: 8,
-#     5: 5,
-#     6: 12,
-#     7: 13,
-#     8: 4,
-#     9: 3,
-#     10: 14,
-#     11: 11,
-#     12: 6,
-#     13: 7,
-#     14: 10,
-#     15: 15,
-#     16: 2
-# }
-
-# ATHLETE_LIST_KEYS = {
-#     16: 1,
-#     1: 2,
-#     9: 3,
-#     8: 4,
-#     5: 5,
-#     12: 6,
-#     13: 7,
-#     4: 8,
-#     3: 9,
-#     14: 10,
-#     11: 11,
-#     6: 12,
-#     7: 13,
-#     10: 14,
-#     15: 15,
-#     2: 16
-# }
-
 ATHLETE_LIST_KEYS_re = {
     16: "-",
     1: "-",
@@ -329,28 +278,36 @@ ATHLETE_LIST_KEYS_re = {
     2: "-"
 }
 
-ATHLETE_LIST_THIRD = {}
+ATHLETE_LIST_THIRD = {
+    "Ж": {
+        "10": {
+        },
+        "12": {
+        },
+        "14": {
+        },
+        "16": {
+        },
+        "18": {
+        }
+    },
+    "М": {
+        "10": {
+        },
+        "12": {
+        },
+        "14": {
+        },
+        "16": {
+        },
+        "18": {
+        }
+    }
+}
+# Program code.
 
-from sorting.athlete import *
-from IO.parser import *
-from datetime import date
-from datetime import datetime
-from random import shuffle
-from copy import copy
 
-
-class Grid:
-    def __init__(self, data, index):
-        self.ATHLETE_LIST = [[16, 1],
-                             [9, 8],
-                             [5, 12],
-                             [13, 4],
-                             [3, 14],
-                             [11, 6],
-                             [7, 10],
-                             [15, 2]]
-        # self.packaging(data, index)
-
+# Adding participants to the desired section of the main dictionary (data)
 def packaging(data, index):
     for athlete in data["participants"][index]["data"]:
         age = calculate_group_of_age(athlete)
@@ -359,13 +316,18 @@ def packaging(data, index):
     return ATHLETES_DISTRIBUTION
 
 
+# Calculation of the participant's age.
 def calculate_age(athlete):
     today = date.today()
     date_format = "%d.%m.%y"
     date_born = datetime.strptime(athlete["birthday"], date_format)
-    return today.year - date_born.year - ((today.month, today.day) < (date_born.month, date_born.day))
+    today_date = today.year - date_born.year - ((today.month, today.day) < (date_born.month, date_born.day))
+    if today_date > 18:
+        today_date = 18
+    return today_date
 
 
+# Calculation the weight group to which the participant belongs.
 def calculate_group_of_weight(athlete, age):
     for weight in ATHLETES_DISTRIBUTION[athlete["gender"]][age]:
         if float(athlete["weight"]) <= float(weight):
@@ -373,6 +335,7 @@ def calculate_group_of_weight(athlete, age):
         continue
 
 
+# Calculation the age group to which the participant belongs.
 def calculate_group_of_age(athlete):
     for groups in ATHLETES_DISTRIBUTION[athlete["gender"]]:
         if calculate_age(athlete) <= int(groups):
@@ -380,23 +343,33 @@ def calculate_group_of_age(athlete):
         continue
 
 
+# Randomization of the list of participants in the tournament.
 def shuffle_tournament(data):
     for gender in data:
         for age in data[gender]:
             for weight in data[gender][age].values():
                 shuffle(weight)
 
+
+# Changes the keys of age categories for the distribution of participants to the names of
+# categories approved in the regulations.
 def change_to_normal_name_in_age(data):
     for gender in data:
         for age in copy(data[gender]):
             data[gender][age_count[gender][age]] = data[gender].pop(age)
 
+
+# Changes the keys of weight categories for the distribution of participants to the names of
+# categories approved in the regulations.
 def change_to_normal_name_in_weight(data):
     for gender in data:
         for age in data[gender]:
             for weight in copy(data[gender][age]):
                 data[gender][age][weight_count[gender][age][weight]] = data[gender][age].pop(weight)
 
+
+# Converting a dictionary containing a list of participants in the competition into a dictionary containing
+# the location of participants in the tournament grid.
 def to_actual_data(data):
     for gender in data:
         for age in copy(data[gender]):
@@ -406,7 +379,6 @@ def to_actual_data(data):
                 Deleting empty part of main dictionary.
                 '''
                 if len(data[gender][age][weight]) <= 1:
-                    # data[gender][age][weight].clear()
                     data[gender][age].pop(weight)
                     continue
 
@@ -415,10 +387,8 @@ def to_actual_data(data):
                 And adding they to special dict.
                 '''
                 if len(data[gender][age][weight]) == 3:
-                    ATHLETE_LIST_THIRD[gender] = copy(data[gender])
-                    ATHLETE_LIST_THIRD[gender][age] = copy(data[gender][age])
                     ATHLETE_LIST_THIRD[gender][age][weight] = copy(data[gender][age][weight])
-                    data[gender][age].pop(weight)
+                    data[gender][age][weight] = []
                     continue
 
                 flag_dict = ATHLETE_LIST_KEYS_re.copy()
@@ -431,7 +401,6 @@ def to_actual_data(data):
                     if len(flag_list) == 2:
                         data[gender][age][weight].append(flag_list)
                         flag_list = []
-
     '''
     Deleting empty part of main dictionary.
     '''
@@ -439,7 +408,6 @@ def to_actual_data(data):
         for age in copy(data[gender]):
             if len(data[gender][age]) == 0:
                 data[gender].pop(age)
-
     '''
     Deleting part of main dictionary with third participant of main dictionary.
     And adding they to special dict.
@@ -449,32 +417,23 @@ def to_actual_data(data):
             if len(ATHLETE_LIST_THIRD[gender][age]) == 0:
                 ATHLETE_LIST_THIRD[gender].pop(age)
 
-parser_data = Parser(file_name=r"C:\Users\megat\project\sortition\Попередня Запоріжжя reborn.docx").result()
-# print(parser_data)
 
-sth_list = packaging(parser_data, 1)
-sth_list = packaging(parser_data, 2)
-sth_list = packaging(parser_data, 3)
+# A function that does distribute the participants in a dictionary and parsed information.
+def parcing():
+    data = Parser(file_name=r"C:\Users\megat\project\sortition\Попередня Запоріжжя reborn.docx").result()
+    full_list = []
+    for categories in range(len(data["participants"])):
+        full_list = packaging(data, categories)
+    return full_list
 
-shuffle_tournament(sth_list)
-to_actual_data(sth_list)
-change_to_normal_name_in_weight(sth_list)
-change_to_normal_name_in_age(sth_list)
-print(sth_list)
-print(ATHLETE_LIST_THIRD)
-'''
-Testing calculate_group_of_age.
-'''
-# for groups in athletes_distribution["Ж"]:
-#     if calculate_age(parser_data["participants"][1]["data"][1]) <= int(groups):
-#         print(groups)
-#     continue
-# print(calculate_age(parser_data["participants"][1]["data"][1]))
 
-'''
-Testing calculate_group_of_weight.
-'''
-# for weight in athletes_distribution["М"]["18+"]:
-#     if float(parser_data["participants"][1]["data"][1]["weight"]) <= float(weight):
-#         print(weight)
-#         break
+# Execution of all program functions, for further use of the main date.
+def normalization():
+    parser_data = parcing()
+    shuffle_tournament(parser_data)
+    to_actual_data(parser_data)
+    change_to_normal_name_in_weight(parser_data)
+    change_to_normal_name_in_age(parser_data)
+    change_to_normal_name_in_weight(ATHLETE_LIST_THIRD)
+    change_to_normal_name_in_age(ATHLETE_LIST_THIRD)
+    return parser_data
