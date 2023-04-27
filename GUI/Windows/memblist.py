@@ -2,10 +2,10 @@ __all__ = ["TopLevelMembers"]
 
 from tkinter import ttk
 from tkinter import *
-from .scrollable import *
 
 from sorting.athlete_sort import *
 from ..Buttons.colorbtn import *
+from .battlegrid import *
 
 
 class TopLevelMembers(Toplevel):
@@ -43,9 +43,9 @@ class TopLevelMembers(Toplevel):
         self.main_frame.pack(fill=BOTH, expand=1)
         self.second_frame = Frame()
 
-        # Создаем Шапку
+        # Создаем Шапку и Подвал
         self.create_header()
-
+        self.create_footer()
         self.create_work_space()
 
         row = 0
@@ -135,9 +135,9 @@ class TopLevelMembers(Toplevel):
         self.main_frame.pack(fill=BOTH, expand=1)
         self.second_frame = Frame()
 
-        # Создаем Шапку
+        # Создаем Шапку И Подвал
         self.create_header()
-
+        self.create_footer()
         self.create_work_space()
 
         row = 0
@@ -259,6 +259,16 @@ class TopLevelMembers(Toplevel):
 
         # Кнопка с инструкцией
         Button(master=header, text="?", font=("Montserrat", 20, "bold")).grid(row=0, column=12)
+
+    def create_footer(self):
+        footer = Frame(self)
+        footer.pack()
+        Button(footer, text="Готово", font=("Montserrat", 20, "bold"), command=self.next_window).pack()
+
+    def next_window(self):
+        self.destroy()
+        self.root_win.root.deiconify()
+        BattleGrid(master=self.root_win.root)
 
     def create_entry(self, variable, entry_list, row, col, width=None) -> None:
         """
