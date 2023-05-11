@@ -305,13 +305,19 @@ def deleting_cross(data):
                         if athlete_pair[0] == "-" and athlete_pair[1] == "-":
                             athlete_pair.clear()
                             continue
+                        '''
+                        Changing the values of athletes in PAIR_LIST for 
+                        more convenient use of this list together with TREE.
+                        '''
+                        if type(index_in_pair) == dict:
+                            index_in_pair["birthday"] = age_group
+                            index_in_pair["weight"] = weight_group
     return data
 
 
 # List creation function for outputting a list of pairs. And creating list for GUI.
 def make_pair_list():
     global TREE
-    global PAIR_LIST
     pair_list = []  # Future list for pair_list.
     tree_with_cross = []  # Future list for tree.
     normal_dict = winner_of_pair_first(normalization())
@@ -333,8 +339,15 @@ def make_pair_list():
         for gender in troika_dict:
             for age_group in troika_dict[gender]:
                 for weight_group in troika_dict[gender][age_group]:
+                    dict_wit_cross[gender][age_group][weight_group] = deepcopy(troika_dict[gender][age_group][weight_group])
+                    '''
+                    Changing the values of athletes in PAIR_LIST for 
+                    more convenient use of this list together with TREE.
+                    '''
+                    for index in range(len(troika_dict[gender][age_group][weight_group])):
+                        troika_dict[gender][age_group][weight_group][index]["birthday"] = age_group
+                        troika_dict[gender][age_group][weight_group][index]["weight"] = weight_group
                     normal_dict_re[gender][age_group][weight_group] = troika_dict[gender][age_group][weight_group]
-                    dict_wit_cross[gender][age_group][weight_group] = troika_dict[gender][age_group][weight_group]
         pair_list.append(deepcopy(normal_dict_re))
         tree_with_cross.append(dict_wit_cross)
     TREE = tree_with_cross
@@ -343,33 +356,59 @@ def make_pair_list():
 
 # The function of deleting empty elements, for more convenient and faster passage through the list of pairs.
 def pair_list_cleaner(pair_list):
-    global PAIR_LIST
     global CHECK_delete
     '''
     PLEASE DON'T ASK HOW IT WORKS. IF IT WORKS, DO NOT TOUCH!!!!
     '''
+    check_list = []
     for tournament_iterations in copy(pair_list):
         for gender in copy(tournament_iterations):
             for age_group in copy(tournament_iterations[gender]):
                 for weight_group in copy(tournament_iterations[gender][age_group]):
                     for item in deepcopy(tournament_iterations[gender][age_group][weight_group]):
-                        if len(item) == 0:
-                            tournament_iterations[gender][age_group][weight_group].remove(item)
-                    if len(tournament_iterations[gender][age_group][weight_group]) == 0:
-                        tournament_iterations[gender][age_group].pop(weight_group)
-                if len(tournament_iterations[gender][age_group]) == 0:
-                    tournament_iterations[gender].pop(age_group)
-            if len(tournament_iterations[gender]) == 0:
-                tournament_iterations.pop(gender)
-
-    for tournament_iterations in copy(range(len(pair_list))):
-        if len(pair_list[CHECK_delete]) == 0:
-            pair_list.pop(CHECK_delete)
-            continue
-        CHECK_delete += 1
-    return pair_list
+                        '''
+                        Creating a complete list of couples.
+                        '''
+                        if len(item) != 0:
+                            if type(item) == list:
+                                for items in tournament_iterations[gender][age_group][weight_group]:
+                                    check_list.append(items)
+                                    continue
+                                continue
+                            check_list.append(tournament_iterations[gender][age_group][weight_group])
+                        break
+    '''
+    Old code, with the old view of the list of pairs, if you need to restore it, 
+    then you need to delete everything before the last comment.
+    '''
+    #                     if len(item) == 0:
+    #                         tournament_iterations[gender][age_group][weight_group].remove(item)
+    #                 if len(tournament_iterations[gender][age_group][weight_group]) == 0:
+    #                     tournament_iterations[gender][age_group].pop(weight_group)
+    #             if len(tournament_iterations[gender][age_group]) == 0:
+    #                 tournament_iterations[gender].pop(age_group)
+    #         if len(tournament_iterations[gender]) == 0:
+    #             tournament_iterations.pop(gender)
+    # for tournament_iterations in copy(range(len(pair_list))):
+    #     if len(pair_list[CHECK_delete]) == 0:
+    #         pair_list.pop(CHECK_delete)
+    #         continue
+    #     CHECK_delete += 1
+    return check_list
 
 
 sth_list = make_pair_list()
 PAIR_LIST = pair_list_cleaner(sth_list)
+print(TREE)
+print(PAIR_LIST)
 # Rasfuma
+
+
+
+
+
+
+
+
+
+# AGREEE
