@@ -374,7 +374,7 @@ def to_actual_data(data):
     for gender in data:
         for age in copy(data[gender]):
             for weight in copy(data[gender][age]):
-
+                adding_is_circle_trinity(data[gender][age][weight])
                 '''
                 Deleting empty part of main dictionary.
                 '''
@@ -416,6 +416,11 @@ def to_actual_data(data):
         for age in copy(ATHLETE_LIST_THIRD[gender]):
             if len(ATHLETE_LIST_THIRD[gender][age]) == 0:
                 ATHLETE_LIST_THIRD[gender].pop(age)
+
+
+def adding_is_circle_trinity(athletes):
+    for people in athletes:
+        people["is_circle_trinity"] = False
 
 
 # A function that does distribute the participants in a dictionary and parsed information.

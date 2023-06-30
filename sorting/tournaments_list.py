@@ -258,14 +258,23 @@ def winner_of_pair_in_third(data_third):
             for weight in copy_of_data[gender][age]:
                 if CHECK_third == 0:
                     new_data[gender] = copy_of_data[gender]
+                    changing_is_circle_trinity(new_data[gender][age][weight])
                     new_data[gender][age][weight].pop(2)
                 if CHECK_third == 1:
                     new_data[gender] = copy_of_data[gender]
+                    changing_is_circle_trinity(new_data[gender][age][weight])
                     new_data[gender][age][weight].pop(1)
                 if CHECK_third == 2:
                     new_data[gender] = copy_of_data[gender]
+                    changing_is_circle_trinity(new_data[gender][age][weight])
                     new_data[gender][age][weight].pop(0)
     return new_data
+
+
+def changing_is_circle_trinity(athletes):
+    for people in athletes:
+        people["is_circle_trinity"] = True
+
 
 
 # Determining the list of pairs from the general list of the tournament participant.
@@ -399,8 +408,6 @@ def pair_list_cleaner(pair_list):
 
 sth_list = make_pair_list()
 PAIR_LIST = pair_list_cleaner(sth_list)
-print(TREE)
-print(PAIR_LIST)
 # Rasfuma
 
 
