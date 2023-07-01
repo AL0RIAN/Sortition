@@ -116,14 +116,10 @@ class Pair:
 class ExportPairsDOCX:
     """Main DOCX export class, that converts parsed info into DOCX couples file."""
 
-    __DEFAULT_DATA = {
-        "start-date": "",
-        "end-date": "",
-        "pairs": []
-    }
+    __DEFAULT_DATA = []
 
     def __init__(self, start_date: str = "{{start-date}}", end_date: str = "{{end-date}}",
-                 data: dict = __DEFAULT_DATA):
+                 data: list = __DEFAULT_DATA):
         """
 
         :param start_date: The day tournament is starting
@@ -163,7 +159,7 @@ class ExportPairsDOCX:
         """
         count = 1  # Left table column
 
-        for pair in self.__data["pairs"]:
+        for pair in self.__data:
             row = self.__table.add_row()
             row.height = Cm(0.6)
             row_cells = row.cells
@@ -173,30 +169,36 @@ class ExportPairsDOCX:
             row_cells[0].paragraphs[0].runs[0].font.size = Pt(10)
             row_cells[0].paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 
-            row_cells[1].text = f"{pair['age-category']} лет\n{pair['weight-category']} кг"
+            if (type(pair[0]) is not str): row_cells[1].text = f"{pair[0]['birthday']} лет\n{pair[0]['weight']} кг"
+            else: row_cells[1].text = ""
             row_cells[1].paragraphs[0].runs[0].font.bold = True
             row_cells[1].paragraphs[0].runs[0].font.size = Pt(9)
             row_cells[1].paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
 
             '''RED'''
-            row_cells[2].text = f"{pair['red']['last-name']} {pair['red']['first-name']}"
+            if (type(pair[0]) is not str): row_cells[2].text = f"{pair[1]['name']}"
+            else: row_cells[2].text = pair[0]
             row_cells[2].paragraphs[0].runs[0].font.size = Pt(10)
             row_cells[2].paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
 
-            row_cells[3].text = pair['red']['club']
+            if (type(pair[0]) is not str): row_cells[3].text = pair[1]['club']
+            else: row_cells[3].text = ""
             row_cells[3].paragraphs[0].runs[0].font.size = Pt(9)
             row_cells[3].paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 
-            row_cells[4].text = "Кругов." if pair['is-circle-trinity'] else ""
+            if (type(pair[0]) is not str): row_cells[4].text = "Кругов." if pair[0]['is_circle_trinity'] else ""
+            else: row_cells[4].text = ""
             row_cells[4].paragraphs[0].runs[0].font.bold = True
             row_cells[4].paragraphs[0].runs[0].font.size = Pt(8)
             row_cells[4].paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 
             '''BLUE'''
-            row_cells[5].text = f"{pair['blue']['last-name']} {pair['blue']['first-name']}"
+            if (type(pair[0]) is not str): row_cells[5].text = f"{pair[0]['name']}"
+            else: row_cells[5].text = pair[1]
             row_cells[5].paragraphs[0].runs[0].font.size = Pt(10)
             row_cells[5].paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
-            row_cells[6].text = pair['blue']['club']
+            if (type(pair[0]) is not str): row_cells[6].text = pair[0]['club']
+            else: row_cells[6].text = ""
             row_cells[6].paragraphs[0].runs[0].font.size = Pt(9)
             row_cells[6].paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 
@@ -214,44 +216,44 @@ class ExportPairsDOCX:
 
             count += 1
 
-    def add_pair(self, pair: Pair) -> None:
-        """
-        Adds one pair to __data.
-
-        :param pair: instance of Pair class.
-        :return: None
-        """
-
-        new_pair = {
-            "is-circle-trinity": False,
-            "age-category": "",
-            "weight-category": "",
-            "red": {
-                "last-name": "",
-                "first-name": "",
-                "club": ""
-            },
-
-            "blue": {
-                "last-name": "Рублев",
-                "first-name": "Дмитрий",
-                "club": "Патриот"
-            }
-        }
-
-        new_pair["is-circle-trinity"] = pair.is_circle_trinity
-        new_pair["age-category"] = pair.age_category
-        new_pair["weight-category"] = pair.weight_category
-
-        new_pair["red"]["last-name"] = pair.red.last_name
-        new_pair["red"]["first-name"] = pair.red.first_name
-        new_pair["red"]["club"] = pair.red.club
-
-        new_pair["blue"]["last-name"] = pair.blue.last_name
-        new_pair["blue"]["first-name"] = pair.blue.first_name
-        new_pair["blue"]["club"] = pair.blue.club
-
-        self.__data["pairs"].append(new_pair)
+    # def add_pair(self, pair: Pair) -> None: # НЕ ТРОГАТЬ СТАРЫЙ СТАНДАРТ
+    #     """
+    #     Adds one pair to __data.
+    #
+    #     :param pair: instance of Pair class.
+    #     :return: None
+    #     """
+    #
+    #     new_pair = {
+    #         "is-circle-trinity": False,
+    #         "age-category": "",
+    #         "weight-category": "",
+    #         "red": {
+    #             "last-name": "",
+    #             "first-name": "",
+    #             "club": ""
+    #         },
+    #
+    #         "blue": {
+    #             "last-name": "Рублев",
+    #             "first-name": "Дмитрий",
+    #             "club": "Патриот"
+    #         }
+    #     }
+    #
+    #     new_pair["is-circle-trinity"] = pair.is_circle_trinity
+    #     new_pair["age-category"] = pair.age_category
+    #     new_pair["weight-category"] = pair.weight_category
+    #
+    #     new_pair["red"]["last-name"] = pair.red.last_name
+    #     new_pair["red"]["first-name"] = pair.red.first_name
+    #     new_pair["red"]["club"] = pair.red.club
+    #
+    #     new_pair["blue"]["last-name"] = pair.blue.last_name
+    #     new_pair["blue"]["first-name"] = pair.blue.first_name
+    #     new_pair["blue"]["club"] = pair.blue.club
+    #
+    #     self.__data["pairs"].append(new_pair)
 
     def export(self, path="") -> None:
         """
@@ -266,5 +268,7 @@ class ExportPairsDOCX:
             self.__document.save(os_path.abspath(f"{path}/Состав пар турнир {self.start_date} - {self.end_date}.docx"))
         else:
             self.__document.save(f"Состав пар турнир {self.start_date} - {self.end_date}.docx")
+
+        print("File created.")
 
 # TODO: ExportRefereeProtocolDOCX
