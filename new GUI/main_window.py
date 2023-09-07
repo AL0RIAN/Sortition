@@ -1,5 +1,6 @@
 import tkinter as tk
 from sorting.tournaments_list import PAIR_LIST
+from sorting.tournaments_list import TREE
 
 
 '''
@@ -41,8 +42,14 @@ count = 0
 def next_battle():
     global count
     count += 1
-    opponent_first['text'] = PAIR_LIST[count][0]['name']
-    opponent_second['text'] = PAIR_LIST[count][1]['name']
+    try:
+        opponent_first['text'] = PAIR_LIST[count][0]['name']
+        opponent_second['text'] = PAIR_LIST[count][1]['name']
+    except TypeError:
+        opponent_first['text'] = PAIR_LIST[count][0]
+        opponent_second['text'] = PAIR_LIST[count][1]
+    except IndexError:
+        battle_btn.config(text='Кінець', state=tk.DISABLED)
 
 
 second_element.grid_rowconfigure(0, minsize=60)
@@ -66,8 +73,66 @@ Third Element.
 
 '''
 Fourth Element.
+Usual tree
+1 step
 '''
 
+
+for i in range(16):
+    if i % 2 == 0:
+        flag = 0
+    else:
+        flag = 1
+    fourth_element.grid_rowconfigure(i, minsize=33)
+    fourth_element.grid_columnconfigure(i, minsize=136)
+    try:
+        athlete = tk.Label(fourth_element, text=TREE[0]['М']['18+']['48-'][i//2][flag]["name"], bg="#DCF4FF")
+    except TypeError:
+        athlete = tk.Label(fourth_element, text=TREE[0]['М']['18+']['48-'][i//2][flag], bg="#DCF4FF")
+    athlete.grid(column=0, row=i)
+'''
+2 step
+'''
+for i in range(8):
+    if i % 2 == 0:
+        flag = 0
+    else:
+        flag = 1
+    try:
+        athlete = tk.Label(fourth_element, text=TREE[1]['М']['18+']['48-'][i//2][flag]["name"], bg="#DCF4FF")
+    except TypeError:
+        athlete = tk.Label(fourth_element, text=TREE[1]['М']['18+']['48-'][i//2][flag], bg="#DCF4FF")
+    athlete.grid(column=1, row=2 * i, rowspan=2)
+'''
+3 step
+'''
+for i in range(4):
+    if i % 2 == 0:
+        flag = 0
+    else:
+        flag = 1
+    try:
+        athlete = tk.Label(fourth_element, text=TREE[2]['М']['18+']['48-'][i//2][flag]["name"], bg="#DCF4FF")
+    except TypeError:
+        athlete = tk.Label(fourth_element, text=TREE[2]['М']['18+']['48-'][i//2][flag], bg="#DCF4FF")
+    athlete.grid(column=2, row=4 * i, rowspan=4)
+'''
+4 step
+'''
+for i in range(2):
+    if i % 2 == 0:
+        flag = 0
+    else:
+        flag = 1
+    try:
+        athlete = tk.Label(fourth_element, text=TREE[3]['М']['18+']['48-'][i//2][flag]["name"], bg="#DCF4FF")
+    except TypeError:
+        athlete = tk.Label(fourth_element, text=TREE[3]['М']['18+']['48-'][i//2][flag], bg="#DCF4FF")
+    athlete.grid(column=3, row=8 * i, rowspan=8)
+
+'''
+Troika
+'''
 
 lottery.mainloop()
 

@@ -11,14 +11,14 @@ class Athlete:
         self.birthday = args["birthday"]
         self.gender = args["gender"]
         self.weight = args["weight"]
-        self.category = args["category"]
-        self.is_sanda = args["is_sanda"]
-        self.is_cinda = args["is_cinda"]
-        self.is_tuishou = args["is_tuishou"]
-        self.is_vinchun = args["is_vinchun"]
-        self.region = args["region"]
-        self.club = args["club"]
-        self.trainer = args["trainer"]
+        # self.category = args["category"]
+        # self.is_sanda = args["is_sanda"]
+        # self.is_cinda = args["is_cinda"]
+        # self.is_tuishou = args["is_tuishou"]
+        # self.is_vinchun = args["is_vinchun"]
+        # self.region = args["region"]
+        # self.club = args["club"]
+        # self.trainer = args["trainer"]
 
     def toJson(self):
         return json.dumps(self, default=lambda o: o.__dict__)
