@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="67ddf0c2-01cf-473c-94ec-be35d64c18c5" name="Changes" comment="Adding is_circle_trinity to dictionary of athletes.">
+      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_17_02_2023_23_23_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_17_02_2023_23_23_[Changes]1/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_17_02_2023_23_23__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_24_02_2023_22_21_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_24_02_2023_22_21_[Changes]1/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_24_02_2023_22_21__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_24_03_2023_00_03_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_24_03_2023_00_03_[Changes]1/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_24_03_2023_00_03__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_9_4_2023_1_04_AM_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_9_4_2023_1_04_AM__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_9_4_2023_1_05_AM_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_9_4_2023_1_05_AM_[Changes]1/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_9_4_2023_1_05_AM__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_03_2023_00_00_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_03_2023_00_00__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_03_2023_00_02_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_03_2023_00_02__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_02_2023_01_25_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_02_2023_01_25__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sortition.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IO/export/export_docx_r.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/new GUI/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/new GUI/main_window.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Состав пар турнир {{start-date}} - {{end-date}}.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Windows/battlegrid.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Windows/battlegrid.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Windows/root.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Windows/root.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sorting/athlete.py" beforeDir="false" afterPath="$PROJECT_DIR$/sorting/athlete.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="sorting_algorithm" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2LEsIzrxoVTpHJE8paUZ1XhYJLl" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/megat/project/sortition/IO/export&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\megat\project\sortition\IO\export" />
+      <recent name="C:\Users\megat\project\sortition" />
+      <recent name="C:\Users\megat\project\sortition\sorting" />
+      <recent name="C:\Users\megat\project\sortition\GUI" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\megat\project\sortition\sorting" />
+      <recent name="C:\Users\megat\project\sortition\database" />
+      <recent name="C:\Users\megat\project\sortition\IO\parser" />
+      <recent name="C:\Users\megat\project\sortition\SORTING" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="algorithm" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="sortition" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/algorithm.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="export_docx_r" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="sortition" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/IO/export" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/IO/export/export_docx_r.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="sortition" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pair_list" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="sortition" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/IO/export" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/IO/export/pair_list.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="tournaments_list (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="sortition" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/sorting" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/sorting/tournaments_list.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="tournaments_list" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="sortition" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/sorting" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="C:\Users\megat\project\sortition\sorting\tournaments_list.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.algorithm" />
+      <item itemvalue="Python.pair_list" />
+      <item itemvalue="Python.tournaments_list" />
+      <item itemvalue="Python.tournaments_list (1)" />
+      <item itemvalue="Python.main" />
+      <item itemvalue="Python.export_docx_r" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.main" />
+        <item itemvalue="Python.export_docx_r" />
+        <item itemvalue="Python.tournaments_list (1)" />
+        <item itemvalue="Python.tournaments_list" />
+        <item itemvalue="Python.pair_list" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="67ddf0c2-01cf-473c-94ec-be35d64c18c5" name="Changes" comment="" />
+      <created>1675447500673</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1675447500673</updated>
+    </task>
+    <task id="LOCAL-00001" summary="The first version of algorithme.">
+      <created>1676157660051</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1676157660051</updated>
+    </task>
+    <task id="LOCAL-00002" summary="The first version of algorithme.">
+      <created>1676668832856</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1676668832856</updated>
+    </task>
+    <task id="LOCAL-00003" summary="test version of pair_list">
+      <created>1679090393549</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1679090393549</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Second test version of pair_list.">
+      <created>1679248737772</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1679248737772</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Third test version of pair_list.">
+      <created>1679273213028</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1679273213028</updated>
+    </task>
+    <task id="LOCAL-00006" summary="The final base of athletes for the entire program.">
+      <created>1679795821584</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1679795821584</updated>
+    </task>
+    <task id="LOCAL-00007" summary="The final base of athletes for the entire program. (reborn)&#10;P.S. Removed some unnecessary )">
+      <created>1679795933331</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1679795933331</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Minor change to the future database.">
+      <created>1680023976890</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1680023976890</updated>
+    </task>
+    <task id="LOCAL-00009" summary="add full category for class Athlete in athlete.py&#10;&#10;in athlete_sort.py changed path to &quot;Попередня Запоріжжя&quot;&#10;&#10;main_data.py : in process&#10;&#10;&quot;Попередня Запоріжжя&quot; changed to &quot;Попередня Запоріжжяr&quot;&#10;it's more correct">
+      <created>1680571043632</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1680571043632</updated>
+    </task>
+    <task id="LOCAL-00010" summary="add full category for class Athlete in athlete.py&#10;&#10;in athlete_sort.py changed path to &quot;Попередня Запоріжжя&quot;&#10;&#10;main_data.py : in process (shuffle_tournament changed)&#10;&#10;&quot;Попередня Запоріжжя&quot; changed to &quot;Попередня Запоріжжяr&quot;&#10;it's more correct">
+      <created>1680571934462</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1680571934462</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Working, unformatted code.">
+      <created>1680901249216</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1680901249216</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Попередня Запоріжжя reborn.docx for Alorian&#10;Попередня Запоріжжя big.docx for Anlev&#10;Попередня Запоріжжя small.docx for MEGORD&#10;&#10;Added several different test dates.">
+      <created>1681002109710</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1681002109710</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Added normal naming in main data.">
+      <created>1681343238984</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1681343238984</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Adding third to sortition and pair list.">
+      <created>1682113678027</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1682113678027</updated>
+    </task>
+    <task id="LOCAL-00015" summary="The version of the algorithm is ready for use in the GUI as well as for exporting the list of pairs.&#10;For the GUI, simply import the TREE variable from the tournaments_list.&#10;For a list of pairs, simply import the variable PAIR_LIST from tournaments_list.">
+      <created>1682368849989</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1682368849989</updated>
+    </task>
+    <task id="LOCAL-00016" summary="The version of the algorithm is ready for use in the GUI as well as for exporting the list of pairs.&#10;For the GUI, simply import the TREE variable from the tournaments_list.&#10;For a list of pairs, simply import the variable PAIR_LIST from tournaments_list.&#10;To use, do not forget to change the path of the file &quot;Попередня Запоріжжя&quot;.">
+      <created>1682369015338</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1682369015338</updated>
+    </task>
+    <task id="LOCAL-00017" summary="The version of the algorithm is ready for use in the GUI as well as for exporting the list of pairs.&#10;For the GUI, simply import the TREE variable from the tournaments_list.&#10;For a list of pairs, simply import the variable PAIR_LIST from tournaments_list.&#10;To use, do not forget to change the path of the file &quot;Попередня Запоріжжя&quot;.">
+      <created>1682369511502</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1682369511502</updated>
+    </task>
+    <task id="LOCAL-00018" summary="The version of the algorithm is ready for use in the GUI as well as for exporting the list of pairs.&#10;For the GUI, simply import the TREE variable from the tournaments_list.&#10;For a list of pairs, simply import the variable PAIR_LIST from tournaments_list.&#10;To use, do not forget to change the path of the file &quot;Попередня Запоріжжя&quot;.">
+      <created>1682377173826</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1682377173826</updated>
+    </task>
+    <task id="LOCAL-00019" summary="&#10;Changing the list of pairs, for more convenient use. As well as changes in the data about the participant in this list, for more convenient handling during data changes in the tournament grid.">
+      <created>1682975685766</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1682975685766</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Adding is_circle_trinity to dictionary of athletes.">
+      <created>1688164117394</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1688164117394</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="sorting_algorithm" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="The first version of algorithme." />
+    <MESSAGE value="test version of pair_list" />
+    <MESSAGE value="Second test version of pair_list." />
+    <MESSAGE value="Third test version of pair_list." />
+    <MESSAGE value="The final base of athletes for the entire program." />
+    <MESSAGE value="The final base of athletes for the entire program. (reborn)&#10;P.S. Removed some unnecessary )" />
+    <MESSAGE value="Minor change to the future database." />
+    <MESSAGE value="add full category for class Athlete in athlete.py&#10;&#10;in athlete_sort.py changed path to &quot;Попередня Запоріжжя&quot;&#10;&#10;main_data.py : in process&#10;&#10;&quot;Попередня Запоріжжя&quot; changed to &quot;Попередня Запоріжжяr&quot;&#10;it's more correct" />
+    <MESSAGE value="add full category for class Athlete in athlete.py&#10;&#10;in athlete_sort.py changed path to &quot;Попередня Запоріжжя&quot;&#10;&#10;main_data.py : in process (shuffle_tournament changed)&#10;&#10;&quot;Попередня Запоріжжя&quot; changed to &quot;Попередня Запоріжжяr&quot;&#10;it's more correct" />
+    <MESSAGE value="Working, unformatted code." />
+    <MESSAGE value="Попередня Запоріжжя reborn.docx for Alorian&#10;Попередня Запоріжжя big.docx for Anlev&#10;Попередня Запоріжжя small.docx for MEGORD&#10;&#10;Added several different test dates." />
+    <MESSAGE value="Added normal naming in main data." />
+    <MESSAGE value="Adding third to sortition and pair list." />
+    <MESSAGE value="The version of the algorithm is ready for use in the GUI as well as for exporting the list of pairs.&#10;For the GUI, simply import the TREE variable from the tournaments_list.&#10;For a list of pairs, simply import the variable PAIR_LIST from tournaments_list." />
+    <MESSAGE value="The version of the algorithm is ready for use in the GUI as well as for exporting the list of pairs.&#10;For the GUI, simply import the TREE variable from the tournaments_list.&#10;For a list of pairs, simply import the variable PAIR_LIST from tournaments_list.&#10;To use, do not forget to change the path of the file &quot;Попередня Запоріжжя&quot;." />
+    <MESSAGE value="&#10;Changing the list of pairs, for more convenient use. As well as changes in the data about the participant in this list, for more convenient handling during data changes in the tournament grid." />
+    <MESSAGE value="Adding is_circle_trinity to dictionary of athletes." />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding is_circle_trinity to dictionary of athletes." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/sorting/athlete_sort.py</url>
+          <line>2</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

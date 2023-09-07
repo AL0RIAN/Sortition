@@ -1,0 +1,68 @@
+Index: IO/parser/parser.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>__all__ = [\"Parser\"]\r\n\r\nfrom docx import Document #Main python DOCX class\r\nimport json #Debug\r\n\r\nclass Parser:\r\n    \"\"\"Main parser of DOCX files\"\"\"\r\n\r\n    __DOC_TABLE_WIDTH = 13 #Number of cells in a table row\r\n\r\n    __TABLE_PATTERN = { #Pattern table-cell: cell value\r\n        1: \"name\",\r\n        2: \"birthday\",\r\n        3: \"gender\",\r\n        4: \"category\",\r\n        5: \"weight\",\r\n        6: \"is_sanda\",\r\n        7: \"is_cinda\",\r\n        8: \"is_tuishou\",\r\n        9: \"is_vinchun\",\r\n        10: \"region\",\r\n        11: \"club\",\r\n        12: \"trainer\",\r\n\r\n    }\r\n    __AGE_CATEGORY_PATTERN = { #Pattern cell-value: converted-value\r\n        \"Юнаки молодшого віку до 10 років\": \"10-\",\r\n        \"Юнаки молодшого віку 10-11 років\": \"10-11\",\r\n        \"Юнаки старшого віку 12-13 років\": \"12-13\",\r\n        \"Юніори 14-15 років\": \"14-15\",\r\n        \"Юніори 16-17 років\": \"16-17\",\r\n        \"Дорослі 18+ років\": \"18+\"\r\n    }\r\n\r\n    def __init__(self, file_name: str):\r\n        \"\"\"\r\n\r\n        :param file_name: Import file name\r\n        \"\"\"\r\n\r\n        self.__data = dict(competition_region=\"\", participants=[])\r\n        self.file_name = file_name\r\n        self.__doc = Document(file_name)\r\n        self.__table = self.__doc.tables[0]\r\n        self.__data[\"competition_region\"] = self.__parse_competition_region()\r\n        self.__parse_participants_info()\r\n\r\n    def __parse_competition_region(self) -> str:\r\n        \"\"\"\r\n        Collects competition region info\r\n\r\n        :return: str\r\n        \"\"\"\r\n\r\n        for paragraph in self.__doc.paragraphs:\r\n            if \"Команди: \" in paragraph.text:\r\n                return paragraph.text.replace(\"Команди: \", \"\")\r\n\r\n    def __is_age_category(self, cell) -> bool:\r\n        \"\"\"\r\n        If collected data is age category info then True, else False\r\n\r\n        :param cell: cell from table\r\n        :return: bool\r\n        \"\"\"\r\n        return True if cell.text in Parser.__AGE_CATEGORY_PATTERN else False\r\n\r\n    def __insert_info_in_dict(self, dict: dict, row: int, col: int) -> None:\r\n        \"\"\"\r\n        Searches the cell data type, and inserts particular value to particular key in dict\r\n\r\n        :param dict: participant info\r\n        :param row: row in table\r\n        :param col: column in table\r\n        :return: None\r\n        \"\"\"\r\n        cell = self.__table.rows[row].cells[col]\r\n        dict[Parser.__TABLE_PATTERN[col]] = cell.text\r\n\r\n    def __parse_participants_info(self) -> None:\r\n        \"\"\"\r\n        Main parse loop\r\n\r\n        :return: None\r\n        \"\"\"\r\n\r\n        row = 2 #Because 1 in row is number of participant\r\n\r\n        while True:\r\n            try:\r\n                participant_info = {}\r\n\r\n                cell = self.__table.rows[row].cells[1]\r\n\r\n                if self.__is_age_category(cell=cell):\r\n                    self.__data[\"participants\"].insert(0, {\"age_category\": Parser.__AGE_CATEGORY_PATTERN[cell.text],\r\n                                                           \"data\": []})\r\n                    row += 1\r\n                    continue\r\n\r\n                participant_info[\"name\"] = cell.text\r\n\r\n                for i in range(1, Parser.__DOC_TABLE_WIDTH):\r\n                    self.__insert_info_in_dict(participant_info, row, i)\r\n\r\n                self.__data[\"participants\"][0][\"data\"].append(participant_info)\r\n\r\n                row += 1\r\n\r\n            except IndexError:\r\n                break\r\n\r\n    def result(self) -> dict:\r\n        \"\"\"\r\n        Returns the result of parsing in dictionary format\r\n\r\n        :return: dict\r\n        \"\"\"\r\n        #return json.dumps(self.__data, ensure_ascii=False)\r\n        return self.__data\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/IO/parser/parser.py b/IO/parser/parser.py
+--- a/IO/parser/parser.py	(revision 0197d2d5911279c56566612b73ca85120968bb6a)
++++ b/IO/parser/parser.py	(date 1679608942267)
+@@ -1,14 +1,15 @@
+ __all__ = ["Parser"]
+ 
+-from docx import Document #Main python DOCX class
+-import json #Debug
++from docx import Document  # Main python DOCX class
++import json  # Debug
+ 
++
+ class Parser:
+     """Main parser of DOCX files"""
+ 
+-    __DOC_TABLE_WIDTH = 13 #Number of cells in a table row
++    __DOC_TABLE_WIDTH = 13  # Number of cells in a table row
+ 
+-    __TABLE_PATTERN = { #Pattern table-cell: cell value
++    __TABLE_PATTERN = {  # Pattern table-cell: cell value
+         1: "name",
+         2: "birthday",
+         3: "gender",
+@@ -23,7 +24,7 @@
+         12: "trainer",
+ 
+     }
+-    __AGE_CATEGORY_PATTERN = { #Pattern cell-value: converted-value
++    __AGE_CATEGORY_PATTERN = {  # Pattern cell-value: converted-value
+         "Юнаки молодшого віку до 10 років": "10-",
+         "Юнаки молодшого віку 10-11 років": "10-11",
+         "Юнаки старшого віку 12-13 років": "12-13",
+@@ -84,7 +85,7 @@
+         :return: None
+         """
+ 
+-        row = 2 #Because 1 in row is number of participant
++        row = 2  # Because 1 in row is number of participant
+ 
+         while True:
+             try:
+@@ -110,11 +111,15 @@
+             except IndexError:
+                 break
+ 
+-    def result(self) -> dict:
++    def result(self, json_debug: bool = False):
+         """
+         Returns the result of parsing in dictionary format
+ 
++        :param json_debug: If true, then json.dumps
++
+         :return: dict
+         """
+-        #return json.dumps(self.__data, ensure_ascii=False)
+-        return self.__data
++        if json_debug:
++            return json.dumps(self.__data, ensure_ascii=False)
++
++        return self.__data
+\ No newline at end of file
