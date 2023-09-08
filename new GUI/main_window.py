@@ -30,8 +30,91 @@ third_element.grid(row=2, column=0)
 fourth_element.grid(row=0, column=1, rowspan=3)
 
 '''
-First Element.
+Crete dictionary for first element(dictionary with categories of tournament trees).
 '''
+
+choices_dict = {'Ж': {}, 'М': {}}
+for gender in TREE[0]:
+    for age in TREE[0][gender]:
+        choices = list(TREE[0][gender].keys())
+        for weight in TREE[0][gender][age]:
+            choices = list(TREE[0][gender][age].keys())
+            choices_dict[gender][age] = choices
+print(choices_dict)
+
+'''
+First Element, with functions of switching in OptionMenu.
+'''
+
+
+def man_checkbutton(*args):
+    if man_choices.get() == 1:
+        woman_choices.set(0)
+        new_choices = list(choices_dict['М'])
+        age_choice_menu.set(new_choices[0])
+        age_option_menu['menu'].delete(0, 'end')
+        for choice in new_choices:
+            age_option_menu['menu'].add_command(label=choice,
+                                                command=lambda new_choice=choice: man_age_checkbutton(new_choice))
+
+def man_age_checkbutton(choice):
+    new_choice = choice
+    age_choice_menu.set(new_choice)
+    new_choices = list(choices_dict['М'][age_choice_menu.get()])
+    weight_choice_menu.set(new_choices[0])
+    weight_option_menu['menu'].delete(0, 'end')
+
+    for choice in new_choices:
+        weight_option_menu['menu'].add_command(label=choice,
+                                               command=lambda new_choice=choice: weight_choice_menu.set(new_choice))
+
+
+def woman_checkbutton(*args):
+    if woman_choices.get() == 1:
+        man_choices.set(0)
+        new_choices = list(choices_dict['Ж'])
+        age_choice_menu.set(new_choices[0])
+        age_option_menu['menu'].delete(0, 'end')
+        for choice in new_choices:
+            age_option_menu['menu'].add_command(label=choice,
+                                                command=lambda new_choice=choice: woman_age_checkbutton(new_choice))
+
+def woman_age_checkbutton(choice):
+    new_choice = choice
+    age_choice_menu.set(new_choice)
+    new_choices = list(choices_dict['Ж'][age_choice_menu.get()])
+    weight_choice_menu.set(new_choices[0])
+    weight_option_menu['menu'].delete(0, 'end')
+
+    for choice in new_choices:
+        weight_option_menu['menu'].add_command(label=choice,
+                                               command=lambda new_choice=choice: weight_choice_menu.set(new_choice))
+
+
+# def woman_checkbutton():
+#     if woman_choices.get() == 1:
+#         man_choices.set(0)
+#         new_choices = list(choices_dict['Ж'])
+#         age_choice_menu.set(new_choices[0])
+#         age_option_menu['menu'].delete(0, 'end')
+#         for choice in new_choices:
+#             age_option_menu['menu'].add_command(label=choice,
+#                                                 command=woman_age_checkbutton(choice))
+#
+#
+# def woman_age_checkbutton(choice):
+#     if woman_choices.get() == 1:
+#         new_choice = choice
+#         age_choice_menu.set(new_choice)
+#         new_choices = list(choices_dict['Ж'][age_choice_menu.get()])
+#         # Очищаем старые опции во втором OptionMenu
+#         weight_choice_menu.set(new_choices[0])
+#         weight_option_menu['menu'].delete(0, 'end')
+#
+#         for choice in new_choices:
+#             weight_option_menu['menu'].add_command(label=choice,
+#                                                    command=lambda new_choice=choice: weight_choice_menu.set(
+#                                                         new_choice))
 
 
 first_element.grid_rowconfigure(0, minsize=60)
@@ -47,8 +130,8 @@ age_choice_menu = tk.StringVar()
 weight_choices = ['test', 'test', 'test', 'test', 'test']
 weight_choice_menu = tk.StringVar()
 
-woman_button = tk.Checkbutton(first_element, text="Ж", variable=woman_choices)
-man_button = tk.Checkbutton(first_element, text="М", variable=man_choices)
+woman_button = tk.Checkbutton(first_element, text="Ж", variable=woman_choices, command=woman_checkbutton)
+man_button = tk.Checkbutton(first_element, text="М", variable=man_choices, command=man_checkbutton)
 age_option_menu = tk.OptionMenu(first_element, age_choice_menu, *age_choices)
 age_option_describe = tk.Label(first_element, bg='#a9c799', text='Віков група')
 weight_option_menu = tk.OptionMenu(first_element, weight_choice_menu, *weight_choices)
