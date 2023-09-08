@@ -33,6 +33,36 @@ fourth_element.grid(row=0, column=1, rowspan=3)
 First Element.
 '''
 
+
+first_element.grid_rowconfigure(0, minsize=60)
+first_element.grid_rowconfigure(1, minsize=60)
+first_element.grid_rowconfigure(2, minsize=60)
+first_element.grid_columnconfigure(0, minsize=125)
+first_element.grid_columnconfigure(1, minsize=125)
+
+woman_choices = tk.IntVar()
+man_choices = tk.IntVar()
+age_choices = ['10-11', '12-13', '14-15', '16-17', '18+']
+age_choice_menu = tk.StringVar()
+weight_choices = ['test', 'test', 'test', 'test', 'test']
+weight_choice_menu = tk.StringVar()
+
+woman_button = tk.Checkbutton(first_element, text="Ж", variable=woman_choices)
+man_button = tk.Checkbutton(first_element, text="М", variable=man_choices)
+age_option_menu = tk.OptionMenu(first_element, age_choice_menu, *age_choices)
+age_option_describe = tk.Label(first_element, bg='#a9c799', text='Віков група')
+weight_option_menu = tk.OptionMenu(first_element, weight_choice_menu, *weight_choices)
+weight_option_describe = tk.Label(first_element, bg='#a9c799', text='Вісова група')
+
+
+man_button.grid(row=0, column=0)
+woman_button.grid(row=0, column=1)
+age_option_menu.grid(row=1, column=0)
+age_option_describe.grid(row=1, column=1, sticky='wens')
+weight_option_menu.grid(row=2, column=0)
+weight_option_describe.grid(row=2, column=1, sticky='wens')
+
+
 '''
 Second Element.
 '''
@@ -70,6 +100,17 @@ opponent_second.grid(column=0, row=2, sticky='wens')
 '''
 Third Element.
 '''
+
+
+third_element.grid_rowconfigure(0, minsize=30)
+third_element.grid_rowconfigure(1, minsize=150)
+third_element.grid_columnconfigure(0, minsize=250)
+
+current_battle = tk.Label(third_element, text='№ Поточного спаринга')
+back_button = tk.Button(third_element, bg='#db928f', text='Назад')
+
+current_battle.grid(row=0, column=0, sticky='wens')
+back_button.grid(row=1, column=0, sticky='wens')
 
 '''
 Fourth Element.
