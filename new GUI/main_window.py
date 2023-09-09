@@ -66,8 +66,6 @@ def man_checkbutton(*args):
 
 
 def man_age_checkbutton(choice):
-    global age_flag
-    age_flag = age_choice_menu.get()
     new_choice = choice
     age_choice_menu.set(new_choice)
     new_choices = list(choices_dict['М'][age_choice_menu.get()])
@@ -93,8 +91,6 @@ def woman_checkbutton(*args):
                                                 command=lambda new_choice=choice: woman_age_checkbutton(new_choice))
 
 def woman_age_checkbutton(choice):
-    global age_flag
-    age_flag = age_choice_menu.get()
     new_choice = choice
     age_choice_menu.set(new_choice)
     new_choices = list(choices_dict['Ж'][age_choice_menu.get()])
@@ -108,6 +104,8 @@ def woman_age_checkbutton(choice):
 
 def get_selected_value():
     global weight_flag
+    global age_flag
+    age_flag = age_choice_menu.get()
     weight_flag = weight_choice_menu.get()
     get_tree(gender_flag, age_flag, weight_flag)
 
@@ -229,6 +227,8 @@ Usual tree
 
 
 def get_tree(gender, age, weight):
+    for child in fourth_element.winfo_children():
+        child.destroy()
     for i in range(16):
         if i % 2 == 0:
             flag = 0
