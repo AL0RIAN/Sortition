@@ -44,7 +44,6 @@ for gender in TREE[0]:
         for weight in TREE[0][gender][age]:
             choices = list(TREE[0][gender][age].keys())
             choices_dict[gender][age] = choices
-print(choices_dict)
 
 '''
 First Element, with functions of switching in OptionMenu.
@@ -110,7 +109,6 @@ def get_selected_value():
     get_tree(gender_flag, age_flag, weight_flag)
 
 
-
 # def woman_checkbutton():
 #     if woman_choices.get() == 1:
 #         man_choices.set(0)
@@ -135,8 +133,6 @@ def get_selected_value():
 #             weight_option_menu['menu'].add_command(label=choice,
 #                                                    command=lambda new_choice=choice: weight_choice_menu.set(
 #                                                         new_choice))
-
-
 first_element.grid_rowconfigure(0, minsize=40)
 first_element.grid_rowconfigure(1, minsize=50)
 first_element.grid_rowconfigure(2, minsize=50)
@@ -229,57 +225,92 @@ Usual tree
 def get_tree(gender, age, weight):
     for child in fourth_element.winfo_children():
         child.destroy()
-    for i in range(16):
-        if i % 2 == 0:
-            flag = 0
-        else:
-            flag = 1
-        fourth_element.grid_rowconfigure(i, minsize=33)
-        fourth_element.grid_columnconfigure(i, minsize=136)
-        try:
-            athlete = tk.Label(fourth_element, text=TREE[0][gender][age][weight][i//2][flag]["name"], bg="#DCF4FF")
-        except TypeError:
-            athlete = tk.Label(fourth_element, text=TREE[0][gender][age][weight][i//2][flag], bg="#DCF4FF")
-        athlete.grid(column=0, row=i)
-    '''
-    2 step
-    '''
-    for i in range(8):
-        if i % 2 == 0:
-            flag = 0
-        else:
-            flag = 1
-        try:
-            athlete = tk.Label(fourth_element, text=TREE[1][gender][age][weight][i//2][flag]["name"], bg="#DCF4FF")
-        except TypeError:
-            athlete = tk.Label(fourth_element, text=TREE[1][gender][age][weight][i//2][flag], bg="#DCF4FF")
-        athlete.grid(column=1, row=2 * i, rowspan=2)
-    '''
-    3 step
-    '''
-    for i in range(4):
-        if i % 2 == 0:
-            flag = 0
-        else:
-            flag = 1
-        try:
-            athlete = tk.Label(fourth_element, text=TREE[2][gender][age][weight][i//2][flag]["name"], bg="#DCF4FF")
-        except TypeError:
-            athlete = tk.Label(fourth_element, text=TREE[2][gender][age][weight][i//2][flag], bg="#DCF4FF")
-        athlete.grid(column=2, row=4 * i, rowspan=4)
-    '''
-    4 step
-    '''
-    for i in range(2):
-        if i % 2 == 0:
-            flag = 0
-        else:
-            flag = 1
-        try:
-            athlete = tk.Label(fourth_element, text=TREE[3][gender][age][weight][i//2][flag]["name"], bg="#DCF4FF")
-        except TypeError:
-            athlete = tk.Label(fourth_element, text=TREE[3][gender][age][weight][i//2][flag], bg="#DCF4FF")
-        athlete.grid(column=3, row=8 * i, rowspan=8)
+
+    if not TREE[0][gender][age][weight]:
+        for child in fourth_element.winfo_children():
+            child.destroy()
+        fourth_element.grid_rowconfigure(0, minsize=180)
+        fourth_element.grid_rowconfigure(1, minsize=180)
+        fourth_element.grid_rowconfigure(2, minsize=180)
+        fourth_element.grid_columnconfigure(0, minsize=183)
+        fourth_element.grid_columnconfigure(1, minsize=183)
+        fourth_element.grid_columnconfigure(2, minsize=183)
+        for i in range(3, 16):
+            fourth_element.grid_rowconfigure(i, minsize=0)
+        for i in range(2):
+            if i % 2 == 0:
+                flag = 0
+            else:
+                flag = 1
+            athlete1 = tk.Label(fourth_element, text=TREE[1][gender][age][weight][flag]["name"],
+                                bg="#DCF4FF")
+            athlete2 = tk.Label(fourth_element, text=TREE[2][gender][age][weight][flag]["name"],
+                                bg="#DCF4FF")
+            athlete3 = tk.Label(fourth_element, text=TREE[3][gender][age][weight][flag]["name"],
+                                bg="#DCF4FF")
+            if i == 1:
+                i += 1
+            athlete1.grid(column=0, row=i, sticky='wens')
+            athlete2.grid(column=1, row=i, sticky='wens')
+            athlete3.grid(column=2, row=i, sticky='wens')
+        vs_label1 = tk.Label(fourth_element, text='Проти', bg="#DCF4FF")
+        vs_label2 = tk.Label(fourth_element, text='Проти', bg="#DCF4FF")
+        vs_label3 = tk.Label(fourth_element, text='Проти', bg="#DCF4FF")
+        vs_label1.grid(column=0, row=1, sticky='wens')
+        vs_label2.grid(column=1, row=1, sticky='wens')
+        vs_label3.grid(column=2, row=1, sticky='wens')
+    else:
+        for i in range(16):
+            if i % 2 == 0:
+                flag = 0
+            else:
+                flag = 1
+            fourth_element.grid_rowconfigure(i, minsize=33)
+            fourth_element.grid_columnconfigure(i, minsize=137)
+            try:
+                athlete = tk.Label(fourth_element, text=TREE[0][gender][age][weight][i//2][flag]["name"], bg="#DCF4FF")
+            except TypeError:
+                athlete = tk.Label(fourth_element, text=TREE[0][gender][age][weight][i//2][flag], bg="#DCF4FF")
+            athlete.grid(column=0, row=i)
+        '''
+        2 step
+        '''
+        for i in range(8):
+            if i % 2 == 0:
+                flag = 0
+            else:
+                flag = 1
+            try:
+                athlete = tk.Label(fourth_element, text=TREE[1][gender][age][weight][i//2][flag]["name"], bg="#DCF4FF")
+            except TypeError:
+                athlete = tk.Label(fourth_element, text=TREE[1][gender][age][weight][i//2][flag], bg="#DCF4FF")
+            athlete.grid(column=1, row=2 * i, rowspan=2)
+        '''
+        3 step
+        '''
+        for i in range(4):
+            if i % 2 == 0:
+                flag = 0
+            else:
+                flag = 1
+            try:
+                athlete = tk.Label(fourth_element, text=TREE[2][gender][age][weight][i//2][flag]["name"], bg="#DCF4FF")
+            except TypeError:
+                athlete = tk.Label(fourth_element, text=TREE[2][gender][age][weight][i//2][flag], bg="#DCF4FF")
+            athlete.grid(column=2, row=4 * i, rowspan=4)
+        '''
+        4 step
+        '''
+        for i in range(2):
+            if i % 2 == 0:
+                flag = 0
+            else:
+                flag = 1
+            try:
+                athlete = tk.Label(fourth_element, text=TREE[3][gender][age][weight][i//2][flag]["name"], bg="#DCF4FF")
+            except TypeError:
+                athlete = tk.Label(fourth_element, text=TREE[3][gender][age][weight][i//2][flag], bg="#DCF4FF")
+            athlete.grid(column=3, row=8 * i, rowspan=8)
 
 '''
 Troika
