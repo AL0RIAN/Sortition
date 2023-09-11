@@ -219,18 +219,35 @@ def winner_of_pair_later(data):
                             first_list.append(data[gender][age_group][weight_group][pair_of_athletes][0])
                             pair_of_athletes += 1
                             continue
+                        #Old version of PAIR_LIST
+                        # if data[gender][age_group][weight_group][pair_of_athletes][0] != "-" and\
+                        #         data[gender][age_group][weight_group][pair_of_athletes][1] != "-":
+                        #     first_list.append(f"Победитель пары {CHECK}")
+                        #     CHECK += 1
+                        #     pair_of_athletes += 1
+                        #     continue
                         if data[gender][age_group][weight_group][pair_of_athletes][0] != "-" and\
                                 data[gender][age_group][weight_group][pair_of_athletes][1] != "-":
-                            first_list.append(f"Победитель пары {CHECK}")
+                            data[gender][age_group][weight_group][pair_of_athletes][0]['name'] = f"Победитель пары {CHECK}"
+                            first_list.append(data[gender][age_group][weight_group][pair_of_athletes][0])
                             CHECK += 1
                             pair_of_athletes += 1
                             continue
-                        if type(data[gender][age_group][weight_group][pair_of_athletes][0]) == str and\
-                                type(data[gender][age_group][weight_group][pair_of_athletes][0]) == str:
-                            first_list.append(f"Победитель пары {CHECK}")
-                            CHECK += 1
-                            pair_of_athletes += 1
-                            continue
+                        # Old version of PAIR_LIST
+                        # if type(data[gender][age_group][weight_group][pair_of_athletes][0]) == str and\
+                        #         type(data[gender][age_group][weight_group][pair_of_athletes][0]) == str:
+                        #     first_list.append(f"Победитель пары {CHECK}")
+                        #     CHECK += 1
+                        #     pair_of_athletes += 1
+                        #     continue
+                        # Right now, useless part of code.
+                        # if type(data[gender][age_group][weight_group][pair_of_athletes][0]) == str and\
+                        #         type(data[gender][age_group][weight_group][pair_of_athletes][0]) == str:
+                        #     data[gender][age_group][weight_group][pair_of_athletes][0]['name'] = f"Победитель пары {CHECK}"
+                        #     first_list.append(data[gender][age_group][weight_group][pair_of_athletes][0])
+                        #     CHECK += 1
+                        #     pair_of_athletes += 1
+                        #     continue
                     second_list.append(copy(first_list))
                     first_list.clear()
                 data[gender][age_group].update({str(weight_group): list(copy(second_list))})
@@ -378,9 +395,13 @@ def pair_list_cleaner(pair_list):
                         '''
                         Creating a complete list of couples.
                         '''
+                        # need for correct GUI work
+                        item_list = []
+                        item_list.append(item)
                         if len(item) != 0:
                             if type(item) == list:
-                                for items in tournament_iterations[gender][age_group][weight_group]:
+                                # for items in tournament_iterations[gender][age_group][weight_group]:
+                                for items in item_list:
                                     check_list.append(items)
                                     continue
                                 continue

@@ -174,13 +174,11 @@ count = 0
 
 def next_battle():
     global count
-    count += 1
     try:
         opponent_first['text'] = PAIR_LIST[count][0]['name']
         opponent_second['text'] = PAIR_LIST[count][1]['name']
-    except TypeError:
-        opponent_first['text'] = PAIR_LIST[count][0]
-        opponent_second['text'] = PAIR_LIST[count][1]
+        get_tree(PAIR_LIST[count][0]['gender'], PAIR_LIST[count][0]['birthday'], PAIR_LIST[count][0]['weight'])
+        count += 1
     except IndexError:
         battle_btn.config(text='Кінець', state=tk.DISABLED)
 
@@ -190,8 +188,8 @@ second_element.grid_rowconfigure(1, minsize=60)
 second_element.grid_rowconfigure(2, minsize=60)
 second_element.grid_columnconfigure(0, minsize=250)
 
-opponent_first = tk.Label(second_element, bg='#a9c799', text=PAIR_LIST[count][0]['name'])
-opponent_second = tk.Label(second_element, bg='#a9c799', text=PAIR_LIST[count][1]['name'])
+opponent_first = tk.Label(second_element, bg='#a9c799', text='Початок')
+opponent_second = tk.Label(second_element, bg='#a9c799', text='Початок')
 battle_btn = tk.Button(second_element, bg='#db928f', text='В БІЙ',
                        command=next_battle)
 
@@ -315,7 +313,6 @@ def get_tree(gender, age, weight):
 '''
 Troika
 '''
-
 
 lottery.mainloop()
 
