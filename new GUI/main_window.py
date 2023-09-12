@@ -203,12 +203,25 @@ Third Element.
 '''
 
 
+def previous_battle():
+    global count
+    try:
+        if count == 1:
+            return
+        opponent_first['text'] = PAIR_LIST[count][0]['name']
+        opponent_second['text'] = PAIR_LIST[count][1]['name']
+        get_tree(PAIR_LIST[count][0]['gender'], PAIR_LIST[count][0]['birthday'], PAIR_LIST[count][0]['weight'])
+        count -= 1
+    except IndexError:
+        back_button.config(text='Кінець', state=tk.DISABLED)
+
+
 third_element.grid_rowconfigure(0, minsize=30)
 third_element.grid_rowconfigure(1, minsize=150)
 third_element.grid_columnconfigure(0, minsize=250)
 
 current_battle = tk.Label(third_element, text='№ Поточного спаринга')
-back_button = tk.Button(third_element, bg='#db928f', text='Назад')
+back_button = tk.Button(third_element, bg='#db928f', text='Назад', command=previous_battle)
 
 current_battle.grid(row=0, column=0, sticky='wens')
 back_button.grid(row=1, column=0, sticky='wens')
