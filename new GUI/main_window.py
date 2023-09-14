@@ -33,6 +33,23 @@ second_element.grid(row=1, column=0)
 third_element.grid(row=2, column=0)
 fourth_element.grid(row=0, column=1, rowspan=3)
 
+
+'''
+Functions for look actual tree in first element.
+'''
+
+
+def actual_tree():
+    age_choice_menu.set(PAIR_LIST[count][0]['birthday'])
+    weight_choice_menu.set(PAIR_LIST[count][0]['weight'])
+    if PAIR_LIST[count][0]['gender'] == 'Ж':
+        woman_choices.set(1)
+        man_choices.set(0)
+    else:
+        man_choices.set(1)
+        woman_choices.set(0)
+
+
 '''
 Crete dictionary for first element(dictionary with categories of tournament trees).
 '''
@@ -179,6 +196,7 @@ def next_battle():
         opponent_second['text'] = PAIR_LIST[count][1]['name']
         get_tree(PAIR_LIST[count][0]['gender'], PAIR_LIST[count][0]['birthday'], PAIR_LIST[count][0]['weight'])
         count += 1
+        actual_tree()
     except IndexError:
         battle_btn.config(text='Кінець', state=tk.DISABLED)
 
@@ -212,6 +230,7 @@ def previous_battle():
         opponent_second['text'] = PAIR_LIST[count][1]['name']
         get_tree(PAIR_LIST[count][0]['gender'], PAIR_LIST[count][0]['birthday'], PAIR_LIST[count][0]['weight'])
         count -= 1
+        actual_tree()
     except IndexError:
         back_button.config(text='Кінець', state=tk.DISABLED)
 
