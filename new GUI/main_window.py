@@ -1,10 +1,12 @@
 import tkinter as tk
 from sorting.tournaments_list import PAIR_LIST
 from sorting.tournaments_list import TREE
+from versus_window import VersusWindow
 
 gender_flag = ''
 age_flag = ''
 weight_flag = ''
+count = 0
 
 
 '''
@@ -186,17 +188,22 @@ next_tree.grid(row=3, sticky='wens', columnspan=2)
 Second Element.
 '''
 
-count = 0
+count = -1
 
 
 def next_battle():
     global count
     try:
+        count += 1
         opponent_first['text'] = PAIR_LIST[count][0]['name']
         opponent_second['text'] = PAIR_LIST[count][1]['name']
+        PAIR_LIST[count][0]['score'] = 0
+        PAIR_LIST[count][1]['score'] = 0
         get_tree(PAIR_LIST[count][0]['gender'], PAIR_LIST[count][0]['birthday'], PAIR_LIST[count][0]['weight'])
-        count += 1
         actual_tree()
+        if not count == -1:
+            versus_window = VersusWindow(PAIR_LIST[count][0], PAIR_LIST[count][1])
+            versus_window.run()
     except IndexError:
         battle_btn.config(text='Кінець', state=tk.DISABLED)
 
@@ -250,6 +257,11 @@ Fourth Element.
 Usual tree
 1 step
 '''
+
+
+def check_winner(first_athlete, second_athlete):
+    if first_athlete['score'] == 1:
+        pass
 
 
 def get_tree(gender, age, weight):

@@ -418,9 +418,15 @@ def to_actual_data(data):
                 ATHLETE_LIST_THIRD[gender].pop(age)
 
 
+'''
+Add flag of triple and score for battle.
+'''
+
+
 def adding_is_circle_trinity(athletes):
     for people in athletes:
         people["is_circle_trinity"] = False
+        people["score"] = 0
 
 
 # A function that does distribute the participants in a dictionary and parsed information.
