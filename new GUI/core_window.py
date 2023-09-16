@@ -22,21 +22,22 @@ count = 0
 '''
 
 
-lottery = tk.Tk()
-lottery.title('Жеребкування')
-lottery.geometry('800x540')
-lottery.resizable(False, False)
-lottery.config(bg='#DCF4FF')
+class MainWindow:
+    def __init__(self):
+        super().__init__()
+        self.lottery = tk.Tk()
+        self.lottery.title('Жеребкування')
+        self.lottery.geometry('800x540')
+        self.lottery.resizable(False, False)
+        self.lottery.config(bg='#DCF4FF')
 
-first_element = tk.Frame(lottery, bg="#7d7373", width=250, height=180)
-second_element = tk.Frame(lottery, bg="#ff8282", width=250, height=180)
-third_element = tk.Frame(lottery, bg="#7d7373", width=250, height=180)
-fourth_element = tk.Frame(lottery, bg="#DCF4FF", width=550, height=540)
+        self.first_element = FirstElement(self.lottery)
+        self.second_element = SecondElement(self.lottery)
+        self.third_element = ThirdElement(self.lottery)
+        self.fourth_element = FourthElement(self.lottery)
 
-first_element.grid(row=0, column=0)
-second_element.grid(row=1, column=0)
-third_element.grid(row=2, column=0)
-fourth_element.grid(row=0, column=1, rowspan=3)
+    def run(self):
+        self.lottery.mainloop()
 
 
 '''
@@ -72,6 +73,38 @@ First Element, with functions of switching in OptionMenu.
 '''
 
 
+class FirstElement(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent, bg="#7d7373", width=250, height=180)
+        self.grid_rowconfigure(0, minsize=40)
+        self.grid_rowconfigure(1, minsize=50)
+        self.grid_rowconfigure(2, minsize=50)
+        self.grid_columnconfigure(0, minsize=125)
+        self.grid_columnconfigure(1, minsize=125)
+        self.grid_rowconfigure(3, minsize=60)
+
+        woman_choices = tk.IntVar()
+        man_choices = tk.IntVar()
+        age_choices = ['10-11', '12-13', '14-15', '16-17', '18+']
+        age_choice_menu = tk.StringVar()
+        weight_choices = ['test', 'test', 'test', 'test', 'test']
+        weight_choice_menu = tk.StringVar()
+
+        woman_button = tk.Checkbutton(self, text="Ж", variable=woman_choices, command=woman_checkbutton)
+        man_button = tk.Checkbutton(self, text="М", variable=man_choices, command=man_checkbutton)
+        age_option_menu = tk.OptionMenu(self, age_choice_menu, *age_choices)
+        age_option_describe = tk.Label(self, bg='#a9c799', text='Віков група')
+        weight_option_menu = tk.OptionMenu(self, weight_choice_menu, *weight_choices)
+        weight_option_describe = tk.Label(self, bg='#a9c799', text='Вісова група')
+        next_tree = tk.Button(self, text='Наступне дерево', command=get_selected_value)
+
+        man_button.grid(row=0, column=0)
+        woman_button.grid(row=0, column=1)
+        age_option_menu.grid(row=1, column=0)
+        age_option_describe.grid(row=1, column=1, sticky='wens')
+        weight_option_menu.grid(row=2, column=0)
+        weight_option_describe.grid(row=2, column=1, sticky='wens')
+        next_tree.grid(row=3, sticky='wens', columnspan=2)
 def man_checkbutton(*args):
     if man_choices.get() == 1:
         global gender_flag
@@ -167,9 +200,31 @@ next_tree.grid(row=3, sticky='wens', columnspan=2)
 Second Element.
 '''
 
+
+class SecondElement(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent, bg="#ff8282", width=250, height=180)
+        self.grid(row=1, column=0)
+
+
 count = -1
 athlete_flag = PAIR_LIST[0][0]
 count_field = 0
+
+
+second_element.grid_rowconfigure(0, minsize=60)
+second_element.grid_rowconfigure(1, minsize=60)
+second_element.grid_rowconfigure(2, minsize=60)
+second_element.grid_columnconfigure(0, minsize=250)
+
+opponent_first = tk.Label(second_element, bg='#a9c799', text='Початок')
+opponent_second = tk.Label(second_element, bg='#a9c799', text='Початок')
+battle_btn = tk.Button(second_element, bg='#db928f', text='В БІЙ',
+                       command=next_battle)
+
+opponent_first.grid(column=0, row=0, sticky='wens')
+battle_btn.grid(column=0, row=1, sticky='wens')
+opponent_second.grid(column=0, row=2, sticky='wens')
 
 
 def next_battle():
@@ -194,24 +249,26 @@ def next_battle():
         battle_btn.config(text='Кінець', state=tk.DISABLED)
 
 
-second_element.grid_rowconfigure(0, minsize=60)
-second_element.grid_rowconfigure(1, minsize=60)
-second_element.grid_rowconfigure(2, minsize=60)
-second_element.grid_columnconfigure(0, minsize=250)
-
-opponent_first = tk.Label(second_element, bg='#a9c799', text='Початок')
-opponent_second = tk.Label(second_element, bg='#a9c799', text='Початок')
-battle_btn = tk.Button(second_element, bg='#db928f', text='В БІЙ',
-                       command=next_battle)
-
-opponent_first.grid(column=0, row=0, sticky='wens')
-battle_btn.grid(column=0, row=1, sticky='wens')
-opponent_second.grid(column=0, row=2, sticky='wens')
-
-
 '''
 Third Element.
 '''
+
+
+class ThirdElement(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent, bg="#7d7373", width=250, height=180)
+        self.grid(row=2, column=0)
+
+
+third_element.grid_rowconfigure(0, minsize=30)
+third_element.grid_rowconfigure(1, minsize=150)
+third_element.grid_columnconfigure(0, minsize=250)
+
+current_battle = tk.Label(third_element, text='№ Поточного спаринга')
+back_button = tk.Button(third_element, bg='#db928f', text='Назад', command=previous_battle)
+
+current_battle.grid(row=0, column=0, sticky='wens')
+back_button.grid(row=1, column=0, sticky='wens')
 
 
 def previous_battle():
@@ -227,17 +284,6 @@ def previous_battle():
     except IndexError:
         back_button.config(text='Кінець', state=tk.DISABLED)
 
-
-third_element.grid_rowconfigure(0, minsize=30)
-third_element.grid_rowconfigure(1, minsize=150)
-third_element.grid_columnconfigure(0, minsize=250)
-
-current_battle = tk.Label(third_element, text='№ Поточного спаринга')
-back_button = tk.Button(third_element, bg='#db928f', text='Назад', command=previous_battle)
-
-current_battle.grid(row=0, column=0, sticky='wens')
-back_button.grid(row=1, column=0, sticky='wens')
-
 '''
 Fourth Element.
 Usual tree
@@ -245,9 +291,10 @@ Usual tree
 '''
 
 
-def add_winner(first_athlete, second_athlete):
-    if first_athlete['score'] == 1:
-        pass
+class FourthElement(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent, bg="#DCF4FF", width=550, height=540)
+        self.grid(row=0, column=1, rowspan=3)
 
 
 def get_tree(gender, age, weight):

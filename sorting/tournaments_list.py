@@ -9,6 +9,7 @@ CHECK_third = -1  # For a tournament bracket of 3 participants.
 CHECK_delete = 0  # To keep track of the index of the element we are removing.
 TREE = []  # Will be using in GUI.
 PAIR_LIST = []  # Will be using in pair_list.
+TRIPLE_SUPP = []  # Will be using for check winner in battle of triple.
 '''
 main_dict = {
     "Ж": {
@@ -344,8 +345,10 @@ def deleting_cross(data):
 # List creation function for outputting a list of pairs. And creating list for GUI.
 def make_pair_list():
     global TREE
+    global TRIPLE_SUPP
     pair_list = []  # Future list for pair_list.
     tree_with_cross = []  # Future list for tree.
+    triple_supp = []  # Will for check winner in triple fight.
     normal_dict = winner_of_pair_first(normalization())
     dict_wit_cross = deepcopy(normal_dict)
     normal_dict_re = deleting_cross(deepcopy(normal_dict))
@@ -359,13 +362,15 @@ def make_pair_list():
         dict_wit_cross = deepcopy(normal_dict)
         normal_dict_re = deleting_cross(deepcopy(normal_dict))
         troika_dict = winner_of_pair_in_third(ATHLETE_LIST_THIRD)
+
         '''
         Merging dictionaries into 1.
         '''
         for gender in troika_dict:
             for age_group in troika_dict[gender]:
                 for weight_group in troika_dict[gender][age_group]:
-                    dict_wit_cross[gender][age_group][weight_group] = deepcopy(troika_dict[gender][age_group][weight_group])
+                    dict_wit_cross[gender][age_group][weight_group]\
+                        = deepcopy(troika_dict[gender][age_group][weight_group])
                     '''
                     Changing the values of athletes in PAIR_LIST for 
                     more convenient use of this list together with TREE.
@@ -376,6 +381,7 @@ def make_pair_list():
                     normal_dict_re[gender][age_group][weight_group] = troika_dict[gender][age_group][weight_group]
         pair_list.append(deepcopy(normal_dict_re))
         tree_with_cross.append(dict_wit_cross)
+    TRIPLE_SUPP = deepcopy(tree_with_cross)
     TREE = tree_with_cross
     return pair_list
 
