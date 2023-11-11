@@ -71,10 +71,14 @@ class VersusWindow:
 
         define.grid(row=6, column=1)
 
+    # def run(self):
+    #     while self.is_open:
+    #         self.versus.update()
+    #     self.versus.mainloop()
+
     def run(self):
         while self.is_open:
             self.versus.update()
-        self.versus.mainloop()
 
     def close(self):
         self.is_open = False

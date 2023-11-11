@@ -17,8 +17,7 @@ class FirstElement(tk.Frame):
         self.woman_choices = tk.IntVar()
         self.man_choices = tk.IntVar()
 
-        self.woman_button = tk.Checkbutton(self, text="Ж", variable=self.woman_choices)
-        self.man_button = tk.Checkbutton(self, text="М", variable=self.man_choices)
+        self.gender_flag = tk.Label(self, bg='#a9c799', text="Стать")
 
         self.age_choice_menu = tk.Label(self, bg='#a9c799', text='Вік')
         self.weight_choice_menu = tk.Label(self, bg='#a9c799', text='Вага')
@@ -26,8 +25,7 @@ class FirstElement(tk.Frame):
         self.weight_option_describe = tk.Label(self, bg='#a9c799', text='Вагова категорія')
         self.next_tree = tk.Button(self, text='Наступне дерево')
 
-        self.man_button.grid(row=0, column=0)
-        self.woman_button.grid(row=0, column=1)
+        self.gender_flag.grid(row=0, column=0)
         self.age_choice_menu.grid(row=1, column=0)
         self.age_option_describe.grid(row=1, column=1, sticky='wens')
         self.weight_choice_menu.grid(row=2, column=0)
@@ -35,14 +33,12 @@ class FirstElement(tk.Frame):
         self.next_tree.grid(row=3, sticky='wens', columnspan=2)
 
     def actual_tree(self):
+        print(f"COUNT.value: {COUNT.value}")
+        print(f"PAIR_LIST[COUNT.value]: {PAIR_LIST[COUNT.value]}")
         if PAIR_LIST[COUNT.value][0]['gender'] == 'Ж':
-            print(1)
-            self.woman_choices.set(1)
-            self.man_choices.set(0)
+            self.gender_flag.config(text='Ж')
         else:
-            print(1)
-            self.man_choices.set(1)
-            self.woman_choices.set(0)
+            self.gender_flag.config(text='М')
         self.actual_age()
         self.weight_choice_menu.config(text=PAIR_LIST[COUNT.value][0]['weight'])
 

@@ -1,6 +1,7 @@
 import tkinter as tk
 from sorting.tournaments_list import PAIR_LIST
 from Window.MainWindow.tracking import COUNT
+from Window.MainWindow.first_frame_re import FirstElement
 from Window.MainWindow.fourth_frame import FourthElement
 from Window.versus_window import VersusWindow
 
@@ -15,6 +16,7 @@ class SecondElement(tk.Frame):
         self.count_field = 0
         self.first_frame = first_frame_instance
         self.fourth_element_instance = FourthElement(parent)
+        self.lottery = parent
 
     def create_widgets(self):
         self.grid_rowconfigure(0, minsize=60)
@@ -41,7 +43,7 @@ class SecondElement(tk.Frame):
             self.fourth_element_instance.get_tree(PAIR_LIST[count.value][0]['gender'],
                                                   PAIR_LIST[count.value][0]['birthday'],
                                                   PAIR_LIST[count.value][0]['weight'])
-            self.first_frame.actual_tree()
+            print(count.value)
 
             if self.athlete_flag['name'] == PAIR_LIST[count.value][0]['name']:
                 self.count_field += 1
@@ -50,3 +52,8 @@ class SecondElement(tk.Frame):
                 versus_window.run()
         except IndexError:
             self.battle_btn.config(text='Кінець', state=tk.DISABLED)
+        finally:
+            try:
+                self.first_frame.actual_tree()
+            except Exception as e:
+                print(f"Exception occurred: {e}")

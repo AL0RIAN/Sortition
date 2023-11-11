@@ -7,13 +7,13 @@ from Window.MainWindow.fourth_frame import FourthElement
 
 
 class ThirdElement(tk.Frame):
-    def __init__(self, parent, opponent_first, opponent_second):
+    def __init__(self, parent, opponent_first, opponent_second, first_frame_instance):
         super().__init__(parent, bg="#7d7373", width=250, height=180)
         self.grid(row=2, column=0)
         self.create_widgets()
         self.opponent_first = opponent_first
         self.opponent_second = opponent_second
-        self.first_frame = FirstElement(parent)
+        self.first_frame = first_frame_instance
         self.fourth_element_instance = FourthElement(parent)
 
     def create_widgets(self):
