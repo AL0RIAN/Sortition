@@ -1,7 +1,6 @@
 import tkinter as tk
 from sorting.tournaments_list import PAIR_LIST
 from Window.MainWindow.tracking import COUNT
-from Window.MainWindow.first_frame_re import FirstElement
 from Window.MainWindow.fourth_frame import FourthElement
 from Window.versus_window import VersusWindow
 
