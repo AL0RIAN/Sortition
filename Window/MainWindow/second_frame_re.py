@@ -43,7 +43,6 @@ class SecondElement(tk.Frame):
             self.fourth_element_instance.get_tree(PAIR_LIST[count.value][0]['gender'],
                                                   PAIR_LIST[count.value][0]['birthday'],
                                                   PAIR_LIST[count.value][0]['weight'])
-            print(count.value)
 
             if self.athlete_flag['name'] == PAIR_LIST[count.value][0]['name']:
                 self.count_field += 1
