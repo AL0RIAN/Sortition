@@ -1,5 +1,6 @@
 import tkinter as tk
 from import_window import *
+from main_window import starting
 
 '''
 First window in program.

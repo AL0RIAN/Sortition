@@ -1,6 +1,7 @@
 from IO.parser import *
 import tkinter as tk
 from tkinter import filedialog as fd
+from main_window import lottery
 
 '''
 Window in which we will download file to our program.
@@ -28,5 +29,9 @@ class ImportWindow:
     def run(self):
         self.import_frame.mainloop()
 
+
     def open_file(self):
         file_name = fd.askopenfilename()
+        self.import_frame.withdraw()  # Спрятать главное окно StartWindow, но не закрывать его
+        # lottery.mainloop()
+        self.import_frame.destroy()

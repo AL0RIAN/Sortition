@@ -19,7 +19,7 @@ class MainWindow:
         #                                     self.first_element.weight_choice_menu)
         self.second_element = SecondElement(self.lottery, self.first_element)
         self.third_element = ThirdElement(self.lottery, self.second_element.opponent_first,
-                                          self.second_element.opponent_second)
+                                          self.second_element.opponent_second, self.first_element)
         self.fourth_element = FourthElement(self.lottery)
 
     def run(self):

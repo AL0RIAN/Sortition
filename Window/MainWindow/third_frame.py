@@ -9,6 +9,7 @@ from Window.MainWindow.fourth_frame import FourthElement
 class ThirdElement(tk.Frame):
     def __init__(self, parent, opponent_first, opponent_second, first_frame_instance):
         super().__init__(parent, bg="#7d7373", width=250, height=180)
+        self.button_font = ('Times New Roman', 20)
         self.grid(row=2, column=0)
         self.create_widgets()
         self.opponent_first = opponent_first
@@ -17,15 +18,13 @@ class ThirdElement(tk.Frame):
         self.fourth_element_instance = FourthElement(parent)
 
     def create_widgets(self):
-        self.grid_rowconfigure(0, minsize=30)
-        self.grid_rowconfigure(1, minsize=150)
+        self.grid_rowconfigure(0, minsize=180)
         self.grid_columnconfigure(0, minsize=250)
 
-        self.current_battle = tk.Label(self, text='№ Поточного спаринга')
-        self.back_button = tk.Button(self, bg='#db928f', text='Назад', command=partial(self.previous_battle, COUNT))
+        self.back_button = tk.Button(self, bg='#db928f', text='Назад',
+                                     font=self.button_font, command=partial(self.previous_battle, COUNT))
 
-        self.current_battle.grid(row=0, column=0, sticky='wens')
-        self.back_button.grid(row=1, column=0, sticky='wens')
+        self.back_button.grid(row=0, column=0, sticky='wens')
 
     def previous_battle(self, count):
         try:

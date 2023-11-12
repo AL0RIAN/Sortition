@@ -347,8 +347,8 @@ def get_tree(gender, age, weight):
 '''
 Troika
 '''
-
-lottery.mainloop()
+def starting():
+    lottery.mainloop()
 
 
 #AGREEEEE

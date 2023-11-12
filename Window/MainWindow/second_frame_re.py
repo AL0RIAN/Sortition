@@ -9,6 +9,7 @@ class SecondElement(tk.Frame):
     # def __init__(self, parent, age_option, weight_option):
     def __init__(self, parent, first_frame_instance):
         super().__init__(parent, bg="#ff8282", width=250, height=180)
+        self.button_font = ('Times New Roman', 14)
         self.grid(row=1, column=0)
         self.create_widgets()
         self.athlete_flag = PAIR_LIST[0][0]
@@ -23,9 +24,10 @@ class SecondElement(tk.Frame):
         self.grid_rowconfigure(2, minsize=60)
         self.grid_columnconfigure(0, minsize=250)
 
-        self.opponent_first = tk.Label(self, bg='#a9c799', text='Початок')
-        self.battle_btn = tk.Button(self, bg='#db928f', text='В БІЙ', command=lambda: self.next_battle(COUNT))
-        self.opponent_second = tk.Label(self, bg='#a9c799', text='Початок')
+        self.opponent_first = tk.Label(self, bg='#a9c799', text='Початок', font=self.button_font)
+        self.battle_btn = tk.Button(self, bg='#db928f', text='В БІЙ',
+                                    font=self.button_font, command=lambda: self.next_battle(COUNT))
+        self.opponent_second = tk.Label(self, bg='#a9c799', text='Початок', font=self.button_font)
 
         self.opponent_first.grid(column=0, row=0, sticky='wens')
         self.battle_btn.grid(column=0, row=1, sticky='wens')
