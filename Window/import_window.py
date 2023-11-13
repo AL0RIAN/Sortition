@@ -25,7 +25,7 @@ class ImportWindow:
     def create_widgets(self):
         button_font = ('Times New Roman', 16)
         decoration = tk.Label(self.import_frame, text='武术', font=('Times New Roman', 260), fg='#9BB6FF', bg='#F6FFFE')
-        choose_btn = tk.Button(self.import_frame, text='Вибрати файл', bg='#FFFFFF', fg='#000000', width=20, height=3,
+        choose_btn = tk.Button(self.import_frame, text='Вибрати файл', bg='#F6FFFE', fg='#000000', width=11, height=3,
                                command=self.open_file, relief=tk.FLAT, font=button_font)
 
         decoration.place(relx=0.5, rely=0.5, anchor="center")

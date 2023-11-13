@@ -8,6 +8,7 @@ class FourthElement(tk.Frame):
         super().__init__(parent, bg="#DCF4FF", width=550, height=540)
         self.grid(row=0, column=1, rowspan=3)
         self.button_font = ('Times New Roman', 10)
+        self.button_font_triple = ('Times New Roman', 16)
 
     def make_column(self, gender, age, weight, number_cycle, number_field, n_column):
         for i in range(number_cycle):
@@ -52,9 +53,9 @@ class FourthElement(tk.Frame):
                 self.grid_rowconfigure(i, minsize=40)
                 self.grid_columnconfigure(i, minsize=137)
                 athlete1 = tk.Label(self, text=TREE[i + 1][gender][age][weight][0]["name"], bg="#DCF4FF",
-                                    font=self.button_font)
+                                    font=self.button_font_triple)
                 athlete2 = tk.Label(self, text=TREE[i + 1][gender][age][weight][1]["name"], bg="#DCF4FF",
-                                    font=self.button_font)
+                                    font=self.button_font_triple)
                 if TRIPLE_SUPP[i + 1][gender][age][weight][0]['score'] > TRIPLE_SUPP[i + 1][gender][age][weight][1][
                     "score"]:
                     athlete1.config(fg='green')
