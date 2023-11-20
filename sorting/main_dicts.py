@@ -1,8 +1,11 @@
+import Window.MainWindow.tracking
 from IO.parser import *
 from datetime import date
 from datetime import datetime
 from random import shuffle
 from copy import copy
+import shared
+from Window.MainWindow.tracking import ADDRESS_LINK
 
 
 # Declaring Dictionaries.
@@ -431,7 +434,8 @@ def adding_is_circle_trinity(athletes):
 
 # A function that does distribute the participants in a dictionary and parsed information.
 def parcing():
-    data = Parser(file_name=r"C:\Users\megat\project\sortition\Попередня Запоріжжя reborn.docx").result()
+    # data = Parser(file_name=r"C:\Users\megat\project\sortition\Попередня Запоріжжя reborn.docx").result()
+    data = Parser(file_name=shared.read_variable()).result()
     full_list = []
     for categories in range(len(data["participants"])):
         full_list = packaging(data, categories)

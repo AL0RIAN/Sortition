@@ -4,6 +4,11 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from tkinter import filedialog as fd
 from MainWindow.main_window import MainWindow
+from Window.MainWindow.tracking import ADDRESS_LINK
+from sorting.tournaments_list import PAIR_LIST
+import shared
+from sorting.tournaments_list import make_pair_list
+from sorting.tournaments_list import pair_list_cleaner
 
 '''
 Window in which we will download file to our program.
@@ -35,8 +40,12 @@ class ImportWindow:
         self.import_frame.mainloop()
 
     def open_file(self):
-        file_name = fd.askopenfilename()
-        print(file_name)
+        # global ADDRESS_LINK
+        shared.write_variable(fd.askopenfilename())
+        # print(ADDRESS_LINK)
+        # sth_list = make_pair_list()
+        # PAIR_LIST = pair_list_cleaner(sth_list)
+        print(PAIR_LIST)
         self.import_frame.withdraw()  # Спрятать главное окно StartWindow, но не закрывать его
         test = MainWindow()
         test.run()

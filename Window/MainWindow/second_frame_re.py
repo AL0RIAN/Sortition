@@ -41,9 +41,6 @@ class SecondElement(tk.Frame):
             self.opponent_second['text'] = PAIR_LIST[count.value][1]['name']
             PAIR_LIST[count.value][0]['score'] = 0
             PAIR_LIST[count.value][1]['score'] = 0
-            self.fourth_element_instance.get_tree(PAIR_LIST[count.value][0]['gender'],
-                                                  PAIR_LIST[count.value][0]['birthday'],
-                                                  PAIR_LIST[count.value][0]['weight'])
 
             if self.athlete_flag['name'] == PAIR_LIST[count.value][0]['name']:
                 self.count_field += 1
@@ -54,6 +51,9 @@ class SecondElement(tk.Frame):
             self.battle_btn.config(text='Кінець', state=tk.DISABLED)
         finally:
             try:
+                self.fourth_element_instance.get_tree(PAIR_LIST[count.value][0]['gender'],
+                                                      PAIR_LIST[count.value][0]['birthday'],
+                                                      PAIR_LIST[count.value][0]['weight'])
                 self.first_frame.actual_tree()
             except Exception as e:
                 print(f"Exception occurred: {e}")

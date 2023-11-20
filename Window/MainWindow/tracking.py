@@ -8,3 +8,4 @@ class SharedVariable:
 
 
 COUNT = SharedVariable(-1)
+ADDRESS_LINK = ""
