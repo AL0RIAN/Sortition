@@ -3,6 +3,7 @@ from sorting.tournaments_list import PAIR_LIST
 from Window.MainWindow.tracking import COUNT
 from Window.MainWindow.fourth_frame import FourthElement
 from Window.versus_window import VersusWindow
+import traceback
 
 
 class SecondElement(tk.Frame):
@@ -33,6 +34,30 @@ class SecondElement(tk.Frame):
         self.battle_btn.grid(column=0, row=1, sticky='wens')
         self.opponent_second.grid(column=0, row=2, sticky='wens')
 
+    # def next_battle(self, count):
+    #     try:
+    #         with count.lock:
+    #             count.value += 1
+    #         self.opponent_first['text'] = PAIR_LIST[count.value][0]['name']
+    #         self.opponent_second['text'] = PAIR_LIST[count.value][1]['name']
+    #         PAIR_LIST[count.value][0]['score'] = 0
+    #         PAIR_LIST[count.value][1]['score'] = 0
+    #
+    #         if self.athlete_flag['name'] == PAIR_LIST[count.value][0]['name']:
+    #             self.count_field += 1
+    #         if not count.value == -1:
+    #             versus_window = VersusWindow(PAIR_LIST[count.value][0], PAIR_LIST[count.value][1], self.count_field)
+    #             versus_window.run()
+    #     except IndexError:
+    #         self.battle_btn.config(text='Кінець', state=tk.DISABLED)
+    #     finally:
+    #         try:
+    #             self.fourth_element_instance.get_tree(PAIR_LIST[count.value][0]['gender'],
+    #                                                   PAIR_LIST[count.value][0]['birthday'],
+    #                                                   PAIR_LIST[count.value][0]['weight'])
+    #             self.first_frame.actual_tree()
+    #         except Exception as e:
+    #             print(f"Exception occurred: {e}")
     def next_battle(self, count):
         try:
             with count.lock:
@@ -56,4 +81,5 @@ class SecondElement(tk.Frame):
                                                       PAIR_LIST[count.value][0]['weight'])
                 self.first_frame.actual_tree()
             except Exception as e:
-                print(f"Exception occurred: {e}")
+                print(f"Exception occurred in next_battle: {e}")
+                traceback.print_exc()

@@ -4,6 +4,7 @@ from sorting.tournaments_list import PAIR_LIST
 from Window.MainWindow.tracking import COUNT
 from Window.MainWindow.first_frame_re import FirstElement
 from Window.MainWindow.fourth_frame import FourthElement
+import traceback
 
 
 class ThirdElement(tk.Frame):
@@ -26,6 +27,20 @@ class ThirdElement(tk.Frame):
 
         self.back_button.grid(row=0, column=0, sticky='wens')
 
+    # def previous_battle(self, count):
+    #     try:
+    #         if count.value == 0:
+    #             return
+    #         with count.lock:
+    #             count.value -= 1
+    #         self.opponent_first['text'] = PAIR_LIST[count.value][0]['name']
+    #         self.opponent_second['text'] = PAIR_LIST[count.value][1]['name']
+    #         self.fourth_element_instance.get_tree(PAIR_LIST[count.value][0]['gender'],
+    #                                               PAIR_LIST[count.value][0]['birthday'],
+    #                                               PAIR_LIST[count.value][0]['weight'])
+    #         self.first_frame.actual_tree()
+    #     except IndexError:
+    #         self.back_button.config(text='Кінець', state=tk.DISABLED)
     def previous_battle(self, count):
         try:
             if count.value == 0:
@@ -40,3 +55,6 @@ class ThirdElement(tk.Frame):
             self.first_frame.actual_tree()
         except IndexError:
             self.back_button.config(text='Кінець', state=tk.DISABLED)
+        except Exception as e:
+            print(f"Unexpected error in previous_battle: {e}")
+            traceback.print_exc()

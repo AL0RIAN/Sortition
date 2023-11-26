@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 from tkinter import filedialog as fd
-from MainWindow.main_window import MainWindow
+from Window.MainWindow.main_window import MainWindow
 from Window.MainWindow.tracking import ADDRESS_LINK
 from sorting.tournaments_list import PAIR_LIST
 import shared
@@ -45,7 +45,6 @@ class ImportWindow:
         # print(ADDRESS_LINK)
         # sth_list = make_pair_list()
         # PAIR_LIST = pair_list_cleaner(sth_list)
-        print(PAIR_LIST)
         self.import_frame.withdraw()  # Спрятать главное окно StartWindow, но не закрывать его
         test = MainWindow()
         test.run()

@@ -1,3 +1,3 @@
-from GUI import *
+from Window.start_window import *
 
-root.mainloop()
+starting = StartWindow()
