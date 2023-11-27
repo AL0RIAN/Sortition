@@ -22,6 +22,8 @@ class StartWindow:
         self.create_widgets()
         self.run()
 
+        self.start.protocol("WM_DELETE_WINDOW", self.on_closing)
+
     # def create_widgets(self):
     #     continue_btn = tk.Button(self.start, text='Продовжити', bg='#DCF4FF')
     #     start_btn = tk.Button(self.start, text='Новий турнір', bg='#DCF4FF', command=self.new_tournament)
@@ -44,6 +46,10 @@ class StartWindow:
 
     def run(self):
         self.start.mainloop()
+
+    def on_closing(self):
+        self.start.destroy()
+        sys.exit(0)
 
     def new_tournament(self):
         importing = ImportWindow()

@@ -1,5 +1,6 @@
 from IO.parser import *
 import tkinter as tk
+import sys
 from tkinter import ttk
 from PIL import Image, ImageTk
 from tkinter import filedialog as fd
@@ -27,6 +28,8 @@ class ImportWindow:
 
         self.create_widgets()
 
+        self.import_frame.protocol("WM_DELETE_WINDOW", self.on_closing)
+
     def create_widgets(self):
         button_font = ('Times New Roman', 16)
         decoration = tk.Label(self.import_frame, text='武术', font=('Times New Roman', 260), fg='#9BB6FF', bg='#F6FFFE')
@@ -38,6 +41,10 @@ class ImportWindow:
 
     def run(self):
         self.import_frame.mainloop()
+
+    def on_closing(self):
+        self.import_frame.destroy()
+        sys.exit(0)
 
     def open_file(self):
         # global ADDRESS_LINK

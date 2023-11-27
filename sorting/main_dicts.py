@@ -436,6 +436,7 @@ def adding_is_circle_trinity(athletes):
 def parcing():
     # data = Parser(file_name=r"C:\Users\megat\project\sortition\Попередня Запоріжжя reborn.docx").result()
     data = Parser(file_name=shared.read_variable()).result()
+    # data = Parser(file_name='Попередня Запоріжжя reborn.docx').result()
     full_list = []
     for categories in range(len(data["participants"])):
         full_list = packaging(data, categories)

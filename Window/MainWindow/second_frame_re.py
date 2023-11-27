@@ -60,8 +60,10 @@ class SecondElement(tk.Frame):
     #             print(f"Exception occurred: {e}")
     def next_battle(self, count):
         try:
-            with count.lock:
-                count.value += 1
+            # Удалите следующую строку
+            # with count.lock:
+            # И просто увеличьте count.value
+            count.value += 1
             self.opponent_first['text'] = PAIR_LIST[count.value][0]['name']
             self.opponent_second['text'] = PAIR_LIST[count.value][1]['name']
             PAIR_LIST[count.value][0]['score'] = 0
