@@ -131,7 +131,7 @@ class ExportPairsDOCX:
         else:
             # Else base.docx is in the same folder as this file,
             # but because this file is imported, you have to do this
-            self.__document = Document(os_path.abspath("export\\base.docx"))
+            self.__document = Document(os_path.abspath(r"IO\\export\\base.docx"))
         self.start_date = start_date
         self.end_date = end_date
         self.__table = self.__document.tables[0]  # Only one table is needed
