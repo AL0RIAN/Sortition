@@ -5,6 +5,9 @@ from docx.shared import Pt, Cm  # Points, Centimeters
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT  # Paragraph alignment
 from docx.oxml.shared import OxmlElement, qn  # Magic
 from os import path as os_path  # Working with external files
+import os
+import tempfile
+import shutil
 
 '''
 Sample data.
@@ -255,20 +258,46 @@ class ExportPairsDOCX:
     #
     #     self.__data["pairs"].append(new_pair)
 
+    # def export(self, path="") -> None:
+    #     """
+    #     Congratulations! You're exporting a file. Leave path empty to export in root folder
+    #
+    #     :param path: Path where to save export file
+    #     :return: None
+    #     """
+    #     self.__print_dates()
+    #     self.__print_table()
+    #     if path != "":
+    #         self.__document.save(os_path.abspath(f"{path}/Состав пар турнир {self.start_date} - {self.end_date}.docx"))
+    #     else:
+    #         self.__document.save(f"Состав пар турнир {self.start_date} - {self.end_date}.docx")
+    #
+    #     print("File created.")
+
+
     def export(self, path="") -> None:
         """
-        Congratulations! You're exporting a file. Leave path empty to export in root folder
+        Congratulations! You're exporting a file. Leave path empty to export in the root folder.
 
-        :param path: Path where to save export file
+        :param path: Path where to save the export file
         :return: None
         """
         self.__print_dates()
         self.__print_table()
-        if path != "":
-            self.__document.save(os_path.abspath(f"{path}/Состав пар турнир {self.start_date} - {self.end_date}.docx"))
-        else:
-            self.__document.save(f"Состав пар турнир {self.start_date} - {self.end_date}.docx")
 
-        print("File created.")
+        # Specify the file name with underscores in the date portion
+        file_name = f"Состав пар турнир {self.start_date.replace('/', '_')} - {self.end_date.replace('/', '_')}.docx"
+
+        # Specify the destination folder (path parameter or root folder if empty)
+        destination_folder = path if path else os.path.expanduser("~")
+
+        # Combine the folder and file name to get the full file path
+        file_path = os.path.join(destination_folder, file_name)
+
+        try:
+            self.__document.save(file_path)
+            print("File created at:", file_path)
+        except Exception as e:
+            print(f"Error saving the document: {e}")
 
 # TODO: ExportRefereeProtocolDOCX

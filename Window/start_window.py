@@ -37,7 +37,7 @@ class StartWindow:
         button_height = 2
 
         continue_btn = tk.Button(self.start, text='Продовжити', bg='#D4FFC7', font=button_font, width=button_width,
-                                 height=button_height)
+                                 height=button_height, state=tk.DISABLED)
         start_btn = tk.Button(self.start, text='Новий турнір', bg='#FFC7C7', command=self.new_tournament,
                               font=button_font, width=button_width, height=button_height)
 

@@ -1,5 +1,6 @@
 import tkinter as tk
 from sorting.tournaments_list import TRIPLE_SUPP
+import shared_triple_supp
 
 supporting_tree = {}
 
@@ -81,17 +82,21 @@ class VersusWindow:
             self.versus.update()
 
     def close(self):
+        TRIPLE_SUPP = shared_triple_supp.read_variable()
         self.is_open = False
         gender_flag = self.first_athlete['gender']
         birthday_flag = self.first_athlete['birthday']
         weight_flag = self.first_athlete['weight']
+        print(TRIPLE_SUPP)
         if self.first_athlete['is_circle_trinity'] == 1:
             if self.first_athlete['score'] > self.second_athlete['score']:
                 TRIPLE_SUPP[self.count][gender_flag][birthday_flag][weight_flag][0]['score']\
                     = self.first_athlete['score']
+                shared_triple_supp.write_variable(TRIPLE_SUPP)
             else:
                 TRIPLE_SUPP[self.count][gender_flag][birthday_flag][weight_flag][1]['score']\
                     = self.second_athlete['score']
+                shared_triple_supp.write_variable(TRIPLE_SUPP)
         self.versus.destroy()
 
     def adding(self, button_number, score):

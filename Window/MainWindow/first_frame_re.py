@@ -1,6 +1,7 @@
 import tkinter as tk
 from sorting.tournaments_list import PAIR_LIST
 from Window.MainWindow.tracking import COUNT
+import shared_pair_list
 
 
 class FirstElement(tk.Frame):
@@ -29,6 +30,7 @@ class FirstElement(tk.Frame):
         self.current_battle.grid(row=3, sticky='wens')
 
     def actual_tree(self):
+        PAIR_LIST = shared_pair_list.read_variable()
         if PAIR_LIST[COUNT.value][0]['gender'] == 'Ж':
             self.gender_flag.config(text='Ж')
         else:
@@ -38,4 +40,5 @@ class FirstElement(tk.Frame):
         self.current_battle.config(text=f'Спарінг №{COUNT.value + 1}')
 
     def actual_age(self):
+        PAIR_LIST = shared_pair_list.read_variable()
         self.age_choice_menu.config(text=PAIR_LIST[COUNT.value][0]['birthday'])

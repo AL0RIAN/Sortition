@@ -1,5 +1,8 @@
+import shared_pair_list
+import shared_tree
 from sorting.main_dicts import normalization
 from sorting.main_dicts import ATHLETE_LIST_THIRD
+import shared_triple_supp
 from copy import copy
 from copy import deepcopy
 
@@ -382,7 +385,9 @@ def make_pair_list():
         pair_list.append(deepcopy(normal_dict_re))
         tree_with_cross.append(dict_wit_cross)
     TRIPLE_SUPP = deepcopy(tree_with_cross)
+    shared_triple_supp.write_variable(TRIPLE_SUPP)
     TREE = tree_with_cross
+    shared_tree.write_variable(TREE)
     return pair_list
 
 
@@ -433,8 +438,8 @@ def pair_list_cleaner(pair_list):
     return check_list
 
 
-sth_list = make_pair_list()
-PAIR_LIST = pair_list_cleaner(sth_list)
+# sth_list = make_pair_list()
+# PAIR_LIST = pair_list_cleaner(sth_list)
 # Rasfuma
 
 

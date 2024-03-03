@@ -1,6 +1,8 @@
 import tkinter as tk
 from sorting.tournaments_list import TREE
 from sorting.tournaments_list import TRIPLE_SUPP
+import shared_triple_supp
+import shared_tree
 
 
 class FourthElement(tk.Frame):
@@ -11,6 +13,7 @@ class FourthElement(tk.Frame):
         self.button_font_triple = ('Times New Roman', 16)
 
     def make_column(self, gender, age, weight, number_cycle, number_field, n_column):
+        TREE = shared_tree.read_variable()
         for i in range(number_cycle):
             flag = 0 if i % 2 == 0 else 1
             try:
@@ -22,6 +25,8 @@ class FourthElement(tk.Frame):
             athlete.grid(column=n_column, row=i * number_field, rowspan=number_field)
 
     def get_tree(self, gender, age, weight):
+        TREE = shared_tree.read_variable()
+        TRIPLE_SUPP = shared_triple_supp.read_variable()
         for child in self.winfo_children():
             child.destroy()
 

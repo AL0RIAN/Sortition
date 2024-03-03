@@ -2,7 +2,9 @@ import tkinter as tk
 from tkcalendar import Calendar
 from tkinter import filedialog
 from IO.export.export_docx import ExportPairsDOCX
+import os
 from sorting.tournaments_list import PAIR_LIST
+import shared_pair_list
 
 class StartEndFrame:
     def __init__(self):
@@ -34,8 +36,11 @@ class StartEndFrame:
         start_value = self.start_cal.get_date()
         end_value = self.end_cal.get_date()
         folder_path = filedialog.askdirectory()
-        ExportPairsDOCX(r"start_value", r"end_value", PAIR_LIST).export(folder_path)
+        folder_path = folder_path.replace("/", "\\")
+        os.makedirs(folder_path, exist_ok=True)
+        ExportPairsDOCX(str(start_value), str(end_value), shared_pair_list.read_variable()).export(folder_path)
         self.start.destroy()
 
     def start_end_s(self):
         self.start.mainloop()
+

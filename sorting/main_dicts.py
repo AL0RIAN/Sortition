@@ -5,6 +5,11 @@ from datetime import datetime
 from random import shuffle
 from copy import copy
 import shared
+
+from sorting.tournaments_list import *
+# from sorting.tournaments_list import make_pair_list
+# from sorting.tournaments_list import pair_list_cleaner
+
 from Window.MainWindow.tracking import ADDRESS_LINK
 
 

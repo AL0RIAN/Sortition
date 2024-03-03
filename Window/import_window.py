@@ -4,8 +4,9 @@ from PIL import Image, ImageTk
 from tkinter import filedialog as fd
 from Window.MainWindow.main_window import MainWindow
 from Window.start_end_date import StartEndFrame
-from IO.export.export_docx import ExportPairsDOCX
+from sorting.tournaments_list import *
 import shared
+import shared_pair_list
 '''
 Window in which we will download file to our program.
 '''
@@ -112,6 +113,9 @@ class ImportWindow:
 
     def open_file(self):
         shared.write_variable(fd.askopenfilename())
+        sth_list = make_pair_list()
+        PAIR_LIST = pair_list_cleaner(sth_list)
+        shared_pair_list.write_variable(PAIR_LIST)
 
     def start_sortition(self):
         self.import_frame.withdraw()
