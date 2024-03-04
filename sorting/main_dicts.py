@@ -1,8 +1,16 @@
+import Window.MainWindow.tracking
 from IO.parser import *
 from datetime import date
 from datetime import datetime
 from random import shuffle
 from copy import copy
+import shared
+
+from sorting.tournaments_list import *
+# from sorting.tournaments_list import make_pair_list
+# from sorting.tournaments_list import pair_list_cleaner
+
+from Window.MainWindow.tracking import ADDRESS_LINK
 
 
 # Declaring Dictionaries.
@@ -374,7 +382,7 @@ def to_actual_data(data):
     for gender in data:
         for age in copy(data[gender]):
             for weight in copy(data[gender][age]):
-
+                adding_is_circle_trinity(data[gender][age][weight])
                 '''
                 Deleting empty part of main dictionary.
                 '''
@@ -418,9 +426,22 @@ def to_actual_data(data):
                 ATHLETE_LIST_THIRD[gender].pop(age)
 
 
+'''
+Add flag of triple and score for battle.
+'''
+
+
+def adding_is_circle_trinity(athletes):
+    for people in athletes:
+        people["is_circle_trinity"] = False
+        people["score"] = 0
+
+
 # A function that does distribute the participants in a dictionary and parsed information.
 def parcing():
-    data = Parser(file_name=r"C:\Users\megat\project\sortition\Попередня Запоріжжя reborn.docx").result()
+    # data = Parser(file_name=r"C:\Users\megat\project\sortition\Попередня Запоріжжя reborn.docx").result()
+    data = Parser(file_name=shared.read_variable()).result()
+    # data = Parser(file_name='Попередня Запоріжжя reborn.docx').result()
     full_list = []
     for categories in range(len(data["participants"])):
         full_list = packaging(data, categories)

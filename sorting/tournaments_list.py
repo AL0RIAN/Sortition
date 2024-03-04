@@ -1,5 +1,8 @@
+import shared_pair_list
+import shared_tree
 from sorting.main_dicts import normalization
 from sorting.main_dicts import ATHLETE_LIST_THIRD
+import shared_triple_supp
 from copy import copy
 from copy import deepcopy
 
@@ -9,6 +12,7 @@ CHECK_third = -1  # For a tournament bracket of 3 participants.
 CHECK_delete = 0  # To keep track of the index of the element we are removing.
 TREE = []  # Will be using in GUI.
 PAIR_LIST = []  # Will be using in pair_list.
+TRIPLE_SUPP = []  # Will be using for check winner in battle of triple.
 '''
 main_dict = {
     "Ж": {
@@ -219,18 +223,35 @@ def winner_of_pair_later(data):
                             first_list.append(data[gender][age_group][weight_group][pair_of_athletes][0])
                             pair_of_athletes += 1
                             continue
+                        #Old version of PAIR_LIST
+                        # if data[gender][age_group][weight_group][pair_of_athletes][0] != "-" and\
+                        #         data[gender][age_group][weight_group][pair_of_athletes][1] != "-":
+                        #     first_list.append(f"Победитель пары {CHECK}")
+                        #     CHECK += 1
+                        #     pair_of_athletes += 1
+                        #     continue
                         if data[gender][age_group][weight_group][pair_of_athletes][0] != "-" and\
                                 data[gender][age_group][weight_group][pair_of_athletes][1] != "-":
-                            first_list.append(f"Победитель пары {CHECK}")
+                            data[gender][age_group][weight_group][pair_of_athletes][0]['name'] = f"Победитель пары {CHECK}"
+                            first_list.append(data[gender][age_group][weight_group][pair_of_athletes][0])
                             CHECK += 1
                             pair_of_athletes += 1
                             continue
-                        if type(data[gender][age_group][weight_group][pair_of_athletes][0]) == str and\
-                                type(data[gender][age_group][weight_group][pair_of_athletes][0]) == str:
-                            first_list.append(f"Победитель пары {CHECK}")
-                            CHECK += 1
-                            pair_of_athletes += 1
-                            continue
+                        # Old version of PAIR_LIST
+                        # if type(data[gender][age_group][weight_group][pair_of_athletes][0]) == str and\
+                        #         type(data[gender][age_group][weight_group][pair_of_athletes][0]) == str:
+                        #     first_list.append(f"Победитель пары {CHECK}")
+                        #     CHECK += 1
+                        #     pair_of_athletes += 1
+                        #     continue
+                        # Right now, useless part of code.
+                        # if type(data[gender][age_group][weight_group][pair_of_athletes][0]) == str and\
+                        #         type(data[gender][age_group][weight_group][pair_of_athletes][0]) == str:
+                        #     data[gender][age_group][weight_group][pair_of_athletes][0]['name'] = f"Победитель пары {CHECK}"
+                        #     first_list.append(data[gender][age_group][weight_group][pair_of_athletes][0])
+                        #     CHECK += 1
+                        #     pair_of_athletes += 1
+                        #     continue
                     second_list.append(copy(first_list))
                     first_list.clear()
                 data[gender][age_group].update({str(weight_group): list(copy(second_list))})
@@ -258,14 +279,23 @@ def winner_of_pair_in_third(data_third):
             for weight in copy_of_data[gender][age]:
                 if CHECK_third == 0:
                     new_data[gender] = copy_of_data[gender]
+                    changing_is_circle_trinity(new_data[gender][age][weight])
                     new_data[gender][age][weight].pop(2)
                 if CHECK_third == 1:
                     new_data[gender] = copy_of_data[gender]
+                    changing_is_circle_trinity(new_data[gender][age][weight])
                     new_data[gender][age][weight].pop(1)
                 if CHECK_third == 2:
                     new_data[gender] = copy_of_data[gender]
+                    changing_is_circle_trinity(new_data[gender][age][weight])
                     new_data[gender][age][weight].pop(0)
     return new_data
+
+
+def changing_is_circle_trinity(athletes):
+    for people in athletes:
+        people["is_circle_trinity"] = True
+
 
 
 # Determining the list of pairs from the general list of the tournament participant.
@@ -318,8 +348,10 @@ def deleting_cross(data):
 # List creation function for outputting a list of pairs. And creating list for GUI.
 def make_pair_list():
     global TREE
+    global TRIPLE_SUPP
     pair_list = []  # Future list for pair_list.
     tree_with_cross = []  # Future list for tree.
+    triple_supp = []  # Will for check winner in triple fight.
     normal_dict = winner_of_pair_first(normalization())
     dict_wit_cross = deepcopy(normal_dict)
     normal_dict_re = deleting_cross(deepcopy(normal_dict))
@@ -333,13 +365,15 @@ def make_pair_list():
         dict_wit_cross = deepcopy(normal_dict)
         normal_dict_re = deleting_cross(deepcopy(normal_dict))
         troika_dict = winner_of_pair_in_third(ATHLETE_LIST_THIRD)
+
         '''
         Merging dictionaries into 1.
         '''
         for gender in troika_dict:
             for age_group in troika_dict[gender]:
                 for weight_group in troika_dict[gender][age_group]:
-                    dict_wit_cross[gender][age_group][weight_group] = deepcopy(troika_dict[gender][age_group][weight_group])
+                    dict_wit_cross[gender][age_group][weight_group]\
+                        = deepcopy(troika_dict[gender][age_group][weight_group])
                     '''
                     Changing the values of athletes in PAIR_LIST for 
                     more convenient use of this list together with TREE.
@@ -350,7 +384,10 @@ def make_pair_list():
                     normal_dict_re[gender][age_group][weight_group] = troika_dict[gender][age_group][weight_group]
         pair_list.append(deepcopy(normal_dict_re))
         tree_with_cross.append(dict_wit_cross)
+    TRIPLE_SUPP = deepcopy(tree_with_cross)
+    shared_triple_supp.write_variable(TRIPLE_SUPP)
     TREE = tree_with_cross
+    shared_tree.write_variable(TREE)
     return pair_list
 
 
@@ -369,9 +406,13 @@ def pair_list_cleaner(pair_list):
                         '''
                         Creating a complete list of couples.
                         '''
+                        # need for correct GUI work
+                        item_list = []
+                        item_list.append(item)
                         if len(item) != 0:
                             if type(item) == list:
-                                for items in tournament_iterations[gender][age_group][weight_group]:
+                                # for items in tournament_iterations[gender][age_group][weight_group]:
+                                for items in item_list:
                                     check_list.append(items)
                                     continue
                                 continue
@@ -397,10 +438,8 @@ def pair_list_cleaner(pair_list):
     return check_list
 
 
-sth_list = make_pair_list()
-PAIR_LIST = pair_list_cleaner(sth_list)
-print(TREE)
-print(PAIR_LIST)
+# sth_list = make_pair_list()
+# PAIR_LIST = pair_list_cleaner(sth_list)
 # Rasfuma
 
 

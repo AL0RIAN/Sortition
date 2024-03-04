@@ -5,6 +5,9 @@ from docx.shared import Pt, Cm  # Points, Centimeters
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT  # Paragraph alignment
 from docx.oxml.shared import OxmlElement, qn  # Magic
 from os import path as os_path  # Working with external files
+import os
+import tempfile
+import shutil
 
 '''
 Sample data.
@@ -116,14 +119,10 @@ class Pair:
 class ExportPairsDOCX:
     """Main DOCX export class, that converts parsed info into DOCX couples file."""
 
-    __DEFAULT_DATA = {
-        "start-date": "",
-        "end-date": "",
-        "pairs": []
-    }
+    __DEFAULT_DATA = []
 
     def __init__(self, start_date: str = "{{start-date}}", end_date: str = "{{end-date}}",
-                 data: dict = __DEFAULT_DATA):
+                 data: list = __DEFAULT_DATA):
         """
 
         :param start_date: The day tournament is starting
@@ -135,7 +134,7 @@ class ExportPairsDOCX:
         else:
             # Else base.docx is in the same folder as this file,
             # but because this file is imported, you have to do this
-            self.__document = Document(os_path.abspath("export\\base.docx"))
+            self.__document = Document(os_path.abspath(r"IO\\export\\base.docx"))
         self.start_date = start_date
         self.end_date = end_date
         self.__table = self.__document.tables[0]  # Only one table is needed
@@ -163,7 +162,7 @@ class ExportPairsDOCX:
         """
         count = 1  # Left table column
 
-        for pair in self.__data["pairs"]:
+        for pair in self.__data:
             row = self.__table.add_row()
             row.height = Cm(0.6)
             row_cells = row.cells
@@ -173,30 +172,36 @@ class ExportPairsDOCX:
             row_cells[0].paragraphs[0].runs[0].font.size = Pt(10)
             row_cells[0].paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 
-            row_cells[1].text = f"{pair['age-category']} лет\n{pair['weight-category']} кг"
+            if (type(pair[0]) is not str): row_cells[1].text = f"{pair[0]['birthday']} лет\n{pair[0]['weight']} кг"
+            else: row_cells[1].text = ""
             row_cells[1].paragraphs[0].runs[0].font.bold = True
             row_cells[1].paragraphs[0].runs[0].font.size = Pt(9)
             row_cells[1].paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
 
             '''RED'''
-            row_cells[2].text = f"{pair['red']['last-name']} {pair['red']['first-name']}"
+            if (type(pair[0]) is not str): row_cells[2].text = f"{pair[1]['name']}"
+            else: row_cells[2].text = pair[0]
             row_cells[2].paragraphs[0].runs[0].font.size = Pt(10)
             row_cells[2].paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
 
-            row_cells[3].text = pair['red']['club']
+            if (type(pair[0]) is not str): row_cells[3].text = pair[1]['club']
+            else: row_cells[3].text = ""
             row_cells[3].paragraphs[0].runs[0].font.size = Pt(9)
             row_cells[3].paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 
-            row_cells[4].text = "Кругов." if pair['is-circle-trinity'] else ""
+            if (type(pair[0]) is not str): row_cells[4].text = "Кругов." if pair[0]['is_circle_trinity'] else ""
+            else: row_cells[4].text = ""
             row_cells[4].paragraphs[0].runs[0].font.bold = True
             row_cells[4].paragraphs[0].runs[0].font.size = Pt(8)
             row_cells[4].paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 
             '''BLUE'''
-            row_cells[5].text = f"{pair['blue']['last-name']} {pair['blue']['first-name']}"
+            if (type(pair[0]) is not str): row_cells[5].text = f"{pair[0]['name']}"
+            else: row_cells[5].text = pair[1]
             row_cells[5].paragraphs[0].runs[0].font.size = Pt(10)
             row_cells[5].paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
-            row_cells[6].text = pair['blue']['club']
+            if (type(pair[0]) is not str): row_cells[6].text = pair[0]['club']
+            else: row_cells[6].text = ""
             row_cells[6].paragraphs[0].runs[0].font.size = Pt(9)
             row_cells[6].paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 
@@ -214,57 +219,85 @@ class ExportPairsDOCX:
 
             count += 1
 
-    def add_pair(self, pair: Pair) -> None:
-        """
-        Adds one pair to __data.
+    # def add_pair(self, pair: Pair) -> None: # НЕ ТРОГАТЬ СТАРЫЙ СТАНДАРТ
+    #     """
+    #     Adds one pair to __data.
+    #
+    #     :param pair: instance of Pair class.
+    #     :return: None
+    #     """
+    #
+    #     new_pair = {
+    #         "is-circle-trinity": False,
+    #         "age-category": "",
+    #         "weight-category": "",
+    #         "red": {
+    #             "last-name": "",
+    #             "first-name": "",
+    #             "club": ""
+    #         },
+    #
+    #         "blue": {
+    #             "last-name": "Рублев",
+    #             "first-name": "Дмитрий",
+    #             "club": "Патриот"
+    #         }
+    #     }
+    #
+    #     new_pair["is-circle-trinity"] = pair.is_circle_trinity
+    #     new_pair["age-category"] = pair.age_category
+    #     new_pair["weight-category"] = pair.weight_category
+    #
+    #     new_pair["red"]["last-name"] = pair.red.last_name
+    #     new_pair["red"]["first-name"] = pair.red.first_name
+    #     new_pair["red"]["club"] = pair.red.club
+    #
+    #     new_pair["blue"]["last-name"] = pair.blue.last_name
+    #     new_pair["blue"]["first-name"] = pair.blue.first_name
+    #     new_pair["blue"]["club"] = pair.blue.club
+    #
+    #     self.__data["pairs"].append(new_pair)
 
-        :param pair: instance of Pair class.
-        :return: None
-        """
+    # def export(self, path="") -> None:
+    #     """
+    #     Congratulations! You're exporting a file. Leave path empty to export in root folder
+    #
+    #     :param path: Path where to save export file
+    #     :return: None
+    #     """
+    #     self.__print_dates()
+    #     self.__print_table()
+    #     if path != "":
+    #         self.__document.save(os_path.abspath(f"{path}/Состав пар турнир {self.start_date} - {self.end_date}.docx"))
+    #     else:
+    #         self.__document.save(f"Состав пар турнир {self.start_date} - {self.end_date}.docx")
+    #
+    #     print("File created.")
 
-        new_pair = {
-            "is-circle-trinity": False,
-            "age-category": "",
-            "weight-category": "",
-            "red": {
-                "last-name": "",
-                "first-name": "",
-                "club": ""
-            },
-
-            "blue": {
-                "last-name": "Рублев",
-                "first-name": "Дмитрий",
-                "club": "Патриот"
-            }
-        }
-
-        new_pair["is-circle-trinity"] = pair.is_circle_trinity
-        new_pair["age-category"] = pair.age_category
-        new_pair["weight-category"] = pair.weight_category
-
-        new_pair["red"]["last-name"] = pair.red.last_name
-        new_pair["red"]["first-name"] = pair.red.first_name
-        new_pair["red"]["club"] = pair.red.club
-
-        new_pair["blue"]["last-name"] = pair.blue.last_name
-        new_pair["blue"]["first-name"] = pair.blue.first_name
-        new_pair["blue"]["club"] = pair.blue.club
-
-        self.__data["pairs"].append(new_pair)
 
     def export(self, path="") -> None:
         """
-        Congratulations! You're exporting a file. Leave path empty to export in root folder
+        Congratulations! You're exporting a file. Leave path empty to export in the root folder.
 
-        :param path: Path where to save export file
+        :param path: Path where to save the export file
         :return: None
         """
         self.__print_dates()
         self.__print_table()
-        if path != "":
-            self.__document.save(os_path.abspath(f"{path}/Состав пар турнир {self.start_date} - {self.end_date}.docx"))
-        else:
-            self.__document.save(f"Состав пар турнир {self.start_date} - {self.end_date}.docx")
+
+        # Specify the file name with underscores in the date portion
+        file_name = f"Состав пар турнир {self.start_date.replace('/', '_')} - {self.end_date.replace('/', '_')}.docx"
+
+        # Specify the destination folder (path parameter or root folder if empty)
+        destination_folder = path if path else os.path.expanduser("~")
+
+        # Combine the folder and file name to get the full file path
+        file_path = os.path.join(destination_folder, file_name)
+
+        try:
+            self.__document.save(file_path)
+            print("File created at:", file_path)
+        except Exception as e:
+            print(f"Error saving the document: {e}")
 
 # TODO: ExportRefereeProtocolDOCX

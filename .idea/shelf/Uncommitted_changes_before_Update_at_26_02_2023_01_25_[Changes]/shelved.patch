@@ -1,0 +1,99 @@
+Index: GUI/Buttons/athletebtn.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>__all__ = [\"InfoButton\"]\r\n\r\nfrom .colorbtn import *\r\nfrom ..athlete import *\r\n\r\n\r\nclass InfoButton(ColorButton):\r\n    def __init__(self, master, root_win, hover_color, info: Athlete):\r\n        super().__init__(master=master, root_win=root_win, hover_color=hover_color, start_bg=\"#F8F5F5\")\r\n\r\n        self.root_win = root_win\r\n        self.config(width=11, text=f\"{info.index} | {info.name}\", borderwidth=0, cursor=\"hand2\", font=(\"Montserrat\", 15, \"bold\"))\r\n        self.info = info\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/GUI/Buttons/athletebtn.py b/GUI/Buttons/athletebtn.py
+--- a/GUI/Buttons/athletebtn.py	(revision 43d2b62bd2a07d691c944fd392cfbd1bf81724e5)
++++ b/GUI/Buttons/athletebtn.py	(date 1677282601315)
+@@ -9,5 +9,5 @@
+         super().__init__(master=master, root_win=root_win, hover_color=hover_color, start_bg="#F8F5F5")
+ 
+         self.root_win = root_win
+-        self.config(width=11, text=f"{info.index} | {info.name}", borderwidth=0, cursor="hand2", font=("Montserrat", 15, "bold"))
++        self.config(width=11, text=f"{info.name}", borderwidth=0, cursor="hand2", font=("Montserrat", 15, "bold"))
+         self.info = info
+Index: GUI/athlete.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>__all__ = [\"Athlete\", \"all\"]\r\n\r\n\r\nclass Athlete:\r\n    def __init__(self, name, power, index):\r\n        self.name = name\r\n        self.power = power\r\n        self.index = index\r\n\r\n\r\nall = [[Athlete(\"Babodzaki\", 3, 16), Athlete(\"Malenia\", 4, 1)],\r\n       [Athlete(\"Radan\", 4, 9), Athlete(\"Godri\", 2, 8)],\r\n       [Athlete(\"Rennie\", 5, 5), Athlete(\"Renala\", 1, 12)],\r\n       [Athlete(\"Godwin\", 2, 13), Athlete(\"Tif\", 9, 4)],\r\n       [Athlete(\"Kirill\", 3, 3), Athlete(\"Bob\", 4, 14)],\r\n       [Athlete(\"Yarik\", 2, 11), Athlete(\"Rob\", 9, 6)],\r\n       [Athlete(\"Timo\", 2, 7), Athlete(\"Cop\", 9, 10)],\r\n       [Athlete(\"Andrey\", 2, 15), Athlete(\"Grob\", 9, 2)]]\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/GUI/athlete.py b/GUI/athlete.py
+--- a/GUI/athlete.py	(revision 43d2b62bd2a07d691c944fd392cfbd1bf81724e5)
++++ b/GUI/athlete.py	(date 1677354307666)
+@@ -1,13 +1,11 @@
+ __all__ = ["Athlete", "all"]
+ 
+-
+ class Athlete:
+     def __init__(self, name, power, index):
+         self.name = name
+         self.power = power
+         self.index = index
+ 
+-
+ all = [[Athlete("Babodzaki", 3, 16), Athlete("Malenia", 4, 1)],
+        [Athlete("Radan", 4, 9), Athlete("Godri", 2, 8)],
+        [Athlete("Rennie", 5, 5), Athlete("Renala", 1, 12)],
+Index: SORTING/algorithm.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/SORTING/algorithm.py b/SORTING/algorithm.py
+new file mode 100644
+--- /dev/null	(date 1677355608835)
++++ b/SORTING/algorithm.py	(date 1677355608835)
+@@ -0,0 +1,45 @@
++from copy import copy
++from IO.parser.parser import *
++
++ATHLETE_LIST = [[16, 1],
++                [9, 8],
++                [5, 12],
++                [13, 4],
++                [3, 14],
++                [11, 6],
++                [7, 10],
++                [15, 2]]
++class Athlete:
++    def __init__(self, name, birthday, gender, weight, *args):
++        self.name = name
++        self.birthday = birthday
++        self.gender = gender
++        self.weight = weight
++        self.category = args
++        self.region = args
++        self.club = args
++        self.trainer = args
++        self.is_sanda = args
++        self.is_cinda = args
++        self.is_tuishow = args
++        self.is_vinchun = args
++
++def packaging(parser_data):
++    tmp_count = 1
++    global ATHLETE_LIST
++    list = copy(ATHLETE_LIST)
++    for athlete in parser_data["participants"][5]["data"]:
++        for i in range(8):
++            for j in range(2):
++                if tmp_count == list[i][j]:
++                    list[i][j] = Athlete(name=athlete["name"], birthday=athlete["birthday"],
++                                         gender=athlete["gender"], weight=athlete["weight"])
++                    break
++        tmp_count += 1
++    return list
++
++parser_data = Parser(file_name="Попередня Запоріжжя.docx").result()
++
++all = packaging(parser_data)
++
++print(all)
+\ No newline at end of file
+diff --git a/SORTING/__init__.py b/SORTING/__init__.py
+new file mode 100644

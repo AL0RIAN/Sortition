@@ -19,7 +19,6 @@ class Athlete:
         self.region = args["region"]
         self.club = args["club"]
         self.trainer = args["trainer"]
-
     def toJson(self):
         return json.dumps(self, default=lambda o: o.__dict__)
 
